@@ -1,71 +1,66 @@
 #include <iostream>
-#include <vector>
-#include <tuple>
-#define VSIZE 100
+#include <string>
+#define size 7
 
 using namespace std;
 
-int findParent(int graph[][VSIZE + 1], int n);
+int arr[size][size] =
+{
+	0, 1, 1, 0, 0, 0, 0,
+	1, 0, 0, 1, 1, 0, 0,
+	1, 0, 0, 0, 0, 0, 1,
+	0, 1, 0, 0, 0, 1, 0,
+	0, 1, 0, 0, 0, 1, 0,
+	0, 0, 0, 1, 1, 0, 1,
+	0, 0, 1, 0, 0, 1, 0
+};
 
-int main() {
+int visited[size] = { 0, };
+int queue[size];
+int front = -1;
+int rear = -1;
 
-	int VertexN; // 정점의 갯수
-	int EdgeN; // 간선의 갯수
-
-	int startV, destV;
-
-	// INPUT
-	cin >> VertexN;
-	cin >> startV >> destV;
-	cin >> EdgeN;
-
-	vector<tuple<int, int, int>> Edge;
-	// 간선의 정보를 저장
-	for (int i = 0; i < EdgeN; i++) {
-		int A, B;
-		cin >> A >> B;
-		Edge.push_back(make_tuple(A, B, 1));
-	}
-
-	// 인접 행렬
-	int graphMatrix[VSIZE + 1][VSIZE + 1] = { 0, };
-
-	for (auto i : Edge) {
-		int V1 = get<0>(i); // A
-		int V2 = get<1>(i); // B
-		int W = get<2>(i); // W
-		// 양방향 기록
-		graphMatrix[V1][V2] = W;
-		graphMatrix[V2][V1] = W;
-	}
-
-	int startN = findParent(graphMatrix, startV);
-	int destN = findParent(graphMatrix, destV);
-
-	cout << startN + destN << endl;
-
-	system("pause");
-
-	return 0;
-
+void Put(int data) {
+	rear++;
+	queue[rear] = data;
 }
 
-int findParent(int graph[VSIZE + 1][VSIZE + 1], int n) {
+int isEmpty() {
+	if (rear == front)
+		return 1;
+	return 0;
+}
 
-	int count = 0;
+int Pop() {
+	if (isEmpty())
+		return -1;
+	else {
+		front++;
+		return queue[front];
+	}
+}
 
-	while (true) {
-		int i;
-		for (i = 1; i <= n; i++) {
-			if (graph[n][i] == 1) {
-				if (i == 1) return 1;
-				count++;
-				count += findParent(graph, i);
-				return count;
+void bfs(int d) {
+	Put(d);
+
+	if (visited[d] == 0) {
+		cout << d << " ";
+		visited[d] = 1;
+	}
+	while (!isEmpty()) {
+		int t = Pop();
+		for (int i = 0; i < size; i++) {
+			if (arr[t][i] == 1 && visited[i] == 0) {
+				Put(i);
+				cout << i << " ";
+				visited[i] = 1;
 			}
 		}
-		if (i == n) return -1;
 	}
+}
 
-	return count;
+int main() {
+	bfs(0);
+
+	return 0;
 }
