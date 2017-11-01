@@ -1,12 +1,13 @@
 #include <iostream>
 #include <vector>
+#include <queue>
 #include <tuple>
 #include <stdlib.h>
 #define VSIZE 101
 
 using namespace std;
 
-bool visit[VSIZE];
+int visit[VSIZE + 1];
 int graphMatrix[VSIZE + 1][VSIZE + 1]; // 최대 갯수만큼 미리 선언
 vector <pair<int, int>> graphList[VSIZE + 1];
 
@@ -24,11 +25,41 @@ void dfs(int n) {
 
 } // dfs
 
+void bfs(int start, int dest) {
+	queue <int> que;
+	que.push(start);
+	visit[start] = 1;
+
+	while (!que.empty()) {
+		int p = que.front();
+		que.pop();
+
+		if (p == dest) {
+			cout << visit[p] - 1 << endl;
+			return;
+		} // if
+
+		for (int i = 0; i < graphList[p].size(); i++) {
+			int vertexNumber = graphList[p][i].first;
+
+			if (visit[vertexNumber] == 0) {
+				que.push(vertexNumber);
+				visit[vertexNumber] = visit[p] + 1;
+			} // if
+		} // for
+	} // while
+
+	cout << "-1" << endl;
+} // FUNCTION BFS
+
 int main() {
+	int startV, destV;
 
 	int VertexN; // 정점의 갯수
 	int EdgeN; // 간선의 갯수
-	cin >> VertexN >> EdgeN;
+	cin >> VertexN;
+	cin >> startV >> destV;
+	cin >> EdgeN;
 	vector<tuple<int, int, int>> Edge;
 
 	// 간선의 정보를 저장
@@ -59,9 +90,11 @@ int main() {
 		graphList[V2].push_back(make_pair(V1, W));
 	}
 
-	dfs(1);
+	//dfs(1);
 
-	cout << cnt;
+	bfs(startV, destV);
+
+	//cout << cnt;
 
 	system("pause");
 
