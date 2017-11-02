@@ -12,11 +12,13 @@ int visit2[VSIZE + 1];
 int graphMatrix[VSIZE + 1][VSIZE + 1]; // 최대 갯수만큼 미리 선언
 vector <pair<int, int>> graphList[VSIZE + 1];
 
+queue <int> esq;
+
 int index = 0;
 
 void dfs(int n) {
 
-	printf("%d ", n);
+	esq.push(n);
 
 	visit[n] = true;
 	for (int i = 0; i < graphList[n].size(); i++) {
@@ -36,7 +38,7 @@ void bfs(int start) {
 		int p = que.front();
 		que.pop();
 
-		printf("%d ", p);
+		esq.push(p);
 
 		for (int i = 0; i < graphList[p].size(); i++) {
 			int vertexNumber = graphList[p][i].first;
@@ -48,6 +50,11 @@ void bfs(int start) {
 		} // for
 	} // while
 } // FUNCTION BFS
+
+void clearQueue(queue <int> &someQueue) {
+	queue<int> empty;
+	swap(someQueue, empty);
+}
 
 int main() {
 	int startV, destV;
@@ -87,8 +94,30 @@ int main() {
 	}
 
 	dfs(startV);
-	cout << endl;
+
+	int repeat = esq.size();
+
+	for (int i = 0; i < repeat - 1; i++) {
+		printf("%d ", esq.front());
+		esq.pop();
+	}
+
+	printf("%d\n", esq.front());
+	esq.pop();
+
+	clearQueue(esq);
+
 	bfs(startV);
+
+	repeat = esq.size();
+
+	for (int i = 0; i < repeat - 1; i++) {
+		printf("%d ", esq.front());
+		esq.pop();
+	}
+
+	printf("%d\n", esq.front());
+	esq.pop();
 
 	system("pause");
 
