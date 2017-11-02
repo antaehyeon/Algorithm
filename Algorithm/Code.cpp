@@ -3,6 +3,7 @@
 #include <queue>
 #include <tuple>
 #include <stdlib.h>
+#include <algorithm>
 #define VSIZE 1000
 
 using namespace std;
@@ -21,6 +22,7 @@ void dfs(int n) {
 	esq.push(n);
 
 	visit[n] = true;
+	sort(graphList[n].begin(), graphList[n].end());
 	for (int i = 0; i < graphList[n].size(); i++) {
 		if (visit[graphList[n][i].first] == false) {
 			dfs(graphList[n][i].first);
@@ -40,6 +42,7 @@ void bfs(int start) {
 
 		esq.push(p);
 
+		sort(graphList[start].begin(), graphList[start].end());
 		for (int i = 0; i < graphList[p].size(); i++) {
 			int vertexNumber = graphList[p][i].first;
 
