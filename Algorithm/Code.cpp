@@ -29,8 +29,20 @@ public:
 
 vector <Student> v;
 
-bool cmp(const Student &a, const Student &b) {
+bool CompareName(const Student &a, const Student &b) {
 	return a.name < b.name;
+}
+
+bool CompareKorean(const Student &a, const Student &b) {
+	return a.korean > b.korean;
+}
+
+bool CompareEnglish(const Student &a, const Student &b) {
+	return a.english < b.english;
+}
+
+bool CompareMath(const Student &a, const Student &b) {
+	return a.math < b.math;
 }
 
 
@@ -51,7 +63,10 @@ int main() {
 		v.push_back(Student(name, korean, english, math));
 	}
 
-	sort(v.begin(), v.end(), cmp);
+	sort(v.begin(), v.end(), CompareName);
+	sort(v.begin(), v.end(), CompareMath);
+	sort(v.begin(), v.end(), CompareEnglish);
+	sort(v.begin(), v.end(), CompareKorean);
 
 	for (auto i : v) {
 		cout << i.name << endl;
@@ -59,9 +74,9 @@ int main() {
 
 	cout << endl;
 
-	for (int i = 0; i < v.size(); i++) {
+	/*for (int i = 0; i < v.size(); i++) {
 		cout << v[i].name << endl;
-	}
+	}*/
 
 	system("pause");
 
