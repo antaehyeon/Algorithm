@@ -11,12 +11,28 @@
 using namespace std;
 
 int index;
-vector <tuple<string, int, int, int>> studentInfo[VSIZE + 1];
 
-bool nameSort(const tuple<string, int, int, int> &A,
-			  const tuple<string, int ,int, int> &B) {
-	return get<0>(A) < get<0>(B);
+class Student {
+public:
+	string name;
+	int korean,
+		english,
+		math;
+
+	Student(string name, int korean, int english, int math) {
+		this->name = name;
+		this->korean = korean;
+		this->english = english;
+		this->math = math;
+	}
+};
+
+vector <Student> v;
+
+bool cmp(const Student &a, const Student &b) {
+	return a.name < b.name;
 }
+
 
 int main() {
 
@@ -30,21 +46,24 @@ int main() {
 		int korean, english, math;
 
 		cin >> name;
-
 		scanf("%d %d %d", &korean, &english, &math);
 
-		studentInfo[i].push_back(make_tuple(name, korean, english, math));
-
+		v.push_back(Student(name, korean, english, math));
 	}
 
-	sort(studentInfo->begin(), studentInfo->end(), nameSort);
+	sort(v.begin(), v.end(), cmp);
 
-	for (auto i : studentInfo) {
-		cout << get<0>(i[0]) << endl;
+	for (auto i : v) {
+		cout << i.name << endl;
 	}
 
-	//tuple<string, int, int, int> temp = studentInfo[0][0];
-	//cout << get<0>(temp) << endl;
+	cout << endl;
+
+	for (int i = 0; i < v.size(); i++) {
+		cout << v[i].name << endl;
+	}
+
+	system("pause");
 
 	return 0;
 }
