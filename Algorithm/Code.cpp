@@ -11,7 +11,7 @@
 
 using namespace std;
 
-int visit[9] = { 0, };
+int visit[10] = { 0, };
 
 int main() {
 
@@ -23,16 +23,20 @@ int main() {
 	cin >> strArr;
 
 	while (strArr[index] != '\0') {
-		if (strArr[index] == '9')
-			strArr[index] = '6';
 		visit[(int)strArr[index++] - 48]++;
 	}
 
 	for (auto i : visit)
 		if (i > max) max = i;
 
-	if (max == visit[5])
-		max = max / 2 + 1;
+	if (max == visit[6] || max == visit[9]) {
+		if (max % 2 == 1) {
+			max = max / 2 + 1;
+		}
+		else {
+			max = max / 2;
+		}
+	}
 
 	cout << max;
 
