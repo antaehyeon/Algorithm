@@ -4,29 +4,25 @@
 using namespace std;
 
 int main() {
-	ios_base::sync_with_stdio(false);
-
 	int N = 0,
 		M = 0;
 	set<int> s;
 
-	cin >> N;
+	scanf("%d", &N);
 
 	for (int i = 0; i < N; i++) {
 		int x;
-		cin >> x;
+		scanf("%d", &x);
 		s.insert(x);
 	}
 
-	cin >> M;
+	scanf("%d", &M);
 
 	for (int i = 0; i < M; i++) {
 		int x;
-		cin >> x;
-		cout << s.count(x) << " ";
+		scanf("%d", &x);
+		printf("%d ", s.count(x));
 	}
-
-	cout << "\n";
 
 	return 0;
 }
