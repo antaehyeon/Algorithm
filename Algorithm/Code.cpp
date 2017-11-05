@@ -27,26 +27,31 @@ public:
 	}
 };
 
+bool Student::operator>(Student &obj) {
+
+}
+
 vector <Student> v;
 
-bool CompareName(const Student &a, const Student &b) {
-	return a.name < b.name;
-}
+bool compare(const Student &a, const Student &b) {
 
-bool CompareKorean(const Student &a, const Student &b) {
-	return a.korean > b.korean;
-}
+	if ((a.korean == b.korean) && (a.english == b.english) && (a.math == b.math)) {
+		return a < b;
+	}
+	else if (a.korean == b.english) {
+		return a.math > b.math;
+	}
+	else if (a.korean == b.korean) {
+		return a.english > b.english;
+	}
+	else {
+		return a.korean > b.korean;
+	}
 
-bool CompareEnglish(const Student &a, const Student &b) {
-	return a.english < b.english;
 }
-
-bool CompareMath(const Student &a, const Student &b) {
-	return a.math < b.math;
-}
-
 
 int main() {
+	ios_base::sync_with_stdio(false);
 
 	int n;
 
@@ -57,24 +62,21 @@ int main() {
 		string name;
 		int korean, english, math;
 
-		cin >> name;
-		scanf("%d %d %d", &korean, &english, &math);
+		cin >> name >> korean >> english >> math;
+		//scanf("%d %d %d", &korean, &english, &math);
 
 		v.push_back(Student(name, korean, english, math));
 	}
 
-	sort(v.begin(), v.end(), CompareName);
-	sort(v.begin(), v.end(), CompareMath);
-	sort(v.begin(), v.end(), CompareEnglish);
-	sort(v.begin(), v.end(), CompareKorean);
+	sort(v.begin(), v.end(), compare);
 
 	for (auto i : v) {
 		cout << i.name << endl;
 	}
 
-	cout << endl;
+	/*cout << endl;
 
-	/*for (int i = 0; i < v.size(); i++) {
+	for (int i = 0; i < v.size(); i++) {
 		cout << v[i].name << endl;
 	}*/
 
