@@ -6,39 +6,29 @@
 #include <vector>
 #include <tuple>
 #include <utility>
-#include <stdlib.h>
 #define VSIZE 1000000
 
 using namespace std;
 
-int visit[10] = { 0, };
+int card[10] = { 0, };
 
 int main() {
 
-	char strArr[VSIZE + 1];
+	string str;
 	int x	  = 0,
-		index = 0,
-		max	  = 0;
+		maxN  = 0;
 
-	cin >> strArr;
+	cin >> str;
 
-	while (strArr[index] != '\0') {
-		visit[(int)strArr[index++] - 48]++;
+	for (auto i : str)
+		card[i - '0']++;
+
+	for (int i = 0; i < 10; i++) {
+		if (i == 6 || i == 9) continue;
+		maxN = max(maxN, card[i]);
 	}
 
-	for (auto i : visit)
-		if (i > max) max = i;
-
-	if (max == visit[6] || max == visit[9]) {
-		if (max % 2 == 1) {
-			max = max / 2 + 1;
-		}
-		else {
-			max = max / 2;
-		}
-	}
-
-	cout << max;
+	cout << max(maxN, (card[6] + card[9] + 1)/2);
 
 	return 0;
 }
