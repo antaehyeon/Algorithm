@@ -21,7 +21,7 @@ int main() {
 	for (int i = 0; i < M; i++) {
 		int x;
 		scanf("%d", &x);
-		printf("%d ", s.count(x));
+		printf("%d\n", s.count(x));
 	}
 
 	return 0;
