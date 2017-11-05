@@ -1,34 +1,32 @@
 #include <iostream>
-#include <cstring>
-#include <string>
-#include <algorithm>
-#include <queue>
-#include <vector>
-#include <tuple>
-#include <utility>
-#define VSIZE 1000000
+#include <set>
 
 using namespace std;
 
-int card[10] = { 0, };
-
 int main() {
+	ios_base::sync_with_stdio(false);
 
-	string str;
-	int x	  = 0,
-		maxN  = 0;
+	int N = 0,
+		M = 0;
+	set<int> s;
 
-	cin >> str;
+	cin >> N;
 
-	for (auto i : str)
-		card[i - '0']++;
-
-	for (int i = 0; i < 10; i++) {
-		if (i == 6 || i == 9) continue;
-		maxN = max(maxN, card[i]);
+	for (int i = 0; i < N; i++) {
+		int x;
+		cin >> x;
+		s.insert(x);
 	}
 
-	cout << max(maxN, (card[6] + card[9] + 1)/2);
+	cin >> M;
+
+	for (int i = 0; i < M; i++) {
+		int x;
+		cin >> x;
+		cout << s.count(x) << " ";
+	}
+
+	cout << "\n";
 
 	return 0;
 }
