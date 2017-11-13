@@ -1,27 +1,42 @@
 #include <iostream>
-#include <set>
+#include <bitset>
+#include <vector>
 
 using namespace std;
 
 int main() {
-	int N = 0,
-		M = 0;
-	set<int> s;
 
-	scanf("%d", &N);
+	vector<int> map1;
+	vector<int> map2;
 
-	for (int i = 0; i < N; i++) {
-		int x;
-		scanf("%d", &x);
-		s.insert(x);
+	int n = 0,
+		data = 0;
+
+	cin >> n;
+
+	for (int i = 0; i < n; i++) {
+		cin >> data;
+		map1.push_back(data);
 	}
 
-	scanf("%d", &M);
+	for (int i = 0; i < n; i++) {
+		cin >> data;
+		map2.push_back(data);
+	}
 
-	for (int i = 0; i < M; i++) {
-		int x;
-		scanf("%d", &x);
-		printf("%d\n", s.count(x));
+	for (int i = 0; i < n; i++) {
+		// 비트셋은 정확한 숫자를 입력해야함, 문자로 초기화 안됨
+		bitset<16> data1(map1[i]);
+		bitset<16> data2(map2[i]);
+		bitset<16> result = (data1 | data2);
+
+		for (int j = 15; j >= 16 - n; j--) {
+			if (j == 1) cout << "#";
+			else		cout << " ";
+		}
+
+		cout << endl;
+
 	}
 
 	return 0;
