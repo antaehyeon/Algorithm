@@ -30,9 +30,9 @@ int main() {
 		bitset<16> data2(map2[i]);
 		bitset<16> result = (data1 | data2);
 
-		for (int j = 15; j >= 16 - n; j--) {
-			if (j == 1) cout << "#";
-			else		cout << " ";
+		for (int j = n-1; j >= 0; j--) {
+			if (result[j] == 1) cout << "#";
+			else				cout << " ";
 		}
 
 		cout << endl;
