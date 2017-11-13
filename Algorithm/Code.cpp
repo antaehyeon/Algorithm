@@ -1,43 +1,93 @@
 #include <iostream>
 #include <bitset>
 #include <vector>
+#include <string>
+#include <cstring>
+#include <algorithm>
 
 using namespace std;
 
 int main() {
 
-	vector<int> map1;
-	vector<int> map2;
+	vector<int> data;
+	vector<char> result;
 
-	int n = 0,
-		data = 0;
+	string dartResult = "";
 
-	cin >> n;
+	int r = 0;
 
-	for (int i = 0; i < n; i++) {
-		cin >> data;
-		map1.push_back(data);
-	}
+	bool sharp = false;
 
-	for (int i = 0; i < n; i++) {
-		cin >> data;
-		map2.push_back(data);
-	}
+	cin >> dartResult;
 
-	for (int i = 0; i < n; i++) {
-		// 비트셋은 정확한 숫자를 입력해야함, 문자로 초기화 안됨
-		bitset<16> data1(map1[i]);
-		bitset<16> data2(map2[i]);
-		bitset<16> result = (data1 | data2);
+	for (int i = 0; i < dartResult.length(); i++) {
+		int number = stoi(to_string(dartResult.at(i)));
 
-		for (int j = n-1; j >= 0; j--) {
-			if (result[j] == 1) cout << "#";
-			else				cout << " ";
+		// 0 ~ 9 판별라인
+		if (number >= 48 && number <= 57) {
+			result.push_back(number - 48);
+			continue;
 		}
+		
+		// S일경우
+		if (number == 83) continue;
 
-		cout << endl;
-
+		// D일경우
+		if (number == 68) {
+			int d = result.back();
+			result.pop_back();
+			result.push_back(pow(d, 2));
+			continue;
+		}
+		// T일경우
+		if (number == 84) {
+			int d = result.back();
+			result.pop_back();
+			result.push_back(pow(d, 3));
+			continue;
+		}
+		// *일경우
+		if (number == 42) {
+			int n = result.size();
+			if (n == 1) {
+				int d = result.back();
+				result.pop_back();
+				result.push_back(d * 2);
+				continue;
+			}
+			int d = result.back();
+			result.pop_back();
+			int d2 = result.back();
+			result.pop_back();
+			if (sharp) {
+				d2 *= -2;
+				result.push_back(d2);
+				d *= 2;
+				result.push_back(d);
+				continue;
+			}
+			d *= 2;
+			result.push_back(d);
+			d2 *= 2;
+			result.push_back(d2);
+			continue;
+		}
+		// #일경우
+		if (number == 35) {
+			sharp = true;
+			int d = result.back();
+			result.pop_back();
+			result.push_back(-d);
+			continue;
+		}
 	}
+
+	for (int i = 0; i < result.size(); i++) {
+		r += result.back();
+		result.pop_back();
+	}
+
+	cout << r << endl;
 
 	return 0;
 }
