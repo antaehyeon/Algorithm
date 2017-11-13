@@ -14,9 +14,8 @@ int main() {
 
 	string dartResult = "";
 
-	int r = 0;
-
-	bool sharp = false;
+	int r = 0,
+		size = 0;
 
 	cin >> dartResult;
 
@@ -26,6 +25,12 @@ int main() {
 		// 0 ~ 9 판별라인
 		if (number >= 48 && number <= 57) {
 			result.push_back(number - 48);
+			// 만약 10일경우
+			if (stoi(to_string(dartResult.at(i + 1))) == 48) {
+				result.pop_back();
+				result.push_back(10);
+				i++;
+			}
 			continue;
 		}
 		
@@ -59,22 +64,14 @@ int main() {
 			result.pop_back();
 			int d2 = result.back();
 			result.pop_back();
-			if (sharp) {
-				d2 *= -2;
-				result.push_back(d2);
-				d *= 2;
-				result.push_back(d);
-				continue;
-			}
-			d *= 2;
-			result.push_back(d);
 			d2 *= 2;
 			result.push_back(d2);
+			d *= 2;
+			result.push_back(d);
 			continue;
 		}
 		// #일경우
 		if (number == 35) {
-			sharp = true;
 			int d = result.back();
 			result.pop_back();
 			result.push_back(-d);
@@ -82,7 +79,9 @@ int main() {
 		}
 	}
 
-	for (int i = 0; i < result.size(); i++) {
+	size = result.size();
+
+	for (int i = 0; i < size; i++) {
 		r += result.back();
 		result.pop_back();
 	}
