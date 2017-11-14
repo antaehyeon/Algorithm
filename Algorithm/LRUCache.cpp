@@ -1,127 +1,119 @@
 #include <iostream>
-#include <map>
+#include <unordered_map>
+#include <string>
 using namespace std;
-class Node {
-public:
-	int key, value;
-	Node *prev, *next;
-	Node(int k, int v) : key(k), value(v), prev(NULL), next(NULL) {}
+template<class K, class V>
+struct Item {
+	K key;
+	V value;
+	Item *prev;
+	Item *next;
+	Item(string k, int v) : key(k), value(v) {
+		prev = NULL;
+		next = NULL;
+	}
 };
-
-class DoublyLinkedList {
-	Node *front, *rear;
-
-	bool isEmpty() {
-		return rear == NULL;
-	}
-
+template<class K, class V>
+class Cache {
 public:
-	DoublyLinkedList() : front(NULL), rear(NULL) {}
-
-	Node* add_page_to_head(int key, int value) {
-		Node *page = new Node(key, value);
-		if (!front && !rear) {
-			front = rear = page;
-		}
-		else {
-			page->next = front;
-			front->prev = page;
-			front = page;
-		}
-		return page;
-	}
-
-	void move_page_to_head(Node *page) {
-		if (page == front) {
-			return;
-		}
-		if (page == rear) {
-			rear = rear->prev;
-			rear->next = NULL;
-		}
-		else {
-			page->prev->next = page->next;
-			page->next->prev = page->prev;
-		}
-
-		page->next = front;
-		page->prev = NULL;
-		front->prev = page;
-		front = page;
-	}
-
-	void remove_rear_page() {
-		if (isEmpty()) {
-			return;
-		}
-		if (front == rear) {
-			delete rear;
-			front = rear = NULL;
-		}
-		else {
-			Node *temp = rear;
-			rear = rear->prev;
-			rear->next = NULL;
-			delete temp;
-		}
-	}
-	Node* get_rear_page() {
-		return rear;
-	}
-
+	virtual bool lookup(K key, V &val) = 0;
+	virtual void put(K key, V val) = 0;
 };
-
-class LRUCache {
-	int capacity, size;
-	DoublyLinkedList *pageList;
-	map<int, Node*> pageMap;
-
+template<class K, class V>
+class LRUCache : public Cache<K, V> {
+private:
+	/* Doubly Linked List: Head - The most recent, Tail - The least recent */
+	Item<K, V> *head;
+	Item<K, V> *tail;
+	void detach(Item<K, V> *item) { //Detach item from linked list : O(1)
+		item->next->prev = item->prev;
+		item->prev->next = item->next;
+	};
+	void push_front(Item<K, V> *item) { //Add the new item at the front : O(1)
+		item->next = head->next;
+		head->next->prev = item;
+		head->next = item;
+		item->prev = head;
+	};
+	void pop_back() { //delete item from the tail : O(1)
+		Item<K, V> *item = tail->prev;
+		if (item != head) {
+			tail->prev = item->prev;
+			delete item;
+		}
+		else {
+			tail->prev = head;
+		}
+		tail->prev->next = tail;
+	};
+	bool back(K & key) { //Get the item from the tail: O(1)
+		if (tail->prev == head) {
+			return false;
+		}
+		key = tail->prev->key;
+		return true;
+	};
+	/* Hash Table */
+	int MaxNumEntries;
+	unordered_map<K, Item<K, V>*> CacheEntries;
 public:
-	LRUCache(int capacity) {
-		this->capacity = capacity;
-		size = 0;
-		pageList = new DoublyLinkedList();
-		pageMap = map<int, Node*>();
-	}
-
-	int get(int key) {
-		if (pageMap.find(key) == pageMap.end()) {
-			return -1;
-		}
-		int val = pageMap[key]->value;
-
-		// move the page to front
-		pageList->move_page_to_head(pageMap[key]);
-		return val;
-	}
-
-	void put(int key, int value) {
-		if (pageMap.find(key) != pageMap.end()) {
-			// if key already present, update value and move page to head
-			pageMap[key]->value = value;
-			pageList->move_page_to_head(pageMap[key]);
-			return;
-		}
-
-		if (size == capacity) {
-			// remove rear page
-			int k = pageList->get_rear_page()->key;
-			pageMap.erase(k);
-			pageList->remove_rear_page();
-			size--;
-		}
-
-		// add new page to head to Queue
-		Node *page = pageList->add_page_to_head(key, value);
-		size++;
-		pageMap[key] = page;
-	}
-
+	LRUCache(int num) :MaxNumEntries(num) {
+		//head <-> tail
+		head = new Item<K, V>("0", 0);
+		tail = new Item<K, V>("0", 0);
+		head->next = tail;
+		tail->prev = head;
+	};
 	~LRUCache() {
-		map<int, Node*>::iterator i1;
-		for (i1 = pageMap.begin(); i1 != pageMap.end(); i1++) {
-			delete i1->second;
+		while (head->next != tail) {
+			pop_back();
 		}
-		delete pageList;
+		delete head;
+		delete tail;
+	}
+	bool lookup(K k, V &val) {
+		/* find a matching item */
+		auto it = CacheEntries.find(k);
+		if (it == CacheEntries.end()) { //not found
+			return false;
+		}
+		val = (*it).second->value; //found
+								   /* update linked list */
+		detach((*it).second); //detach
+		push_front((*it).second); //add to the head because this is the latest
+		return true;
+	}
+	void put(K k, V val) {
+		/* find a matching item: O(1) operation */
+		auto it = CacheEntries.find(k);
+		if (it != CacheEntries.end()) { //found
+										/* update data */
+			(*it).second->value = val;
+			/* update linked list */
+			detach((*it).second); //detach
+			push_front((*it).second); //add to the head because this is the latest
+			return;
+		}
+		/* Add new one: O(1) operation */
+		if (CacheEntries.size() != MaxNumEntries) { //Cache is NOT full
+			Item<K, V> *t = new Item<K, V>(k, val);
+			pair<K, Item<K, V> *> entry(k, t);
+			CacheEntries.insert(entry);
+			push_front(t); //Latest one
+		}
+		else { //Cache is full
+			   /* Select Victim & delete */
+			K key;
+			back(key); //get the key of the oldest one
+			pop_back();       //remove the oldest one
+			auto rt = CacheEntries.find(key);
+			if (rt != CacheEntries.end()) { //found
+				CacheEntries.erase(rt); //delete
+			}
+			Item<K, V> *t = new Item<K, V>(k, val);
+			pair<K, Item<K, V> *> entry(k, t);
+			CacheEntries.insert(entry);
+			push_front(t); //Latest one
+		}
 	}
 };
