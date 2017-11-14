@@ -4,46 +4,48 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
+#include <array>
 #include "LRUCache.cpp"
 
 using namespace std;
 
+array<string, 10> testData = { "Jeju", "Pangyo", "Seoul", "NewYork", "LA", "Jeju", "Pangyo", "Seoul", "NewYork", "LA" };
+array<string, 9> testData2 = { "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul", "Jeju", "Pangyo", "Seoul" };
+array<string, 12> testData3 = { "Jeju", "Pangyo", "Seoul", "NewYork", "LA", "SanFrancisco", "Seoul", "Rome", "Paris", "Jeju", "NewYork", "Rome" };
+array<string, 12> testData4 = { "Jeju", "Pangyo", "Seoul", "NewYork", "LA", "SanFrancisco", "Seoul", "Rome", "Paris", "Jeju", "NewYork", "Rome" };
+array<string, 4> testData5 = { "Jeju", "Pangyo", "NewYork", "newyork" };
+array<string, 5> testData6 = { "Jeju", "Pangyo", "Seoul", "NewYork", "LA" };
+
 int main() {
 
-	LRUCache<string, int> cache(5);
-	cache.put("A", 1);
-	cache.put("B", 2);
-	cache.put("C", 3);
-	cache.put("D", 4);
-	cache.put("E", 5);
-	int val;
-	if (cache.lookup("A", val)) { //'A' is updated. So 'B' becomes the oldest.
-		cout << "A's value is " << val << endl; //expected result
-	}
-	else {
-		cout << "A: Not found" << endl;
-	}
-	cache.put("F", 6); //Cache replacement. 'B' is removed and 'C' becomes the oldest
-	if (cache.lookup("B", val)) {
-		cout << "B's value is " << val << endl;
-	}
-	else {
-		cout << "B: Not found" << endl; //expected
-	}
-	cache.put("C", 7); //'C' is updated. Now 'D' becomes the oldest
-	if (cache.lookup("C", val)) {
-		cout << "C's value is " << val << endl; //expected
-	}
-	else {
-		cout << "C: Not found" << endl;
-	}
-	cache.put("G", 8); //Cache replacement. 'D' is removed and 'E' becomes the oldest
-	if (cache.lookup("D", val)) {
-		cout << "D's value is " << val << endl;
-	}
-	else {
-		cout << "D: Not found" << endl; //expected result
-	}
-	return 0;
+	int val = 0,
+		count = 0,
+		time = 0,
+		cacheNum = 0;
 
+	cin >> cacheNum;
+
+	if (!cacheNum) {
+		for (int i = 0; i < testData3.size(); i++) {
+			time += 5;
+		}
+		cout << time << endl;
+		return 0;
+	}
+
+	LRUCache<string, int> cache(cacheNum);
+
+	// 왜 일반배열에서 testData->size()는 4가나올까?
+	for (int i = 0; i < testData3.size(); i++) {
+		if (cache.lookup(testData3[i], val)) {
+			time += val;
+			continue;
+		}
+		cache.put(testData3[i], 1);
+		time += 5;
+	} // for
+
+	cout << time;
+
+	return 0;
 }
