@@ -1,73 +1,27 @@
-#include <iostream>
-#include <algorithm>
-#include <string>
-#include <vector>
-
+#include<iostream>
 using namespace std;
+#define MOD 1000000000
+int dp[105][10][1 << 10], n, ans;
+int dfs(int idx, int num, int bit)
+{
+	if (dp[idx][num][bit]) return dp[idx][num][bit];
+	if (idx == n) return bit == (1 << 10) - 1 ? 1 : 0;
 
-vector<string> stringV1, stringV2;
-string tmp = "";
-int unionN = 0,
-	intersectionN = 0;
+	int res = 0;
 
-vector<string> splitString(string str) {
-
-	vector<string> tempV;
-
-	for (int i = 0; i < str.length()-1; i++) {
-		if (str.at(i) < 97 || str.at(i) > 122) {
-			continue;
-		}
-		if (str.at(i + 1) < 97 || str.at(i + 1) > 122) {
-			i++;
-			continue;
-		}
-
-		tmp = tmp + str.at(i) + str.at(i + 1);
-		tempV.push_back(tmp);
-		tmp = "";
-
+	if (num + 1 < 10) res += dfs(idx + 1, num + 1, bit | 1 << (num + 1));
+	if (num - 1 >= 0) res += dfs(idx + 1, num - 1, bit | 1 << (num - 1));
+	res %= MOD;
+	return dp[idx][num][bit] = res;
+}
+int main()
+{
+	cin >> n;
+	for (int i = 1; i < 10; i++)
+	{
+		ans += dfs(1, i, 1 << i);
+		ans %= MOD;
 	}
-
-	return tempV;
-}
-
-
-void solution(string str1, string str2) {
-
-	transform(str1.begin(), str1.end(), str1.begin(), tolower);
-	transform(str2.begin(), str2.end(), str2.begin(), tolower);
-	
-	stringV1 = splitString(str1);
-	stringV2 = splitString(str2);
-
-	for (int i = 0; i < stringV1.size(); i++) {
-		for (int j = 0; j < stringV2.size(); j++) {
-			if (stringV1[i] == stringV2[j]) {
-				intersectionN++;
-				stringV1.erase(stringV1.begin() + i);
-				stringV2.erase(stringV2.begin() + j);
-				i = 0, j = 0; // stringV1의 사이즈가 유동적으로 변하므로 
-							  // 항상 처음부터 시작 해줘야함
-				break;
-			} // if
-		} //for j
-	} // for i
-
-	unionN = stringV1.size() + stringV2.size() + intersectionN;
-
-	double result = (double)intersectionN / (double)unionN;
-
-	cout << (int)(result * 65536) << endl;
-
-}
-
-int main() {
-
-	solution("FRANCE", "french");
-	solution("handshake", "shake hands");
-	solution("aa1+aa2", "AAAA12");
-	solution("E=M*C^2", "e=m*c^2");
-
+	cout << ans << endl;
 	return 0;
 }
