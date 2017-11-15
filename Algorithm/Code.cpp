@@ -1,27 +1,41 @@
-#include<iostream>
+/*
+DP 프로그래밍 입문
+(1로 만들기:1463) https://www.acmicpc.net/problem/1463
+*/
+
+#include <iostream>
+#include <algorithm>
+#define SIZE 10000000
+
 using namespace std;
-#define MOD 1000000000
-int dp[105][10][1 << 10], n, ans;
-int dfs(int idx, int num, int bit)
-{
-	if (dp[idx][num][bit]) return dp[idx][num][bit];
-	if (idx == n) return bit == (1 << 10) - 1 ? 1 : 0;
 
-	int res = 0;
+int d[SIZE + 1] = { 0, };
 
-	if (num + 1 < 10) res += dfs(idx + 1, num + 1, bit | 1 << (num + 1));
-	if (num - 1 >= 0) res += dfs(idx + 1, num - 1, bit | 1 << (num - 1));
-	res %= MOD;
-	return dp[idx][num][bit] = res;
-}
-int main()
-{
-	cin >> n;
-	for (int i = 1; i < 10; i++)
-	{
-		ans += dfs(1, i, 1 << i);
-		ans %= MOD;
+int go(int n) {
+
+	if (n == 1) return 0;
+	if (d[n] > 0) return d[n];
+
+	d[n] = go(n - 1) + 1;
+
+	if (n % 2 == 0) {
+		int temp = go(n / 2) + 1;
+		if (d[n] > temp) d[n] = temp;
 	}
-	cout << ans << endl;
+	if (n % 3 == 0) {
+		int temp = go(n / 3) + 1;
+		if (d[n] > temp) d[n] = temp;
+	}
+
+	return d[n];
+}
+
+int main() {
+
+	int n;
+	cin >> n;
+
+	cout << go(n) << endl;
+
 	return 0;
 }
