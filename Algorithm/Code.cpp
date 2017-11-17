@@ -13,16 +13,7 @@ int main() {
 	int a = 0,
 		b = 0;
 
-	//vector <int> v;
-
-	//while (scanf("%d %d", &a, &b) == 2) {
-
-	//	v.push_back(a + b);
-	//}
-
-	//for (auto i : v) cout << i << endl;
-
-	while (scanf("%d %d", &a, &b) == 2)
+	while (cin >> a >> b)
 		cout << a + b << endl;
 
 	return 0;
