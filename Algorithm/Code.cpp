@@ -1,25 +1,43 @@
 /*
-X보다 작은 수
-https://www.acmicpc.net/problem/10871
+사칙 연산
+https://www.acmicpc.net/problem/10869
 */
 
 #include <iostream>
 #include <functional>
+#include <vector>
 using namespace std;
 
 int main() {
 
-	int sum = 0;
+	vector<function<int(int, int)>> d;
 
-	function<int(int)> f = [&](int n) {
+	d.push_back([](int x, int y) {
+		return x + y;
+	});
 
-		if (n <= 1) return n;
-		else return f(n - 1) + f(n - 2);
-	};
+	d.push_back([](int x, int y) {
+		return x - y;
+	});
 
-	int n;
-	cin >> n;
+	d.push_back([](int x, int y) {
+		return x * y;
+	});
 
-	cout << f(n) << endl;
+	d.push_back([](int x, int y) {
+		return x / y;
+	});
+
+	d.push_back([](int x, int y) {
+		return x % y;
+	});
+
+	int a, b;
+	cin >> a >> b;
+
+	for (auto &f : d) {
+		cout << f(a, b) << endl;
+	}
+
 
 }

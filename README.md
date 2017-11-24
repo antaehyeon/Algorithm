@@ -49,3 +49,19 @@ function<int(int)> f = [](int n) {
 ```
 
 -	[람다표현식의 장점](http://qwefgh90.github.io/java/Lambda-Expression/)
+
+-	[사칙 연산](https://www.acmicpc.net/problem/10869)
+
+```
+vector<function<int(int, int)>> d;
+
+  d.push_back([](int x, int y) {
+    return x + y;
+  });
+
+  ... 나머지 함수 추가
+
+  for (auto &f : d) {
+  cout << f(a, b) << endl;
+}
+```
