@@ -12,3 +12,10 @@ scanf("%i", &var);
 0x로 시작하면 16진수
 나머지는 10진수로 출력됨
 ```
+
+-	[그대로 출력하기](https://www.acmicpc.net/problem/11718)
+
+```
+getline(cin, var);
+cout << var << endl;
+```
