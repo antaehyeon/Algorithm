@@ -80,3 +80,14 @@ for (auto c : string) {
 auto f = find(q.begin(), q.end(), 찾을 값);
 distance(q.begin(), f) : 해당 값의 위치를 찾을 수 있음 (0부터 시작)
 ```
+
+-	NHN Ent 2017 Pre-Test 1차, NHN엔터의 모험
+
+```
+rotate(q.begin(), q.begin()+num, q.end());
+
+rotate(q.rbegin(), q.rbegin()+num, q.rend());
+
+vector 와 string 을 이용하면 특정문자열로 찢기가 편함
+그리고 string 하나 선언해서 문자열을 붙이면 원하는 문자열도 생성가능
+```

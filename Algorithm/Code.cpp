@@ -1,62 +1,105 @@
 /*
 NHN Ent 2017 Pre-Test 1차
-NHN엔터의 모험
+암복호화
 */
 
 #include <iostream>
 #include <vector>
 #include <algorithm>
 #include <string>
-#include <deque>
 using namespace std;
+
+char sumAlphabet(char a, char b) {
+
+	int n = (a - 97) + (b - 97);
+	
+	if (n > 26) n -= 26;
+	
+	return (char)n + 97;
+}
+
+char minusAlphabet(char a, char b) {
+	int n = (a - 97) - (b - 97);
+	
+	if (n < 0) {
+		n += 26;
+	}
+
+	return (char)n + 97;
+}
 
 int main() {
 
-	deque<int> inven;
-	vector<int> inputList;
+	string s = "",
+		mode = "",
+		secretKey = "",
+		message = "",
+		temp = "";
 
-	string inputData;
+	int rotateNum = 0,
+		stringMode = 0;
 
-	int n, count = 0;
+	vector <char> answer;
 
-	getline(cin, inputData);
+	getline(cin, s);
 
-	for (auto a : inputData) {
-		if (a == ' ') continue;
+	for (auto c : s) {
+		if (c == ' ') {
+			stringMode++;
+			continue;
+		}
+
+		switch (stringMode)
+		{
+		case 0:
+			mode += c;
+			break;
+		case 1:
+			secretKey += c;
+			break;
+		case 2:
+			rotateNum = c - 48;
+			break;
+		case 3:
+			message += c;
+			break;
+		default:
+			break;
+		}
+	}
+
+
+
+	if (mode == "encrypt") {
+		for (int i = 0; i < message.length(); i++) {
+			char c = sumAlphabet(secretKey[i], message[i]);
+
+			answer.push_back(c);
+		}
+		rotateNum %= message.length();
 		
-		int n = a - 48;
+		rotate(answer.begin(), answer.begin() + rotateNum, answer.end());
 
-		auto f = find(inven.begin(), inven.end(), n);
-
-		if (inven.size() == 3) {
-			
-			if (f == inven.end()) {
-				cout << inven.front() << endl;
-				count++;
-				inven.pop_front();
-				inven.push_back(n);
-			}
-			else {
-				switch (distance(inven.begin(), f))
-				{
-				case 0:
-					inven.pop_front();
-					inven.push_back(n);
-					break;
-				case 1:
-					swap(inven[1], inven[2]);
-					break;
-				default:
-					break;
-				}
-			}
-		}
-		else {
-			inven.push_back(n);
+		for (auto c : answer) {
+			cout << c;
 		}
 	}
+	else if (mode == "decrypt") {
 
-	if (count == 0) {
-		cout << 0 << endl;
-	}
+		rotateNum %= message.length();
+
+		rotate(message.rbegin(), message.rbegin() + rotateNum, message.rend());
+
+		for (int i = 0; i < message.length(); i++) {
+			char c = minusAlphabet(message[i], secretKey[i]);
+
+			answer.push_back(c);
+		}
+
+		for (auto c : answer) {
+			cout << c;
+		}
+	}	
+
+	return 0;
 }
