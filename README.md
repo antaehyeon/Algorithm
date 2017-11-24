@@ -65,3 +65,18 @@ vector<function<int(int, int)>> d;
   cout << f(a, b) << endl;
 }
 ```
+
+-	NHN Ent 2017 Pre-Test 1차, NHN엔터의 모험
+
+```
+getline(cin, string);
+for (auto c : string) {
+  if (a == ' ') continue;
+  // 값 보관
+}
+한줄의 문자열에 대해서 해당 문자열 기준으로 하나씩 짤려서 c에 들어간다
+(int형으로 출력되니 -48해주면 원래의 값을 찾을 수 있음)
+
+auto f = find(q.begin(), q.end(), 찾을 값);
+distance(q.begin(), f) : 해당 값의 위치를 찾을 수 있음 (0부터 시작)
+```

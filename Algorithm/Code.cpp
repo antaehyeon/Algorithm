@@ -1,43 +1,62 @@
 /*
-사칙 연산
-https://www.acmicpc.net/problem/10869
+NHN Ent 2017 Pre-Test 1차
+NHN엔터의 모험
 */
 
 #include <iostream>
-#include <functional>
 #include <vector>
+#include <algorithm>
+#include <string>
+#include <deque>
 using namespace std;
 
 int main() {
 
-	vector<function<int(int, int)>> d;
+	deque<int> inven;
+	vector<int> inputList;
 
-	d.push_back([](int x, int y) {
-		return x + y;
-	});
+	string inputData;
 
-	d.push_back([](int x, int y) {
-		return x - y;
-	});
+	int n, count = 0;
 
-	d.push_back([](int x, int y) {
-		return x * y;
-	});
+	getline(cin, inputData);
 
-	d.push_back([](int x, int y) {
-		return x / y;
-	});
+	for (auto a : inputData) {
+		if (a == ' ') continue;
+		
+		int n = a - 48;
 
-	d.push_back([](int x, int y) {
-		return x % y;
-	});
+		auto f = find(inven.begin(), inven.end(), n);
 
-	int a, b;
-	cin >> a >> b;
-
-	for (auto &f : d) {
-		cout << f(a, b) << endl;
+		if (inven.size() == 3) {
+			
+			if (f == inven.end()) {
+				cout << inven.front() << endl;
+				count++;
+				inven.pop_front();
+				inven.push_back(n);
+			}
+			else {
+				switch (distance(inven.begin(), f))
+				{
+				case 0:
+					inven.pop_front();
+					inven.push_back(n);
+					break;
+				case 1:
+					swap(inven[1], inven[2]);
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		else {
+			inven.push_back(n);
+		}
 	}
 
-
+	if (count == 0) {
+		cout << 0 << endl;
+	}
 }
