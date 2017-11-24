@@ -1,20 +1,17 @@
 /*
-그대로 출력하기
-https://www.acmicpc.net/problem/11718
+N찍기
+https://www.acmicpc.net/problem/2741
 */
 
 #include <iostream>
-#include <string>
 using namespace std;
 
 int main() {
 
-	string s;
+	int n;
+	cin >> n;
 
-
-	do {
-		getline(cin, s);
-		cout << s << endl;
-	} while (!(s == ""));
-
+	for (int i = 1; i <= n; i++) {
+		cout << n << '\n';
+	}
 }
