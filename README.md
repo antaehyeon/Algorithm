@@ -33,3 +33,19 @@ if(function(var)) {
   var 보다 큰 수만 출력하는 코드
 }
 ```
+
+-	[피보나치 수 5](https://www.acmicpc.net/problem/10870)
+
+```
+람다함수를 재귀적으로 사용하려면
+#include <functional>
+
+function<int(int)> f = [](int n) {
+  if (n <= 1) return n;
+  else return f(n-1) + f(n-2);
+};
+
+위와 같이 auto가 아닌 function<리턴타입(자료형, ...)>으로 사용해야 한다
+```
+
+-	[람다표현식의 장점](http://qwefgh90.github.io/java/Lambda-Expression/)

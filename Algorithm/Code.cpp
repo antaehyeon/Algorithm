@@ -4,24 +4,22 @@ https://www.acmicpc.net/problem/10871
 */
 
 #include <iostream>
+#include <functional>
 using namespace std;
 
 int main() {
 
-	int n, x;
+	int sum = 0;
 
-	cin >> n >> x;
+	function<int(int)> f = [&](int n) {
 
-	auto function = [&](int num) {
-		return num < x;
+		if (n <= 1) return n;
+		else return f(n - 1) + f(n - 2);
 	};
 
-	for (int i = 0; i < n; i++) {
-		int inputN;
+	int n;
+	cin >> n;
 
-		cin >> inputN;
-		if (function(inputN)) {
-			cout << inputN << " ";
-		}
-	}
+	cout << f(n) << endl;
+
 }
