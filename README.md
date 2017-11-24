@@ -19,3 +19,17 @@ scanf("%i", &var);
 getline(cin, var);
 cout << var << endl;
 ```
+
+-	[X보다 작은 수](https://www.acmicpc.net/problem/10871)
+
+```
+람다함수 이용(밖에 있는 변수(x)를 참조하기 위해선 []안에 &를 써야함)
+auto function = [&](int num) {
+  return num < x;
+};
+
+
+if(function(var)) {
+  var 보다 큰 수만 출력하는 코드
+}
+```
