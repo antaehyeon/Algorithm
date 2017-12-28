@@ -94,9 +94,9 @@ vector 와 string 을 이용하면 특정문자열로 찢기가 편함
 
 - # 인프런 알고리즘 강좌 (권오흠)
 
-- ## 순환(Recursion)의 개념과 기본예제1
+- ### 순환(Recursion)의 개념과 기본예제1
 
-- Recursion (재귀함수)
+- #### Recursion (재귀함수)
 
   - 자기 자신을 호출하는 함수
 
@@ -126,7 +126,7 @@ vector 와 string 을 이용하면 특정문자열로 찢기가 편함
     m>=n인 두 양의 정수 m과 n에 대해서 m이 n의 배수이면 gcd(m,n) = n이고, 그렇지 않으면 gcd(m,n) = gcd(n, m%n)이다.
     ```
 
-    ```
+    ```java
     public static double gcd(int m, int n) {
       if (m<n) {
         int tmp=m; m=n; n=tmp;		// swap m and n
@@ -138,7 +138,7 @@ vector 와 string 을 이용하면 특정문자열로 찢기가 편함
     }
     ```
 
-    ```
+    ```java
     gcd(p, q) = if q=0, p
     			otherwise, gcd(q, p%q)
     			
@@ -148,6 +148,150 @@ vector 와 string 을 이용하면 특정문자열로 찢기가 편함
       else
       	return gcd(q, p%q);
     }
+
     ```
 
+- ### 순환(Recursion)의 개념과 기본예제 2
+
+  - #### 문자열의 길이 계산
+
+    ![](2017-12-28_181926.png)
+
+    ```java
+    if the string is empty // base case
+    	return 0;
+    else
+    	return 1 plus the length of the string that
+    		excludes the first character;
+    ```
+
+    ![](2017-12-28_181949.png)
+
+    ```java
+    public static int length(String str) {
+      if (str.equals(""))
+      	return 0;
+      else
+      	return 1+length(str.substring(1));
+    }
+    ```
+
+  - 기존의 문자열의 길이를 계산하는 방법(일반적인)
+
+    - for문이나 while문을 통한 문자들을 카운트한다
+
+  - Recursion
+
+    - 첫번째 문자를 제거한 나머지 문자열의 길이를 계산한 다음 1을 더하면 된다 (Recursion 적인 문자열 계산방법)
+
+  ​
+
+  - #### 문자열의 프린트 (Recursion)
+
+    ```java
+    public static void printChars(String str) {
+      if (str.length()==0)
+      	return;
+      else {
+        System.out.print(str.charAt(0));
+        printChars(str.substring(1));
+      }
+    }
+    ```
+
+  - #### 문자열을 뒤집어 프린트
+
+    ```java
+    public static void printChars(String str) {
+      if (str.length()==0)
+      	return;
+      else {
+        printChars(str.substring(1));
+        System.out.print(str.charAt(0));
+      }
+    }
+    ```
+
+    - Recursion 의 재밌는 예 : print와 출력의 순서만 바꿔주면 된다
+
+  - #### 2진수로 변환하여 출력
+
+    ```java
+    public void printInBinary(int n) {
+      if (n<2)
+      	System.out.print(n);
+      else {
+        printInBinary(n/2);
+        System.out.print(n%2);
+      }
+    }
+
+    ```
+
+  - #### 배열의 합 구하기
+
+    ```java
+    public static int sum(int n, int [] data) {
+      if (n<=0)
+      	return 0;
+      else
+      	return sum(n-1, data) + data[n-1];
+    }
+    ```
+
+    - data[0]에서 data[n-1]까지의 합을 구하여 반환한다
+
+  - #### 데이터파일로 부터 n개의 정수 읽어오기
+
+    ```java
+    public void readFrom(int n, int [] data, Scanner in) {
+      if (n==0)
+      	return;
+      else {
+        readFrom(n-1, data, in);
+        data[n-1] = in.nextInt();
+      }
+    }
+    ```
+
+  - #### Recursion vs Iteration
+
+    1. 모든 순환함수는 반복문(iteration)으로 변경 가능
+    2. 그 역도 성립함. 즉 **모든 반복문은 recursion으로 표현 가능함**
+    3. 순환함수는 복잡한 알고리즘을 알기쉽게 표현하는 것을 가능하게 함
+    4. 하지만 함수 호출에 따른 오버헤드가 존재 (매개변수 전달, 액티베이션 프레임 생성 등)
+
     ​
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
