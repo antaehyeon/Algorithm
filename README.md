@@ -413,24 +413,205 @@ vector 와 string 을 이용하면 특정문자열로 찢기가 편함
 
        - 해당 코드의 수행시간은 156 MS
 
+2. ### Java - Collections
 
+   > 자바 콜렉션에서 많이 사용되는 것
 
+   - ### C++ STL
 
+     - vector, deque, list, set, map, Stack, Queue
 
+   - #### ArrayList
 
+     - 길이가 정해져있지 않고 변하는 배열을 뜻함
 
+     - C++ STL 에서는 vector이 해당됨
 
+     - ArrayList( )
 
+       ```java
+       ArrayList<Integer> a = new ArrayList<Integer>();
+       ```
 
+     - ArrayList(intinitialCapacity)
 
+       ```java
+       ArrayList<Integer> b = new ArrayList<Integer>(40);
+       ```
 
+       - Capacity = 40 으로 정한 ArrayList 를 만든 것
 
+     - 주로 많이 사용하는 메소드들
 
+       - boolean add(E e) : 뒤에 e를 추가
+       - void add (int index, E element) : index 번 째 추가
+       - void clear ( )
+       - boolean Contains(Object o)
+         - Object o 에 들어있는지 아닌지에 대한
+       - E get (int index) : arr[index] 라는 표현도 가능함
+       - boolean isEmpty( )
+       - E remove(int index)
+       - E set (int index, E element)
+       - Object [ ]  toArray( )
 
+     ```java
+     int[] arr = (int [])a.toArray();
+     ```
 
+   - ### [수 정렬하기](https://www.acmicpc.net/problem/2750)
 
+     ```java
+     ArrayList<Integer> a = new ArrayList<Integer>();
+     for (int i=0; i<n; i++) {
+       int temp = sc.nextInt();
+       a.add(tmp);
+     }
+     Collections.sort(a);
+     for (int x : a) {
+       System.out.println(x);
+     }
+     ```
 
+     ```java
+     Collections.sort(a);
+     for (int i=0; i<n; i++) {
+       System.out.println(x);
+     }
+     ```
 
+     - 결국 ArrayList는 배열이기 때문에 추가, 값이 있는지 없는지 확인, 삭제 하는 것 모두 O(n) 이라는 시간이 걸림
+
+     - ArrayList는 그래프 문제의 인접 리스트를 만들 때, 가장 많이 사용
+
+       ```java
+       ArrayList<Integer>[] a = (ArrayList<Integer>[]) new ArrayList[n+1];
+       for (int i=1; i<=n; i++) {
+         a[i] = new ArrayList<Integer>();
+       }
+       for (int i=0; i<m; i++) {
+         int u = sc.nextInt();
+         int v = sc.nextInt();
+         a[u].add(v);
+         a[v].add(u);
+       }
+       ```
+
+   - ### LinkedList
+
+     > 이중연결 리스트 (C++ LIST)
+
+     - 프로그래밍 대회에서 LinkedList 를 사용하는 경우는 드물다
+
+   - ### Stack
+
+     > 한쪽 끝에서만 자료를 넣고 뺄 수 있는 자료구조
+     >
+     > Last In First Out (LIFO)
+
+     - push: E push(E item)
+     - pop: E pop()
+       - C++ 에서는 pop 에 대하여 리턴값이 없음 (void)
+       - 그러나 Java에서는 리턴값이 존재
+     - top: E peek()
+     - empty: bool empty()
+     - size: int size()
+
+   - ### Set
+
+     > 인터페이스, 중복된 원소를 포함하지 않는다
+
+     - boolean add(E e)
+
+     - void clear()
+
+     - boolean contains(Object o)
+
+     - boolean isEmpty()
+
+     - boolean remove(Object o)
+
+     - int size()
+
+     - Obejct[] toArray()
+
+       - **HashSet**
+
+         ```java
+         public class Main {
+           public static void main(String args[]) {
+             HashSet<Integer> d = new HashSet<Integer>();
+             for (int i=10; i>=1; i--) {
+               d.add(i);
+             }
+             for (int x : d) {
+               System.out.print(x + " ");
+             }
+           }
+         }
+         ```
+
+         - 해시테이블을 이용해서 구현되어 있다
+         - 삽입/삭제/제거 연산의 시간복잡도가 O(1)
+         - 순서가 보장되지 않음
+         - 집합이 필요하긴 한데, 순서가 뒤바뀌어도 되는 경우에만 사용
+           - 반드시 오름차순이거나 내림차순이 필요 없을 때
+         - 위의 코드의 출력 결과는 아무도 모름
+         - 그래서 **HashSet은 어떤 데이터가 포함되었는지 유/무 를 체크할 때 사용**
+
+       - **TreeSet**
+
+         > STL Set과 매우 비슷
+
+         ```java
+         TreeSet<Integer> d = new TreeSet<Integer>();
+         for (int i=10; i>=1; i--) {
+           d.add(i);
+         }
+         for (int x : d) {
+           System.out.print(x + " ");
+         }
+         ```
+
+         - 이진 검색 트리(레드 블랙 트리)로 구현되어 있음
+         - 삽입/삭제/제거 연산의 시간 복잡도가 O(logN) 이다
+         - 순서가 보장됨
+         - 오름차순으로 출력됨 (1, 2, 3, 4, 5, 6 ...)
+
+       - **LinkedHashSet**
+
+         > 해시테이블과 연결리스트를 이용해서 구현되어 있음
+
+         ```java
+         LinkedHashSet<Integer> d = new LinkedHashSet<Integer>();
+         for (int i=10; i>=1; i--) {
+           d.add(i);
+         }
+         for (int x : d) {
+           System.out.print(x + " ");
+         }
+         ```
+
+         - 삽입/삭제/제거 연산의 시간복잡도가 O(1) 임
+         - 추가한 순서가 보장됨
+
+     - 일반적인 경우에는 HashSet
+
+     - 순서가 중요한 경우에는 TreeSet
+
+       - Upper bound, Lower bound 를 사용해야 하는 경우
+         - 가장 가까운 두점을 구하는 Line Sweep 알고리즘에서 사용
+
+     - 입력으로 넣은 순서가 중요한 경우에는 LinkedHashSet
+
+   - ### [숫자 카드](https://www.acmicpc.net/problem/10815)
+
+     > 상근이가 가지고 있는 숫자카드를 모두 Set에 넣고, 있는지 없는지 확인하면 됨
+     >
+     > 단, 순서가 중요하지 않음 (어떤 카드를 가지고 있는지 아닌지만 중요)
+     >
+     > HashSet 사용 !
+
+     ​
 
 
 
