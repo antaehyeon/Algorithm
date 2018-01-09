@@ -1,13 +1,14 @@
 package com.company;
 
-import java.util.HashSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        HashSet<Integer> d = new HashSet<>();
+//        HashSet<Integer> d = new HashSet<>();
+//        TreeSet<Integer> d = new TreeSet<Integer>();
+        LinkedHashSet<Integer> d = new LinkedHashSet<Integer>();
 
         int n;
 
