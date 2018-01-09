@@ -152,7 +152,7 @@
 
 - ### [stringTokenizer](https://docs.oracle.com/javase/9/docs/api/java/util/StringTokenizer.html)
 
-  ![스크린샷 2018-01-09 오후 6.40.27](/Users/hyeon/Algorithm/image/스크린샷 2018-01-09 오후 6.40.27.png)
+  ![스크린샷 2018-01-09 오후 6.40.27](https://github.com/antaehyeon/Algorithm/blob/master/image/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202018-01-09%20%EC%98%A4%ED%9B%84%206.40.27.png)
 
   - 어떤 문자열이 있을때 특정 토큰으로 자를 수 있음
 
@@ -177,7 +177,7 @@
     100 MS
     ```
 
-    ![스크린샷 2018-01-09 오후 6.55.18](/Users/hyeon/Algorithm/image/스크린샷 2018-01-09 오후 6.55.18.png)
+    ![스크린샷 2018-01-09 오후 6.55.18](https://github.com/antaehyeon/Algorithm/blob/master/image/%EC%8A%A4%ED%81%AC%EB%A6%B0%EC%83%B7%202018-01-09%20%EC%98%A4%ED%9B%84%206.55.18.png)
 
     - hasMoreElements() 가 내부적으로 hasMoreTokens() 를 호출하므로 통상적으로 hasMoreTokens()를 이용하는게 좋음
     - hasMoreElements () : **Returns** the same value as the **hasMoreTokens method.**
