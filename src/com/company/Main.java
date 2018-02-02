@@ -7,16 +7,25 @@ import java.io.BufferedReader;
 
 public class Main {
 
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws IOException {
+        // init
+        int a;
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
+        ArrayList<Integer> list = new ArrayList<>();
 
-        int n = Integer.parseInt(bf.readLine());
+        // input
+        a = Integer.parseInt(bf.readLine());
 
-        for (int i = 1; i <= n; i++) {
-            sb.append(i + "\n");
+        for (int i = 0; i < a; i++) {
+            list.add(Integer.parseInt(bf.readLine()));
         }
-        System.out.print(sb);
-        bf.close();
+
+        // algorithm
+        Collections.sort(list);
+
+        // output
+        for (int x : list) {
+            System.out.println(x);
+        }
     }
 }

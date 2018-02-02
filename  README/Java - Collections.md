@@ -24,7 +24,7 @@
     ArrayList<Integer> b = new ArrayList<Integer>(40);
     ```
 
-    - Capacity = 40 으로 정한 ArrayList 를 만든 것
+    - **Capacity = 40** 으로 정한 ArrayList 를 만든 것
 
   - 주로 많이 사용하는 메소드들
 
