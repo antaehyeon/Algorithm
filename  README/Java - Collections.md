@@ -64,9 +64,13 @@
   }
   ```
 
+  - BufferedList `120MS`
+
+  - Scanner `220MS`
+
   - 결국 ArrayList는 배열이기 때문에 추가, 값이 있는지 없는지 확인, 삭제 하는 것 모두 O(n) 이라는 시간이 걸림
 
-  - ArrayList는 그래프 문제의 인접 리스트를 만들 때, 가장 많이 사용
+  - ArrayList는 **그래프 문제의 인접 리스트를 만들 때**, 가장 많이 사용
 
     ```java
     ArrayList<Integer>[] a = (ArrayList<Integer>[]) new ArrayList[n+1];
