@@ -1,56 +1,32 @@
 package com.company;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.*;
+import java.io.*;
+import java.util.TreeSet;
 
 public class Main {
+    public static void main(String args[]) throws IOException {
+        TreeSet<String> treeset = new TreeSet<>();
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(bf.readLine());
 
-    public static void main(String[] args) throws IOException {
+        for (int i=0; i<n; i++) {
+            String line = bf.readLine();
+            String[] lines = line.split(" ");
+            String name = lines[0];
+            String type = lines[1];
+            if (type.equals("enter")) {
+                treeset.add(name);
+            } else if (type.equals("leave")) {
+                treeset.remove(name);
+            }
+        } // for i-n
 
-        // init
-        int a;
-//        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        Scanner sc = new Scanner(System.in);
-        Stack<Integer> stack = new Stack<Integer>();
+        int size = treeset.size();
 
-        // input
-//        a = Integer.parseInt(bf.readLine());
-        a = sc.nextInt();
-        sc.nextLine();
-
-        // algorithm - OUTPUT
-        for (int i = 0; i < a; i++) {
-            String line = sc.nextLine();
-            StringTokenizer st = new StringTokenizer(line, " ");
-
-            // PUSH
-            if (st.countTokens() == 2) {
-                st.nextToken();
-                stack.push(Integer.parseInt(st.nextToken()));
-                continue;
-            } // if
-
-            switch (st.nextToken()) {
-                case "pop":
-                    if (stack.empty())
-                        System.out.println("-1");
-                    else
-                        System.out.println(stack.pop());
-                    break;
-                case "size":
-                    System.out.println(stack.size());
-                    break;
-                case "empty":
-                    if (stack.empty()) System.out.println("1");
-                    else               System.out.println("0");
-                    break;
-                case "top":
-                    if (stack.empty()) System.out.println("-1");
-                    else               System.out.println(stack.peek());
-                    break;
-            } // switch-case
-        } // for i-a
-    } // Main
+        for (int i=0; i<size; i++) {
+            String s = treeset.last();
+            System.out.println(s);
+            treeset.remove(s);
+        }
+    } // MAIN
 }

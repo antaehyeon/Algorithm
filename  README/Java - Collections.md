@@ -147,10 +147,10 @@
       ```
 
       - 해시테이블을 이용해서 구현되어 있다
-      - 삽입/삭제/제거 연산의 시간복잡도가 O(1)
+      - 삽입/삭제/제거 연산의 시간복잡도가 `O(1)`
       - 순서가 보장되지 않음
       - 집합이 필요하긴 한데, 순서가 뒤바뀌어도 되는 경우에만 사용
-        - 반드시 오름차순이거나 내림차순이 필요 없을 때
+        - **반드시 오름차순이거나 내림차순이 필요 없을 때**
       - 위의 코드의 출력 결과는 아무도 모름
       - 그래서 **HashSet은 어떤 데이터가 포함되었는지 유/무 를 체크할 때 사용**
 
@@ -169,8 +169,8 @@
       ```
 
       - 이진 검색 트리(레드 블랙 트리)로 구현되어 있음
-      - 삽입/삭제/제거 연산의 시간 복잡도가 O(logN) 이다
-      - 순서가 보장됨
+      - 삽입/삭제/제거 연산의 시간 복잡도가 `O(logN)` 이다
+      - **순서가 보장됨**
       - 오름차순으로 출력됨 (1, 2, 3, 4, 5, 6 ...)
 
     - **LinkedHashSet**
@@ -190,14 +190,14 @@
       - 삽입/삭제/제거 연산의 시간복잡도가 O(1) 임
       - 추가한 순서가 보장됨
 
-  - 일반적인 경우에는 HashSet
+  - **일반적인 경우에는 HashSet**
 
-  - 순서가 중요한 경우에는 TreeSet
+  - **순서가 중요한 경우에는 TreeSet**
 
     - Upper bound, Lower bound 를 사용해야 하는 경우
       - 가장 가까운 두점을 구하는 Line Sweep 알고리즘에서 사용
 
-  - 입력으로 넣은 순서가 중요한 경우에는 LinkedHashSet
+  - **입력으로 넣은 순서가 중요한 경우에는 LinkedHashSet**
 
 - ### [숫자 카드](https://www.acmicpc.net/problem/10815)
 
@@ -207,9 +207,107 @@
   >
   > HashSet 사용 !
 
-  - HashSet : 764 MS
-  - TreeSet : 1028 MS
-  - LinkedHashSet : 832 MS
+  - HashSet : `764 MS`
+  - TreeSet : `1028 MS`
+  - LinkedHashSet : `832 MS`
+
+  ```java
+  import java.util.*;
+  import java.io.*;
+  public class Main {
+      public static void main(String args[]) throws IOException {
+          BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+          int n = Integer.parseInt(bf.readLine());
+          StringTokenizer st = new StringTokenizer(bf.readLine());
+          HashSet<Integer> d = new HashSet<Integer>();
+          while (st.hasMoreTokens()) {
+              int num = Integer.parseInt(st.nextToken());
+              d.add(num);
+          }
+          int m = Integer.parseInt(bf.readLine());
+          st = new StringTokenizer(bf.readLine());
+          StringBuilder sb = new StringBuilder();
+          while (st.hasMoreTokens()) {
+              int num = Integer.parseInt(st.nextToken());
+              if (d.contains(num)) {
+                  sb.append("1 ");
+              } else {
+                  sb.append("0 ");
+              }
+          }
+          System.out.println(sb);
+      }
+  }
+  ```
+
+- ### 회사에 있는 사람
+
+  ```java
+  import java.util.*;
+  import java.io.*;
+  public class Main {
+      public static void main(String args[]) throws IOException {
+          BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+          int n = Integer.parseInt(bf.readLine());
+          HashSet<String> d = new HashSet<String>();
+          while (n-- > 0) {
+              String[] line = bf.readLine().split(" ");
+              if (line[1].equals("enter")) {
+                  d.add(line[0]);
+              } else {
+                  d.remove(line[0]);
+              }
+          }
+          String[] ans = d.toArray(new String[d.size()]);
+          Arrays.sort(ans);
+          int m = ans.length;
+          for (int i=m-1; i>=0; i--) {
+              System.out.println(ans[i]);
+          }
+      }
+  }
+  ```
+
+  ```java
+  import java.io.*;
+  import java.util.TreeSet;
+
+  public class Main {
+      public static void main(String args[]) throws IOException {
+          TreeSet<String> treeset = new TreeSet<>();
+          BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+          int n = Integer.parseInt(bf.readLine());
+
+          for (int i=0; i<n; i++) {
+              String line = bf.readLine();
+              String[] lines = line.split(" ");
+              String name = lines[0];
+              String type = lines[1];
+              if (type.equals("enter")) {
+                  treeset.add(name);
+              } else if (type.equals("leave")) {
+                  treeset.remove(name);
+              }
+          } // for i-n
+
+          int size = treeset.size();
+
+          for (int i=0; i<size; i++) {
+              String s = treeset.last();
+              System.out.println(s);
+              treeset.remove(s);
+          }
+      } // MAIN
+  }
+  ```
+
+  - Set에서 Array로 옮기는 코드
+
+    ```java
+    String[] ans = d.toArray(new String[d.size()]);
+    ```
+
+  ​
 
 - ### Map
 
