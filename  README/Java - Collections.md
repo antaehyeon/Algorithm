@@ -104,6 +104,13 @@
   - top: E peek()
   - empty: bool empty()
   - size: int size()
+  - peek : Looks at the object at the top of this stack without removing it from the stack.
+  - Stack 문제시
+    - Stack이 비어있는데 접근하지는 않는지
+    - 인덱스 범위가 잘못 접근되지는 않는지
+    - Scanner + StringTokenizer : `388MS`
+    - BufferedReader + split : `248MS`
+    - BufferedReader + StringTokenizer : `256MS`
 
 - ### Set
 
