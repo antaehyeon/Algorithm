@@ -337,6 +337,37 @@
     - TreeMap (레드 블랙 트리)
     - LinkedHashMap (연결리스트와 HashTable을 이용해 구현)
 
+  - 저항
+
+    ```java
+            HashMap<String, Integer> hmap = new HashMap<>();
+            HashMap<String, Integer> innerMap = new HashMap<>();
+            String[] colorArray = {"black", "brown", "red", "orange", "yellow", "green", "blue", "violet", "grey", "white"};
+
+            int n = 1;
+            for (int i=0; i<10; i++) {
+                hmap.put(colorArray[i], i);
+                innerMap.put(colorArray[i], n);
+                n *= 10;
+            }
+
+            BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
+            String a = bf.readLine();
+            String b = bf.readLine();
+            String c = bf.readLine();
+            long ans = hmap.get(a)*10 + hmap.get(b);
+            ans *= innerMap.get(c);
+
+            System.out.println(ans);
+    ```
+
+    ​
+
+  ​
+
+  ​
+
   - 듣보잡
 
     > 순서가 중요하기 때문에 TreeMap을 이용해서 구현한다고 생각할 수 있다
