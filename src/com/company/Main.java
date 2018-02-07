@@ -1,64 +1,43 @@
 package com.company;
 
-import java.io.*;
 import java.util.*;
-
+import java.io.*;
 public class Main {
     public static void main(String args[]) throws IOException {
 
-        HashSet<String> set1 = new HashSet<>();
-        HashSet<String> set2 = new HashSet<>();
-        HashSet<String> ans = new HashSet<>();
-
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        String[] lines = bf.readLine().split(" ");
+        int a = Integer.parseInt(lines[0]);
+        int b = Integer.parseInt(lines[1]);
 
-        StringTokenizer st = new StringTokenizer(bf.readLine(), " ");
-
-        int a = 0;
-        int b = 0;
-        int c = 0;
-
-        while (st.hasMoreTokens()) {
-            int n = Integer.parseInt(st.nextToken());
-            if (c==0) a = n;
-            else      b = n;
-            for (int i = 0; i < n; i++) {
-                if (c==1) {
-                    String s = bf.readLine();
-                    set2.add(s);
-                    continue;
-                }
-                String s = bf.readLine();
-                set1.add(s);
-                if (i==a-1) c++;
-            }
-        }
-
-        String[] set1Array = set1.toArray(new String[set1.size()]);
-        String[] set2Array = set2.toArray(new String[set2.size()]);
-
+        HashMap<String, Integer> hm = new HashMap<>();
         for (int i=0; i<a; i++) {
-            for (int j=0; j<b; j++) {
-                if (set1Array[i].equals(set2Array[j])) {
-                    ans.add(set2Array[j]);
-                    break;
-                }
+            String name = bf.readLine();
+            hm.put(name, 1);
+        } // FOR-듣는사람 입력문
+        for (int i=0; i<b; i++) {
+            String name = bf.readLine();
+            Integer c = hm.get(name);
+            if (c == null) {
+                c = 0;
             }
-        }
+            c += 2;
+            hm.put(name, c);
+        } // FOR-보는사람 입력문
 
-        ArrayList<String> list = new ArrayList<>();
-
-        for (String s : ans) {
-            list.add(s);
+        ArrayList<String> list = new ArrayList<String>();
+        for (Map.Entry<String, Integer> entry : hm.entrySet()) {
+            if (entry.getValue() == 3) {
+                list.add(entry.getKey());
+            }
         }
 
         Collections.sort(list);
+        System.out.println(list.size());
 
-        int ls = list.size();
-        for (int i=0; i<ls; i++)
-            System.out.println(list.get(i));
+        for (String s : list) {
+            System.out.println(s);
+        }
 
-
-
-    } // MAIN
+    } // Main
 }
