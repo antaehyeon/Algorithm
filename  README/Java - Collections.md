@@ -364,15 +364,59 @@
 
     ​
 
-  ​
-
-  ​
 
   - 듣보잡
 
     > 순서가 중요하기 때문에 TreeMap을 이용해서 구현한다고 생각할 수 있다
     >
     > 그러나, 출력만 순차적으로 해주면 되기 때문에 HashMap을 이용해서 풀고 출력을 정렬해서 할 수 있다
+
+    처음에 Set을 이용해서 풀려고 했으나, **시간초과**
+
+    ```java
+    BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+    String[] lines = bf.readLine().split(" ");
+    int a = Integer.parseInt(lines[0]);
+    int b = Integer.parseInt(lines[1]);
+
+    HashMap<String, Integer> hm = new HashMap<>();
+    for (int i=0; i<a; i++) {
+        String name = bf.readLine();
+        hm.put(name, 1);
+    } // FOR-듣는사람 입력문
+    for (int i=0; i<b; i++) {
+        String name = bf.readLine();
+        Integer c = hm.get(name);
+        if (c == null) {
+            c = 0;
+        }
+        c += 2;
+        hm.put(name, c);
+    } // FOR-보는사람 입력문
+
+    ArrayList<String> list = new ArrayList<String>();
+    for (Map.Entry<String, Integer> entry : hm.entrySet()) {
+        if (entry.getValue() == 3) {
+            list.add(entry.getKey());
+        }
+    }
+
+    Collections.sort(list);
+    System.out.println(list.size());
+
+    for (String s : list) {
+        System.out.println(s);
+    }
+    ```
+
+    1. Integer 과 int의 차이
+       - Integer 은 Wrapper Class 이므로 NULL 값을 받을 수 있음
+       - SQL에서 많이 사용됨 (NULL 을 처리할 수 있으므로)
+    2. Map에 기존의 KEY로 `put`을 진행시, `value`가 **업데이트**됨
+    3. for (Map.Entry<String, Integer> entry : Map.entrySet()) { }
+       - Key와 Value를 쌍으로 만든 SET을 리턴함
+       - SET.getKey()
+       - SET.getValue()
 
 - ### Queue
 
@@ -402,13 +446,77 @@
   size: int size()
   ```
 
+  - add와 offer의 차이점
+
+    - boolean add(E e)
+      - Queue에 추가를 실패하였을 경우 예외를 던짐
+    - boolean offer(E e)
+      - Queue에 추가를 실패하였을 경우 false값을 리턴한 후, 예외를 던짐
+
+  - [ArrayDeque 와 LinkedList 의 차이점](http://brianandstuff.com/2016/12/12/java-arraydeque-vs-linkedlist/)
+
   - C++ STL 과 차이점
+
     - pop 을 할 때 poll 이 가장 앞에 있는것을 출력해주고 
     - STL 은 pop을 할 때 리턴값이 존재하지 않고 기능만 처리
 
+  - 큐(문제번호 10845)
+
+    ```java
+    import java.util.*;
+    import java.io.*;
+    public class Main {
+        public static void main(String args[]) throws IOException {
+            ArrayDeque<String> a = new ArrayDeque<>();
+            BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+
+            int n = Integer.parseInt(bf.readLine());
+            for (int i=0; i<n; i++) {
+                String[] lines = bf.readLine().split(" ");
+                switch (lines[0]) {
+                    case "push":
+                        a.offer(lines[1]);
+                        break;
+                    case "pop":
+                        if (a.isEmpty()) {
+                            System.out.println("-1");
+                            break;
+                        }
+                        System.out.println(a.poll());
+                        break;
+                    case "size":
+                        System.out.println(a.size());
+                        break;
+                    case "empty":
+                        if(a.isEmpty()) System.out.println("1");
+                        else            System.out.println("0");
+                        break;
+                    case "front":
+                        if (a.isEmpty()) {
+                            System.out.println("-1");
+                            break;
+                        }
+                        System.out.println(a.peekFirst());
+                        break;
+                    case "back":
+                        if (a.isEmpty()) {
+                            System.out.println("-1");
+                            break;
+                        }
+                        System.out.println(a.peekLast());
+                        break;
+                } // switch
+            } // for i-n
+        } // Main
+    }
+    ```
+
+    - LinkedList `240MS`
+    - ArrayDeque `236MS`
+
 - ### PriorityQueue
 
-  >우선순위 큐, 큐에 들어있는 것 중에서 우선순위가 가장 높은것 부터 pop 이 되는 큐
+  >우선순위 큐, 큐에 들어있는 것 중에서 **우선순위가 가장 높은것 부터** pop 이 되는 큐
   >
   >최대힙, 최소힙을 구현할 때 주로 사용
 
