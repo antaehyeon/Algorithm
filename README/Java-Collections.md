@@ -544,7 +544,7 @@
   - 최대 힙
 
   ```java
-  static class Compare implements COmparator<Integer> {
+  static class Compare implements Comparator<Integer> {
     public int compare(Integer one, Integer two) {
       return two.compareTo(one);
     }

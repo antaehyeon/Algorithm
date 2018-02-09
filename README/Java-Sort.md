@@ -1,8 +1,20 @@
-package com.company;
+# Java - Sort
 
-import java.util.*;
-import java.io.*;
+- ### Arrays.sort
 
+  - 배열에서 정렬을 할 때 사용
+  - `Arrays.sort(배열객체)`
+
+- ### Collections.sort
+
+  - `ArrayList<Integer> a = new ArrayList<Integer>()`
+  - `Collections.sort(a)`
+
+- ### Comparable
+
+- ### 좌표 정렬하기 (문제번호 11650)
+
+```java
 class Point implements Comparable<Point> {
     int x, y;
     Point(int x, int y) {
@@ -12,7 +24,7 @@ class Point implements Comparable<Point> {
     public int compareTo(Point that) {
         if (this.x < that.x) {
             return -1;
-        } else if (this.x == that.x) {
+        } else if (this.x == that.y) {
             if (this.y < that.y) {
                 return -1;
             } else if (this.y == that.y) {
@@ -42,6 +54,7 @@ public class Main {
         for (Point p : a) {
             sb.append(p.x + " " + p.y + "\n");
         }
-        System.out.print(sb);
-    }
-}
+        System.out.println(sb);
+    } // Main
+```
+
