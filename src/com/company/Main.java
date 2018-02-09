@@ -10,12 +10,12 @@ class Point implements Comparable<Point> {
         this.y = y;
     }
     public int compareTo(Point that) {
-        if (this.x < that.x) {
+        if (this.y < that.y) {
             return -1;
-        } else if (this.x == that.x) {
-            if (this.y < that.y) {
+        } else if (this.y == that.y) {
+            if (this.x < that.x) {
                 return -1;
-            } else if (this.y == that.y) {
+            } else if (this.x == that.x) {
                 return 0;
             } else {
                 return 1;
