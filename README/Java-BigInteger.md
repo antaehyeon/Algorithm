@@ -103,7 +103,7 @@ System.out.println("c = " + c); // 11,000
     }
     ```
 
-  - **StringBuilder, BufferedReader** 사용 (10776KB, 196MS)
+  - **BufferedReader** 사용 (10776KB, 196MS)
 
     ```java
     public class Main {
@@ -122,3 +122,46 @@ System.out.println("c = " + c); // 11,000
     ```
 
     - BigInteger 의 인자로 String 값을 넘겨주면, 자동으로 변환되어 BigInteger 이 생성됨 (new)
+
+
+
+- #### [a^b](https://www.acmicpc.net/problem/10827)
+
+  - BigDecimal
+
+  - **BufferedReader** 사용 (`10360KB`, `80MS`)
+
+    ```java
+    public class Main {
+        public static void main(String args[]) throws IOException {
+            BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+            String line = bf.readLine();
+            String[] lines = line.split(" ");
+
+            BigDecimal a = new BigDecimal(lines[0]);
+            int b = Integer.parseInt(lines[1]);
+
+            System.out.println(a.pow(b).toPlainString());
+        }
+    }
+    ```
+
+  - **Scanner** 사용 (`13120KB`, `132MS`)
+
+    ```java
+    public class Main {
+        public static void main(String args[]) throws IOException {
+            BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+            String line = bf.readLine();
+            String[] lines = line.split(" ");
+
+            BigDecimal a = new BigDecimal(lines[0]);
+            int b = Integer.parseInt(lines[1]);
+
+            System.out.println(a.pow(b).toPlainString());
+        }
+    }
+    ```
+
+    ​
+
