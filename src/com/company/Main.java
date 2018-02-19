@@ -1,47 +1,19 @@
 package com.company;
 
+import java.math.BigInteger;
 import java.util.*;
 import java.io.*;
-
-class Point implements Comparable<Point> {
-    int x, y;
-    Point(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-    public int compareTo(Point that) {
-        if (this.y < that.y) {
-            return -1;
-        } else if (this.y == that.y) {
-            if (this.x < that.x) {
-                return -1;
-            } else if (this.x == that.x) {
-                return 0;
-            } else {
-                return 1;
-            }
-        } else {
-            return 1;
-        }
-    }
-}
 
 public class Main {
     public static void main(String args[]) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
         int n = Integer.parseInt(bf.readLine());
-        Point[] a = new Point[n];
-        for (int i=0; i<n; i++) {
-            String[] temp = bf.readLine().split(" ");
-            int x = Integer.parseInt(temp[0]);
-            int y = Integer.parseInt(temp[1]);
-            a[i] = new Point(x, y);
+        BigInteger[] d = new BigInteger[Math.max(n+1, 2)];
+        d[0] = BigInteger.ZERO;
+        d[1] = BigInteger.ONE;
+        for (int i=2; i<=n; i++) {
+            d[i] = d[i-1].add(d[i-2]);
         }
-        Arrays.sort(a);
-        StringBuilder sb = new StringBuilder();
-        for (Point p : a) {
-            sb.append(p.x + " " + p.y + "\n");
-        }
-        System.out.print(sb);
+        System.out.println(d[n]);
     }
 }
