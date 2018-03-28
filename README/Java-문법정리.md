@@ -19,7 +19,6 @@
   while(sc.hasNextInt()) {
     sc.nextInt();
   }
-
   ```
 
 - DFS / BFS
