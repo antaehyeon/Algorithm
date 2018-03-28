@@ -5,50 +5,65 @@ import java.util.*;
 
 public class Main {
 
-    static int N;
-    static int M;       // 정점N, 간선M
-    final static int size = 1001;
+    static int V;
+    static int E;
     static int[][] graph;
-    static boolean[] visited;
+    static int[] visited;
+    public static int mode = 1;
+    static boolean BipartiteChk = false;
 
     public static void main(String[] args) throws IOException {
 
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st = new StringTokenizer(br.readLine().trim(), " ");
+        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st;
 
-        N = Integer.parseInt(st.nextToken());
-        M = Integer.parseInt(st.nextToken());
+        int testCase = Integer.parseInt(bf.readLine());
 
-        graph = new int[N+1][N+1];
-        visited = new boolean[N+1];
+        // 테스트케이스만큼 반복
+        for (int i=0; i<testCase; i++) {
+            st = new StringTokenizer(bf.readLine(), " ");
 
-        for (int i=0; i<M; i++) {
-            st = new StringTokenizer(br.readLine(), " ");
-            // 간선 입력받기
-            int a = Integer.parseInt(st.nextToken());
-            int b = Integer.parseInt(st.nextToken());
+            // 정점과 간선을 받음
+            V = Integer.parseInt(st.nextToken());
+            E = Integer.parseInt(st.nextToken());
 
-            graph[a][b] = graph[b][a] = 1;
-        }
+            graph = new int[V+5][V+5];
+            visited = new int[V+5];
 
-        int count = 0;
-        for (int i=1; i<=N; i++) {
-            if (!visited[i]) {
-                DFS(i);
-                count++;
+            int a; int b;
+
+            // 그래프 체크
+            for (int j=0; j<E; j++) {
+                st = new StringTokenizer(bf.readLine(), " ");
+
+                a = Integer.parseInt(st.nextToken());
+                b = Integer.parseInt(st.nextToken());
+
+                graph[a][b] = graph[b][a] = 1;
+            }
+
+            DFS(1);
+            String result = (BipartiteChk) ? "NO" : "YES";
+            System.out.println(result);
+
+            for (int k=1; k<=V; k++) {
+                visited[k] = 0;
             }
         }
-
-        System.out.println(count);
-
     }
 
-    public static void DFS(int i) {
-        visited[i] = true;
+    public static void DFS (int i) {
+        visited[i] = mode;
+        mode = (mode == 1) ? 2 : 1;
 
-        for (int j=1; j<=N; j++) {
-            if (graph[i][j] == 1 && !visited[j]) {
+        for (int j=1; j<=V; j++) {
+            if (graph[i][j] == 1 && visited[j] == 0) {
+                // 방문을 아직 하지 않았다면
+                visited[j] = mode;
                 DFS(j);
+            } else if (graph[i][j] == 1 && visited[j] != mode) {
+                BipartiteChk = true;
+                break;
             }
         }
     }
