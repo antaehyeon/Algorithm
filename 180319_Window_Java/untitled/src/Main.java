@@ -25,68 +25,77 @@ class FastScanner {
 
 public class Main {
 
-    public static void LOG (String data) {
+    public static void LOG(String data) {
         System.out.println(data);
     }
 
-    public static void LOG (int data) {
+    public static void LOG(int data) {
         System.out.println(data);
     }
 
-    public static void LOG (double data) {
+    public static void LOG(double data) {
         System.out.println(data);
     }
 
-    public static int[] splitNumber (int n) {
+    public static int DFS(int[] graph, int[] check, int[] startVertex, int start, int cnt, int step) {
 
-        int size = String.valueOf(n).length();
-
-        int[] result = new int[size];
-
-        String temp = String.valueOf(n);
-        String[] datas = temp.split("");
-
-        for (int i=0; i<size; i++) {
-            result[i] = Integer.parseInt(datas[i]);
-        }
-
-        return result;
-
-    }
-
-    public static int func (Vector<Integer> v, int A, int P) {
-
-        while (true) {
-            int[] datas = splitNumber(A);
-            double n = 0;
-
-            for (int i=0; i<datas.length; i++) {
-                n += Math.pow(datas[i], P);
+        if (check[start] != 0) {
+            if (step != startVertex[start]) {
+                // 이미 방문했고, 정점 시작점이 다를 경우 사이클 X
+                return 0;
             }
 
-            int nn = (int) n;
-
-            if (v.contains(nn)) {
-                return v.indexOf(nn);
-            } else {
-                v.add(nn);
-                A = nn;
-            }
+            return cnt - check[start];
         }
+
+        check[start] = cnt;
+        startVertex[start] = step;
+
+        return DFS(graph, check, startVertex, graph[start], cnt + 1, step);
     }
 
     public static void main(String[] args) throws Exception {
 
         FastScanner fs = new FastScanner(System.in);
 
-        Vector<Integer> v = new Vector<>();
+        int[] graph;
+        int[] check;
+        int[] startVertex;
 
-        int A = fs.nextInt();
-        int P = fs.nextInt();
+        int testCase = fs.nextInt();
 
-        v.add(A);
+        while (testCase-- > 0) {
+            int sn = fs.nextInt();
 
-        int result = func(v, A, P);
-        System.out.println(result);
+            graph = new int[sn+1];
+            check = new int[sn+1];
+            startVertex = new int[sn+1];
+
+            for (int i=1; i<=sn; i++) {
+                int data = fs.nextInt();
+                graph[i] = data;
+            }
+
+            int result = 0;
+            for (int i=1; i<=sn; i++) {
+                if (check[i] == 0) {
+                    result += DFS(graph, check, startVertex, i, 1, i);
+                }
+            }
+
+            System.out.println(sn - result);
+        }
+
     }
 }
+
+
+
+
+
+
+
+
+
+
+

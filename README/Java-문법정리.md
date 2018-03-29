@@ -46,6 +46,53 @@
 
 
 
+- 숫자를 하나씩 찢어버리기
+
+  ```java
+      public static int[] splitNumber (int n) {
+
+          int size = String.valueOf(n).length();
+
+          int[] result = new int[size];
+
+          String temp = String.valueOf(n);
+          String[] datas = temp.split("");
+
+          for (int i=0; i<size; i++) {
+              result[i] = Integer.parseInt(datas[i]);
+          }
+
+          return result;
+
+      }
+  ```
+
+- FastScanner
+
+  ```java
+  class FastScanner {
+      BufferedReader br;
+      StringTokenizer st;
+
+      FastScanner(InputStream i) throws Exception {
+          br = new BufferedReader(new InputStreamReader(i));
+      }
+
+      String next() throws Exception {
+          while (st == null || !st.hasMoreTokens()) {
+              st = new StringTokenizer(br.readLine());
+          }
+          return st.nextToken();
+      }
+
+      int nextInt() throws Exception {
+          return Integer.parseInt(next());
+      }
+  }
+  ```
+
+  ​
+
 
 
 
