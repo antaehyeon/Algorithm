@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -26,74 +25,53 @@ class FastScanner {
 
 public class Main {
 
-    static int V;
-    static int E;
-    static ArrayList<Integer>[] graph;
-    static int[] c;
+    public static void LOG (String data) {
+        System.out.println(data);
+    }
 
-    final static int RED = 1;
-    final static int BLUE = 2;
+    public static void LOG (int data) {
+        System.out.println(data);
+    }
+
+    public static void DFS (ArrayList<Integer>[] g, int[] visit, int start ) {
+        visit[start] = 1;
+
+        for (int data : g[start]) {
+            if (visit[data] == 0) {
+                DFS(g, visit, data);
+            }
+        }
+    }
 
     public static void main(String[] args) throws Exception {
 
         FastScanner fs = new FastScanner(System.in);
 
+        ArrayList<Integer>[] g;
+        int[] visit;
+
+        int result = 0;
         int testCase = fs.nextInt();
 
-        // 테스트케이스만큼 반복
-        for (int i=0; i<testCase; i++) {
-
-            // 정점과 간선을 받음
-            V = fs.nextInt();
-            E = fs.nextInt();
-
-            graph = (ArrayList<Integer>[]) new ArrayList[V+1];
-            c = new int[V+1];
-
-            for (int k=0; k<=V; k++) {
-                graph[k] = new ArrayList<Integer>();
+        for (int t=0; t<testCase; t++) {
+            int N = fs.nextInt();
+             g = (ArrayList<Integer>[]) new ArrayList[N+1];
+             visit = new int[N+1];
+            for (int i=0; i<=N; i++) {
+                g[i] = new ArrayList<>();
             }
-
-            // 그래프 체크
-            for (int j=0; j<E; j++) {
-                int a, b;
-
-                a = fs.nextInt();
-                b = fs.nextInt();
-
-                graph[a].add(b);
-                graph[b].add(a);
+            for (int i=1; i<=N; i++) {
+                int input = fs.nextInt();
+                g[i].add(input);
             }
-
-            for (int s=1; s<=V; s++) {
-                if (c[s] == 0) {
-                    DFS(s, RED);
+            for (int i=1; i<=N; i++) {
+                if (visit[i] == 0) {
+                    DFS(g, visit, i);
+                    result++;
                 }
             }
-
-            boolean BipartiteChk = true;
-
-            for(int k=1; k<=V; k++){
-                for(int j = 0; j < graph[k].size(); j++){
-                    if(c[k] == c[graph[k].get(j)]){
-                        BipartiteChk = false;
-                    }
-                }
-            }
-
-            String result = (BipartiteChk) ? "YES" : "NO";
             System.out.println(result);
-
-        }
-    }
-
-    public static void DFS (int i, int color) {
-        c[i] = color;
-
-        for (int j : graph[i]) {
-            if (c[j] == 0) {
-                DFS(j, 3-color);
-            }
+            result = 0;
         }
     }
 }
