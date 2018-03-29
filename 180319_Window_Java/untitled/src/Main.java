@@ -1,101 +1,51 @@
 import java.io.BufferedReader;
-import java.io.InputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.*;
-
-class FastScanner {
-    BufferedReader br;
-    StringTokenizer st;
-
-    FastScanner(InputStream i) throws Exception {
-        br = new BufferedReader(new InputStreamReader(i));
-    }
-
-    String next() throws Exception {
-        while (st == null || !st.hasMoreTokens()) {
-            st = new StringTokenizer(br.readLine());
-        }
-        return st.nextToken();
-    }
-
-    int nextInt() throws Exception {
-        return Integer.parseInt(next());
-    }
-}
+import java.util.StringTokenizer;
 
 public class Main {
 
-    public static void LOG(String data) {
-        System.out.println(data);
-    }
+    static int[] arr;
+    static boolean[] visited;
+    static boolean[] finished;
+    static int n;
+    static StringTokenizer st;
+    static int result;
 
-    public static void LOG(int data) {
-        System.out.println(data);
-    }
-
-    public static void LOG(double data) {
-        System.out.println(data);
-    }
-
-    public static int DFS(int[] graph, int[] check, int[] startVertex, int start, int cnt, int step) {
-
-        if (check[start] != 0) {
-            if (step != startVertex[start]) {
-                // 이미 방문했고, 정점 시작점이 다를 경우 사이클 X
-                return 0;
+    public static void main(String[] args) throws NumberFormatException, IOException {
+        // TODO Auto-generated method stub
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(br.readLine());
+        while (t-- > 0) {
+            n = Integer.parseInt(br.readLine());
+            arr = new int[n + 1];
+            st = new StringTokenizer(br.readLine());
+            for (int i = 1; i < n + 1; i++) {
+                arr[i] = Integer.parseInt(st.nextToken());
             }
-
-            return cnt - check[start];
-        }
-
-        check[start] = cnt;
-        startVertex[start] = step;
-
-        return DFS(graph, check, startVertex, graph[start], cnt + 1, step);
-    }
-
-    public static void main(String[] args) throws Exception {
-
-        FastScanner fs = new FastScanner(System.in);
-
-        int[] graph;
-        int[] check;
-        int[] startVertex;
-
-        int testCase = fs.nextInt();
-
-        while (testCase-- > 0) {
-            int sn = fs.nextInt();
-
-            graph = new int[sn+1];
-            check = new int[sn+1];
-            startVertex = new int[sn+1];
-
-            for (int i=1; i<=sn; i++) {
-                int data = fs.nextInt();
-                graph[i] = data;
-            }
-
-            int result = 0;
-            for (int i=1; i<=sn; i++) {
-                if (check[i] == 0) {
-                    result += DFS(graph, check, startVertex, i, 1, i);
+            result = 0;
+            visited = new boolean[n + 1];
+            finished = new boolean[n + 1];
+            for (int i = 1; i < n + 1; i++) {
+                if(!visited[i]){
+                    dfs(i);
                 }
             }
-
-            System.out.println(sn - result);
+            System.out.println(n-result);
         }
+    }
 
+    public static void dfs(int curr) {
+        visited[curr] = true;
+        int next = arr[curr];
+        if (visited[next]) {
+            if (!finished[next]) {
+                for (int temp = next; temp != curr; temp = arr[temp])
+                    result++;
+                result++; // 자기 자신
+            }
+        } else
+            dfs(next);
+        finished[curr] = true;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
