@@ -1,69 +1,98 @@
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
+
+class FastScanner {
+    BufferedReader br;
+    StringTokenizer st;
+
+    FastScanner(InputStream i) throws Exception {
+        br = new BufferedReader(new InputStreamReader(i));
+    }
+
+    String next() throws Exception {
+        while (st == null || !st.hasMoreTokens()) {
+            st = new StringTokenizer(br.readLine());
+        }
+        return st.nextToken();
+    }
+
+    int nextInt() throws Exception {
+        return Integer.parseInt(next());
+    }
+}
 
 public class Main {
 
     static int V;
     static int E;
-    static int[][] graph;
-    static int[] visited;
-    public static int mode = 1;
-    static boolean BipartiteChk = false;
+    static ArrayList<Integer>[] graph;
+    static int[] c;
 
-    public static void main(String[] args) throws IOException {
+    final static int RED = 1;
+    final static int BLUE = 2;
 
-        BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
-        StringTokenizer st;
+    public static void main(String[] args) throws Exception {
 
-        int testCase = Integer.parseInt(bf.readLine());
+        FastScanner fs = new FastScanner(System.in);
+
+        int testCase = fs.nextInt();
 
         // 테스트케이스만큼 반복
         for (int i=0; i<testCase; i++) {
-            st = new StringTokenizer(bf.readLine(), " ");
 
             // 정점과 간선을 받음
-            V = Integer.parseInt(st.nextToken());
-            E = Integer.parseInt(st.nextToken());
+            V = fs.nextInt();
+            E = fs.nextInt();
 
-            graph = new int[V+5][V+5];
-            visited = new int[V+5];
+            graph = (ArrayList<Integer>[]) new ArrayList[V+1];
+            c = new int[V+1];
 
-            int a; int b;
+            for (int k=0; k<=V; k++) {
+                graph[k] = new ArrayList<Integer>();
+            }
 
             // 그래프 체크
             for (int j=0; j<E; j++) {
-                st = new StringTokenizer(bf.readLine(), " ");
+                int a, b;
 
-                a = Integer.parseInt(st.nextToken());
-                b = Integer.parseInt(st.nextToken());
+                a = fs.nextInt();
+                b = fs.nextInt();
 
-                graph[a][b] = graph[b][a] = 1;
+                graph[a].add(b);
+                graph[b].add(a);
             }
 
-            DFS(1);
-            String result = (BipartiteChk) ? "NO" : "YES";
+            for (int s=1; s<=V; s++) {
+                if (c[s] == 0) {
+                    DFS(s, RED);
+                }
+            }
+
+            boolean BipartiteChk = true;
+
+            for(int k=1; k<=V; k++){
+                for(int j = 0; j < graph[k].size(); j++){
+                    if(c[k] == c[graph[k].get(j)]){
+                        BipartiteChk = false;
+                    }
+                }
+            }
+
+            String result = (BipartiteChk) ? "YES" : "NO";
             System.out.println(result);
 
-            for (int k=1; k<=V; k++) {
-                visited[k] = 0;
-            }
         }
     }
 
-    public static void DFS (int i) {
-        visited[i] = mode;
-        mode = (mode == 1) ? 2 : 1;
+    public static void DFS (int i, int color) {
+        c[i] = color;
 
-        for (int j=1; j<=V; j++) {
-            if (graph[i][j] == 1 && visited[j] == 0) {
-                // 방문을 아직 하지 않았다면
-                visited[j] = mode;
-                DFS(j);
-            } else if (graph[i][j] == 1 && visited[j] != mode) {
-                BipartiteChk = true;
-                break;
+        for (int j : graph[i]) {
+            if (c[j] == 0) {
+                DFS(j, 3-color);
             }
         }
     }
