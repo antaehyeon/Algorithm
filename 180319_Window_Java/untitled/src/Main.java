@@ -33,12 +33,44 @@ public class Main {
         System.out.println(data);
     }
 
-    public static void DFS (ArrayList<Integer>[] g, int[] visit, int start ) {
-        visit[start] = 1;
+    public static void LOG (double data) {
+        System.out.println(data);
+    }
 
-        for (int data : g[start]) {
-            if (visit[data] == 0) {
-                DFS(g, visit, data);
+    public static int[] splitNumber (int n) {
+
+        int size = String.valueOf(n).length();
+
+        int[] result = new int[size];
+
+        String temp = String.valueOf(n);
+        String[] datas = temp.split("");
+
+        for (int i=0; i<size; i++) {
+            result[i] = Integer.parseInt(datas[i]);
+        }
+
+        return result;
+
+    }
+
+    public static int func (Vector<Integer> v, int A, int P) {
+
+        while (true) {
+            int[] datas = splitNumber(A);
+            double n = 0;
+
+            for (int i=0; i<datas.length; i++) {
+                n += Math.pow(datas[i], P);
+            }
+
+            int nn = (int) n;
+
+            if (v.contains(nn)) {
+                return v.indexOf(nn);
+            } else {
+                v.add(nn);
+                A = nn;
             }
         }
     }
@@ -47,31 +79,14 @@ public class Main {
 
         FastScanner fs = new FastScanner(System.in);
 
-        ArrayList<Integer>[] g;
-        int[] visit;
+        Vector<Integer> v = new Vector<>();
 
-        int result = 0;
-        int testCase = fs.nextInt();
+        int A = fs.nextInt();
+        int P = fs.nextInt();
 
-        for (int t=0; t<testCase; t++) {
-            int N = fs.nextInt();
-             g = (ArrayList<Integer>[]) new ArrayList[N+1];
-             visit = new int[N+1];
-            for (int i=0; i<=N; i++) {
-                g[i] = new ArrayList<>();
-            }
-            for (int i=1; i<=N; i++) {
-                int input = fs.nextInt();
-                g[i].add(input);
-            }
-            for (int i=1; i<=N; i++) {
-                if (visit[i] == 0) {
-                    DFS(g, visit, i);
-                    result++;
-                }
-            }
-            System.out.println(result);
-            result = 0;
-        }
+        v.add(A);
+
+        int result = func(v, A, P);
+        System.out.println(result);
     }
 }

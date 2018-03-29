@@ -40,6 +40,12 @@
 
 
 
+- 순열 사이클
+
+  ![](http://postfiles16.naver.net/MjAxNzAxMjBfMTAg/MDAxNDg0ODg2MjQ2MDg2.afKKnIG5_x6NGwtMXs27WOn00RVMJJk9tdZy6P86PpEg.6iMeKjDmWjhaUPRNo98wPa27duA-yhDLulf5dCWYDJMg.JPEG.occidere/image_1720970261484886234692.jpg?type=w773)
+
+
+
 
 
 
