@@ -31,29 +31,45 @@ class FastScanner {
     }
 }
 
+class Tomato {
+    int x, y, cnt;
+    Tomato (int x, int y, int cnt) {
+        this.x = x;
+        this.y = y;
+        this.cnt = cnt;
+    }
+}
+
 public class Main {
 
-    static final int[] dRow = {0, -1, 0, 1, -1, 1, -1, 1};
-    static final int[] dCol = {-1, 0, 1, 0, 1, 1, -1, -1};
+    static int[][] box;
 
-    static int W, H;
-    static int[][] map = new int[51][51];
+    static int X, Y;
 
-    public static void DFS(int row, int col) {
+    static int[] dX = {0, 0, -1, 1};
+    static int[] dY = {-1, 1, 0, 0};
+    // 상 하 좌 우
 
-        map[row][col] = 0;
+    static Queue<Tomato> q = new LinkedList<Tomato>();
 
-        for (int i=0; i<8; i++) {
-            int nextRow = row + dRow[i];
-            int nextCol = col + dCol[i];
-            // 상, 좌, 하, 우, 왼쪽아래대각선, 오른쪽위대각선, 왼쪽위대각, 오른쪽아래대각
+    public static void BFS () {
 
-            if (nextRow < 0 || nextRow >= H || nextCol < 0 || nextCol >= W) continue;
-            if (map[nextRow][nextCol] == 1) {
-                DFS(nextRow, nextCol);
+        while (!q.isEmpty()) {
+            Tomato tomato = q.remove();
+
+            for (int i=0; i<4; i++) {
+                int nextX = tomato.x + dX[i];
+                int nextY = tomato.y + dY[i];
+
+                if (nextX < 0 || nextX >= X || nextY < 0 || nextY >=Y) {
+                    continue;
+                }
+                if (box[nextX][nextY] == -1 || box[nextX][nextY] >= 1) {
+                    continue;
+                }
+                q.add(new Tomato(nextX, nextY, tomato.cnt+1));
+                box[nextX][nextY] = tomato.cnt+1;
             }
-
-
         }
     }
 
@@ -61,32 +77,55 @@ public class Main {
 
         FastScanner fs = new FastScanner(System.in);
 
-        while (true) {
-            W = fs.nextInt();
-            H = fs.nextInt();
+        X = fs.nextInt();
+        Y = fs.nextInt();
 
-            if (W == 0 && H == 0) break;
+        box = new int[X][Y];
 
-            for (int i=0; i<H; i++) {
-                String line = fs.nextString();
-                String[] lines = line.split(" ");
-                for (int j=0; j<W; j++) {
-                    map[i][j] = Integer.parseInt(lines[j]);
+        boolean chk = true;
+
+        // 박스만들기
+        for (int i=0; i<Y; i++) {
+            String line = fs.nextString();
+            String[] splitData = line.split(" ");
+            for (int j=0; j<X; j++) {
+
+                int temp = Integer.parseInt(splitData[j]);
+                if (temp == 1) {
+                    box[j][i] = temp;
+                    q.add(new Tomato(j, i, 0));
+                } else if(temp == -1) {
+                    box[j][i] = temp;
+                } else {
+                    chk = false;
                 }
             }
-
-            int result = 0;
-
-            for (int i=0; i<H; i++) {
-                for (int j=0; j<W; j++) {
-                    if (map[i][j] == 1) {
-                        DFS(i, j);
-                        result++;
-                    }
-                }
-            }
-
-            System.out.println(result);
         }
+
+        // 처음부터 모든 토마토가 익어있을 경우
+        if (chk) {
+            System.out.print("0");
+            return;
+        }
+
+        BFS();
+
+        chk = true;
+
+        int result = 0;
+
+        for (int i=0; i<X; i++) {
+            for (int j=0; j<Y; j++) {
+                if (box[i][j] > result) {
+                    result = box[i][j];
+                }
+                if (box[i][j] == 0) {
+                    System.out.println("-1");
+                    return;
+                }
+            }
+        }
+
+        System.out.println(result);
     }
 }
