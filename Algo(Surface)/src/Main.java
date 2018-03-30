@@ -31,9 +31,9 @@ class FastScanner {
     }
 }
 
-class Tomato {
+class Position {
     int x, y, cnt;
-    Tomato (int x, int y, int cnt) {
+    Position (int x, int y, int cnt) {
         this.x = x;
         this.y = y;
         this.cnt = cnt;
@@ -43,6 +43,7 @@ class Tomato {
 public class Main {
 
     static int[][] box;
+    static boolean[][] visited;
 
     static int X, Y;
 
@@ -50,25 +51,26 @@ public class Main {
     static int[] dY = {-1, 1, 0, 0};
     // 상 하 좌 우
 
-    static Queue<Tomato> q = new LinkedList<Tomato>();
+    static Queue<Position> q = new LinkedList<Position>();
 
     public static void BFS () {
 
         while (!q.isEmpty()) {
-            Tomato tomato = q.remove();
+            Position p = q.remove();
 
             for (int i=0; i<4; i++) {
-                int nextX = tomato.x + dX[i];
-                int nextY = tomato.y + dY[i];
+                int nextX = p.x + dX[i];
+                int nextY = p.y + dY[i];
 
-                if (nextX < 0 || nextX >= X || nextY < 0 || nextY >=Y) {
+                if (nextX < 0 || nextX >= X || nextY < 0 || nextY >= Y) {
                     continue;
                 }
-                if (box[nextX][nextY] == -1 || box[nextX][nextY] >= 1) {
+                if (box[nextX][nextY] == 0 || visited[nextX][nextY]) {
                     continue;
                 }
-                q.add(new Tomato(nextX, nextY, tomato.cnt+1));
-                box[nextX][nextY] = tomato.cnt+1;
+                q.add(new Position(nextX, nextY, p.cnt+1));
+                box[nextX][nextY] = p.cnt+1;
+                visited[nextX][nextY] = true;
             }
         }
     }
@@ -77,54 +79,31 @@ public class Main {
 
         FastScanner fs = new FastScanner(System.in);
 
-        X = fs.nextInt();
-        Y = fs.nextInt();
+        Y = fs.nextInt();   // 4
+        X = fs.nextInt();   // 6
 
         box = new int[X][Y];
-
-        boolean chk = true;
+        visited = new boolean[X][Y];
 
         // 박스만들기
         for (int i=0; i<Y; i++) {
             String line = fs.nextString();
-            String[] splitData = line.split(" ");
+            String[] splitData = line.split("");
             for (int j=0; j<X; j++) {
 
                 int temp = Integer.parseInt(splitData[j]);
                 if (temp == 1) {
-                    box[j][i] = temp;
-                    q.add(new Tomato(j, i, 0));
-                } else if(temp == -1) {
-                    box[j][i] = temp;
-                } else {
-                    chk = false;
+                    box[j][i] = 1;
                 }
             }
         }
 
-        // 처음부터 모든 토마토가 익어있을 경우
-        if (chk) {
-            System.out.print("0");
-            return;
-        }
+        q.add(new Position(0, 0, 1));
+        visited[0][0] = true;
 
         BFS();
 
-        chk = true;
-
-        int result = 0;
-
-        for (int i=0; i<X; i++) {
-            for (int j=0; j<Y; j++) {
-                if (box[i][j] > result) {
-                    result = box[i][j];
-                }
-                if (box[i][j] == 0) {
-                    System.out.println("-1");
-                    return;
-                }
-            }
-        }
+        int result = box[X-1][Y-1];
 
         System.out.println(result);
     }
