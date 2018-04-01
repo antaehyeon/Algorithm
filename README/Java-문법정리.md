@@ -88,6 +88,11 @@
       int nextInt() throws Exception {
           return Integer.parseInt(next());
       }
+      
+      String nextString() throws Exception {
+          String result = br.readLine();
+          return result;
+      }
   }
   ```
 
@@ -95,6 +100,17 @@
 
   `char - '0'`
 
+
+
+
+
+
+
+
+
+
+- 필기
+  - ​
 
 
 
