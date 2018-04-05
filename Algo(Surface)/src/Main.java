@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -35,19 +36,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         FastScanner fs = new FastScanner(System.in);
-        Scanner sc = new Scanner(System.in);
 
-        String line = "";
+        int n = fs.nextInt();
 
-        while((line=fs.nextString()) != null && line.length() != 0) {
+        String line;
 
-            String[] ns = line.split(" ");
+        while (n-- > 0) {
+            line = fs.nextString();
+            String[] lines = line.split(",");
 
-            if (ns[0].equals("0") && ns[1].equals("0")) {
-                break;
-            }
-
-            System.out.println(Integer.parseInt(ns[0]) + Integer.parseInt(ns[1]));
+            System.out.println(Integer.parseInt(lines[0]) + Integer.parseInt(lines[1]));
 
         }
     }
