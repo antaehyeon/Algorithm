@@ -36,17 +36,24 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         FastScanner fs = new FastScanner(System.in);
+        StringBuilder sb = new StringBuilder("");
 
-        int result = 0;
-        int n = fs.nextInt();
         String line = fs.nextString();
-        String[] lines = line.split("");
+        String[] words = line.split("");
+        int lineL = line.length();
 
-        while(n-- > 0) {
-            result += Integer.parseInt(lines[n]);
+        for (int i=0; i<lineL; i++) {
+
+            sb.append(words[i]);
+
+            if (sb.length() == 10) {
+                System.out.println(sb);
+                sb.setLength(0);
+            }
+
         }
 
-        System.out.println(result);
+        System.out.println(sb);
 
     }
 }
