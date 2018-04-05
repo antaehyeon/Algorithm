@@ -40,13 +40,13 @@ public class Main {
         int n = fs.nextInt();
 
         String line;
+        int a, b;
 
-        while (n-- > 0) {
-            line = fs.nextString();
-            String[] lines = line.split(",");
+        for (int i=1; i<=n; i++) {
+            a = fs.nextInt();
+            b = fs.nextInt();
 
-            System.out.println(Integer.parseInt(lines[0]) + Integer.parseInt(lines[1]));
-
+            System.out.println("Case #" + i + ": " + (a+b));
         }
     }
 }
