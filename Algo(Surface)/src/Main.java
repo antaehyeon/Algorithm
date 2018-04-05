@@ -46,7 +46,7 @@ public class Main {
             a = fs.nextInt();
             b = fs.nextInt();
 
-            System.out.println("Case #" + i + ": " + (a+b));
+            System.out.println("Case #" + i + ": " + a + " + " + b + " = " + (a+b));
         }
     }
 }
