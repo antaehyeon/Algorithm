@@ -147,7 +147,11 @@
 
   - 문자열을 자르는것은 `subString`
 
+  - 최대 `max = Math.max(max, num)`
 
+  - 최소 `min = Math.min(min, num)`
+
+  - 정렬은 List만
 
 
 

@@ -36,19 +36,16 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
 
         int n = fs.nextInt();
-        String line = fs.nextString();
-        String[] nums = line.split(" ");
-
-        ArrayList<Integer> list = new ArrayList<>();
+        int min = 1000000;
+        int max = -1000000;
 
         for (int i=0; i<n; i++) {
-            list.add(Integer.parseInt(nums[i]));
+            int num = fs.nextInt();
+            min = Math.min(min, num);
+            max = Math.max(max, num);
         }
 
-        Collections.sort(list);
-
-        System.out.println(list.get(0));
-        System.out.println(list.get(n-1));
+        System.out.println(min + " " + max);
     }
 }
 
