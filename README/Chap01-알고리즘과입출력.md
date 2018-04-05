@@ -132,11 +132,16 @@
       while((line=fs.nextString()) != null && line.length() != 0) {
           // ...
       }
+
       ```
 
-      ​
+  - [그대로 출력하기](https://www.acmicpc.net/problem/11718)
+
+    nextLine은 더 이상 입력받을 줄이 없을 때 NoSuchElementException 에러를 띄우므로 hasNextLine으로 입력이 아직 안 끝났는지 확인해야 합니다.
 
     ​
+
+  ​
 
 
 

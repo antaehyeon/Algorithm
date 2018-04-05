@@ -36,18 +36,15 @@ public class Main {
     public static void main(String[] args) throws Exception {
 
         FastScanner fs = new FastScanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        int n = fs.nextInt();
+        String line = "";
 
-        String line;
-        int a, b;
-
-        for (int i=1; i<=n; i++) {
-            a = fs.nextInt();
-            b = fs.nextInt();
-
-            System.out.println("Case #" + i + ": " + a + " + " + b + " = " + (a+b));
+        while(sc.hasNextLine()) {
+            line = sc.nextLine();
+            System.out.println(line);
         }
+
     }
 }
 
