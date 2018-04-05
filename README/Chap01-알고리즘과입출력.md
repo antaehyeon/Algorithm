@@ -141,8 +141,20 @@
 
     ​
 
-  ​
+  - StringBuilder 초기화는 `setLength(0)` 으로 진행
 
+  - 문자열을 찾는것은 `indexOf`
+
+  - 문자열을 자르는것은 `subString`
+
+
+
+
+
+
+​
+
+​
 
 
 

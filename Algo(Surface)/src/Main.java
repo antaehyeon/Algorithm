@@ -38,19 +38,10 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         StringBuilder sb = new StringBuilder("");
 
-        String line = fs.nextString();
-        String[] words = line.split("");
-        int lineL = line.length();
+        int n = fs.nextInt();
 
-        for (int i=0; i<lineL; i++) {
-
-            sb.append(words[i]);
-
-            if (sb.length() == 10) {
-                System.out.println(sb);
-                sb.setLength(0);
-            }
-
+        for (int i=1; i<=9; i++) {
+            sb.append(n + " * " + i + " = " + (n * i) + "\n");
         }
 
         System.out.println(sb);
