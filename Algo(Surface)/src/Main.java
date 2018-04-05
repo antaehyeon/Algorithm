@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 class FastScanner {
 
@@ -38,14 +36,19 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
 
         int n = fs.nextInt();
+        String line = fs.nextString();
+        String[] nums = line.split(" ");
 
-        int result = 0;
+        ArrayList<Integer> list = new ArrayList<>();
 
-        for (int i=1; i<=n; i++) {
-            result += i;
+        for (int i=0; i<n; i++) {
+            list.add(Integer.parseInt(nums[i]));
         }
 
-        System.out.println(result);
+        Collections.sort(list);
+
+        System.out.println(list.get(0));
+        System.out.println(list.get(n-1));
     }
 }
 
