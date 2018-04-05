@@ -295,7 +295,7 @@ vector 와 string 을 이용하면 특정문자열로 찢기가 편함
 
 > 알고리즘 기초
 
-1. 알고리즘과 입/출력
+1. [알고리즘과 입/출력](https://github.com/antaehyeon/Algorithm/blob/master/README/Chap01-%EC%95%8C%EA%B3%A0%EB%A6%AC%EC%A6%98%EA%B3%BC%EC%9E%85%EC%B6%9C%EB%A0%A5.md)
 2. 자료구조 1
 3. 다이나믹 프로그래밍 1
 4. 수학 1

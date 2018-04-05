@@ -110,7 +110,33 @@
 
 - ### 입/출력
 
-  - Hello world
+  - 무한대로 입력받기 ([A+B-5](https://www.acmicpc.net/problem/10952))
+
+    - Scanner
+
+      ```java
+      while(sc.hasNextInt()) {
+          a = sc.nextInt();
+          b = sc.nextInt();
+          
+          // ...
+      }
+      ```
+
+      ​
+
+    - BufferedReader
+
+      ```java
+      String line = "";
+      while((line=fs.nextString()) != null && line.length() != 0) {
+          // ...
+      }
+      ```
+
+      ​
+
+    ​
 
 
 
