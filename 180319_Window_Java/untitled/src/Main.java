@@ -14,7 +14,7 @@ public class Main {
 
         d = new int[n+1];
 
-        System.out.println(bottomUp(n));
+        System.out.println(topDown(n));
     }
 
     public static int topDown (int n) {
