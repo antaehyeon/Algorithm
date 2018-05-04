@@ -14,10 +14,17 @@ public class Main {
 
         d = new int[n+1];
 
-        System.out.println(bottomUp(n));
+        System.out.println(topDown(n));
     }
 
     public static int topDown (int n) {
+        if (n == 0 || n == 1) return 1;
+        if (d[n] > 0) return d[n];
+
+        d[n] = topDown(n-2) + topDown(n-1);
+        d[n] %= 10007;
+
+        return d[n];
     }
 
     public static int bottomUp (int n) {
