@@ -274,7 +274,76 @@
   - go(n/2) + 1
   - go(n/3) + 1
 
+  ```java
+  // Bottom-up
+  public static int bottomUp (int n) {
+      d[1] = 0;
+      for (int i=2; i<=n; i++) {
+          d[i] = d[i-1] + 1;
+          if (i%2 == 0 && d[i] > d[i/2] + 1) {
+              d[i] = d[i/2] + 1;
+          }
+          if (i%3 == 0 && d[i] > d[i/3] + 1) {
+              d[i] = d[i/3] + 1;
+          }
+      }
+      return d[n];
+  }
+  ```
+
   
+
+
+
+- ### [2 x n 타일링](https://www.acmicpc.net/problem/11726)
+
+  2×n 크기의 직사각형을 1×2, 2×1 타일로 채우는 방법의 수를 구하는 프로그램을 작성하시오.
+
+  아래 그림은 2×5 크기의 직사각형을 채운 한 가지 방법의 예이다.
+
+  d[n] = `2 x n` 크기의 직사각형을 채우는 방법의 갯수
+
+  - 2 x 0 = 1
+    - 공집합도 1개
+    - 빈 스트링도 1개
+    - 그러므로, 없는 사각형이지만 1개로 구분
+  - 2 x 1 = 1
+
+  ![](https://imgur.com/QerwLQd.png)
+
+  즉, `d[n] = d[n-2] + d[n-1]`
+
+  - d[n-2] 의 사각형 오른쪽에 누워진 직사각형 2개가 붙음
+  - d[n-1]의 사각형 오른쪽에 세워진 직사각형 1개가 붙음
+
+```java
+//TOP-DOWN
+    public static int topDown (int n) {
+        if (n == 0 || n == 1) return 1;
+        if (d[n] > 0) return d[n];
+
+        d[n] = topDown(n-2) + topDown(n-1);
+        d[n] %= 10007;
+
+        return d[n];
+    }
+```
+
+```java
+//BOTTOM-UP
+    public static int bottomUp (int n) {
+        d[0] = 1;
+        if (n > 0) d[1] = 1;
+        for (int i=2; i<=n; i++) {
+            d[i] = d[i-2] + d[i-1];
+            d[i] %= 10007;
+        }
+        System.out.println(d[n]);
+        return d[n];
+    }
+```
+
+- 어떻게보면 피보나치랑 비슷하기도 함 :)
 
 ### 
 
