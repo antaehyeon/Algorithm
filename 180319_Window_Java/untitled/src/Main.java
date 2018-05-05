@@ -15,13 +15,24 @@ public class Main {
 
         for (int i=0; i<T; i++) {
             int n = Integer.parseInt(bf.readLine());
-            System.out.println(bottomUp(n));
+            System.out.println(topDown(n));
         }
     }
 
     public static int topDown (int n) {
-
-        return 0;
+        if (n == 0) {
+            DP[0] = 1;
+        }
+        if (n == 1) {
+            DP[1] = 1;
+        }
+        if (n == 2) {
+            DP[2] = 2;
+        }
+        if (n >= 3) {
+            DP[n] = topDown(n-1) + topDown(n-2) + topDown(n-3);
+        }
+        return DP[n];
     }
 
     public static int bottomUp (int n) {
