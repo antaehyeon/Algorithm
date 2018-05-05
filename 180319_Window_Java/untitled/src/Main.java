@@ -1,39 +1,34 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 
 public class Main {
 
-    static int[] d;
+    static int[] DP;
 
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
-        int n = Integer.parseInt(bf.readLine());
+        int T = Integer.parseInt(bf.readLine());
 
-        d = new int[n+1];
+        DP = new int[11];
 
-        System.out.println(topDown(n));
+        for (int i=0; i<T; i++) {
+            int n = Integer.parseInt(bf.readLine());
+            System.out.println(bottomUp(n));
+        }
     }
 
     public static int topDown (int n) {
-        if (n == 0 || n == 1) return 1;
-        if (d[n] > 0) return d[n];
 
-        d[n] = 2 * topDown(n-2) + topDown(n-1);
-        d[n] %= 10007;
-
-        return d[n];
+        return 0;
     }
 
     public static int bottomUp (int n) {
-        d[0] = 1;
-        if (n > 0) d[1] = 1;
-        for (int i=2; i<=n; i++) {
-            d[i] = (2 * d[i-2]) + d[i-1];
-            d[i] %= 10007;
+        DP[0] = 1; DP[1] = 1; DP[2] = 2;
+        for (int i=3; i<=n; i++) {
+            DP[i] = DP[i - 1] + DP[i - 2] + DP[i - 3];
         }
-        return d[n];
+        return DP[n];
     }
 }
