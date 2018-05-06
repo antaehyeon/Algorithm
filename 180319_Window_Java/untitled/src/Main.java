@@ -5,40 +5,35 @@ import java.io.InputStreamReader;
 public class Main {
 
     static int[] DP;
+    static int[] P;
 
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
-        int T = Integer.parseInt(bf.readLine());
+        int N = Integer.parseInt(bf.readLine());
 
-        DP = new int[11];
+        P = new int[N+1];
+        DP = new int[N+1];
 
-        for (int i=0; i<T; i++) {
-            int n = Integer.parseInt(bf.readLine());
-            System.out.println(topDown(n));
+        String[] p = bf.readLine().split(" ");
+
+        for (int i=1; i<=N; i++) {
+            P[i] = Integer.parseInt(p[i-1]);
         }
+
+        System.out.println(bottomUp(N));
     }
 
     public static int topDown (int n) {
-        if (n == 0) {
-            DP[0] = 1;
-        }
-        if (n == 1) {
-            DP[1] = 1;
-        }
-        if (n == 2) {
-            DP[2] = 2;
-        }
-        if (n >= 3) {
-            DP[n] = topDown(n-1) + topDown(n-2) + topDown(n-3);
-        }
-        return DP[n];
+        return 0;
     }
 
     public static int bottomUp (int n) {
-        DP[0] = 1; DP[1] = 1; DP[2] = 2;
-        for (int i=3; i<=n; i++) {
-            DP[i] = DP[i - 1] + DP[i - 2] + DP[i - 3];
+        DP[0] = 0;
+        for (int i=1; i<=n; i++) {
+            for (int j=1; j<=i; j++) {
+                DP[i] = Math.max(DP[i], DP[i-j] + P[j]);
+            }
         }
         return DP[n];
     }
