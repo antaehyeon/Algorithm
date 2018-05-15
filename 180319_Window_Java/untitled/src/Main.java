@@ -4,22 +4,14 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    static int[] DP;
-    static int[] P;
+    static long[] DP;
 
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(bf.readLine());
 
-        P = new int[N+1];
-        DP = new int[N+1];
-
-        String[] p = bf.readLine().split(" ");
-
-        for (int i=1; i<=N; i++) {
-            P[i] = Integer.parseInt(p[i-1]);
-        }
+        DP = new long[N+1];
 
         System.out.println(bottomUp(N));
     }
@@ -28,13 +20,26 @@ public class Main {
         return 0;
     }
 
-    public static int bottomUp (int n) {
-        DP[0] = 0;
-        for (int i=1; i<=n; i++) {
-            for (int j=1; j<=i; j++) {
-                DP[i] = Math.max(DP[i], DP[i-j] + P[j]);
-            }
+    public static long bottomUp (int n) {
+
+        /*
+            1: 1
+            2: 10
+            3: 100, 101
+            4: 1000, 1001, 1010
+            5: 10000, 10001, 10100, 10101, 10010
+        */
+
+        DP[0] = 0; DP[1] = 1;
+
+        if (n == 1) {
+            return DP[1];
         }
+
+        for (int i=2; i<=n; i++) {
+            DP[i] = DP[i-1] + DP[i-2];
+        }
+
         return DP[n];
     }
 }
