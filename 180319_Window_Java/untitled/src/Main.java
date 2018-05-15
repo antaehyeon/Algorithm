@@ -13,11 +13,23 @@ public class Main {
 
         DP = new long[N+1];
 
-        System.out.println(bottomUp(N));
+        System.out.println(topDown(N));
+//        System.out.println(bottomUp(N));
     }
 
-    public static int topDown (int n) {
-        return 0;
+    public static long topDown (int n) {
+
+        if (n == 0 || n == 1 || n == 2) {
+            return 1;
+        }
+
+        if (DP[n] > 0) {
+            return DP[n];
+        }
+
+        DP[n] = topDown(n-1) + topDown(n-2);
+
+        return DP[n];
     }
 
     public static long bottomUp (int n) {
