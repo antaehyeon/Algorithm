@@ -533,6 +533,53 @@
 
   - 항상 자료형 신경쓸 것, `1<=N<=90` 이므로 `int`가 아닌 `Long` 으로 선언해주어야 함
 
+    ```java
+    //BOTTOM-UP
+    public static long bottomUp (int n) {
+        /*
+                1: 1
+                2: 10
+                3: 100, 101
+                4: 1000, 1001, 1010
+                5: 10000, 10001, 10100, 10101, 10010
+        */
+    
+        DP[0] = 0; DP[1] = 1;
+    
+        if (n == 1) {
+            return DP[1];
+        }
+    
+        for (int i=2; i<=n; i++) {
+            DP[i] = DP[i-1] + DP[i-2];
+        }
+    
+        return DP[n];
+    }
+    ```
+
+    ```java
+    //TOP-DOWN
+    public static long topDown (int n) {
+    
+        if (n == 0 || n == 1 || n == 2) {
+            return 1;
+        }
+    
+        if (DP[n] > 0) {
+            return DP[n];
+        }
+    
+        DP[n] = topDown(n-1) + topDown(n-2);
+    
+        return DP[n];
+    }
+    ```
+
+    
+
+
+
 
 
 
