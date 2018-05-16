@@ -641,7 +641,158 @@
   - 수의 길이 N이 주어졌을 때, 오르막 수의 개수를 구하는 문제
   - 수는 `0으로 시작`할 수 있음
   - 예: 1233345, 357, 8888888, 1555999
-  - 
+  - `D[N][L]` N자리 오르막 수 (마지막 수 L)
+    - `N`의 자리에는 `L`이 온다면
+    - `N-1` 의 자리에는 `0~L` 까지의 숫자가 오게 됨
+      - `1233345` 에서 `L`은 `5` 이며, 그 앞자리는 `0`부터 `5`까지의 숫자로 채워짐
+    - `K` = `0~L`
+
+  ```java
+  // BOTTOM UP    
+  public static long bottomUp (int n) {
+  
+      final long mod = 10007;
+  
+      for (int i=0; i<=9; i++) D[1][i] = 1;
+      for (int i=2; i<=n; i++) {
+          for (int j=0; j<=9; j++) {
+              // k = 0~J 까지의 범위를 뜻함
+              // 인접한 수가 같아도 오름차순으로 치기 때문에
+              // 해당 J까지의 반복문이 필요
+              for (int k=0; k<=j; k++) {
+                  D[i][j] += D[i-1][k];
+                  D[i][j] %= mod;
+              }
+          }
+      }
+      long ans = 0;
+      for (int i=0; i<=9; i++) ans += D[n][i];
+      ans %= mod;
+  
+      return ans;
+  }
+  ```
+
+
+
+- ### [스티커](https://www.acmicpc.net/problem/9465)
+
+  - 스티커 2n개가 2 x n 모양으로 배치되어 있음
+
+  - 스티커 한 장을 떼면 변을 공유하는 스티커는 모두 찢어져서 사용할 수 없음
+
+  - 점수의 합을 최대로 만드는 문제
+
+    ![](https://www.acmicpc.net/upload/images/sticker.png)
+
+  - 점수를 무조건 최대로 만드는 부분으로 접근하면 안됨
+
+    |  99  | 100  |  99  |
+    | :--: | :--: | :--: |
+    |  1   |  99  |  1   |
+
+    100을 뜯어버리게 되면, 맨끝의 99와 가운데 99를 사용할 수 없게 되므로 합은 `102` 가 됨
+
+    99를 뜯게 되면, 합은 `297` 이 됨
+
+  - 스티커를 떼는 순서는 정해져있지 않음 (= 스티커를 떼는 순서를 맘대로 정해도 됨)
+
+  - 왼쪽에서부터 스티커를 한 열씩 뜯을지/말지 고민할 수 있음
+
+    |  X   |  O   |  X   |  O   |
+    | :--: | :--: | :--: | :--: |
+    |  X   |  X   |  O   |  O   |
+    |  0   |  1   |  2   |  3   |
+
+    3 번의 경우는 일어날 수 없음 (문제의 조건에 위배됨)
+
+  - 점화식 `D[N][S] = 2 x n 스티커`
+
+    - `S` `n번 열의 상태`
+    - `A[i][j]`
+    - `i` 열 `j` 행
+    - `j=0` 뜯지 않음
+    - `j=1` 위쪽 스티커를 뜯음
+    - `j=2` 아래쪽 스티커를 뜯음
+
+  - `D[N][0]` 이라면
+
+    - MAX (`D[N-1][0]` `D[N-1][1]` `D[N-1][2]`)
+
+  - `D[N][1]` 이라면
+
+    - MAX (`D[N-1][0]` `D[N-1][2]`) + `A[N][1]`
+    - `D[N-1][1]` 은 **같은 변을 공유**하기 때문에 불가능
+
+  - `D[N][2]` 이라면
+
+    - MAX (`D[N-1][0]` `D[N-1][1]`) + `A[N][2]`
+
+  - 답 
+
+    - MAX (`D[n][0]` `D[n][1]` `D[n][2]`)
+
+  ```java
+  import java.io.BufferedReader;
+  import java.io.IOException;
+  import java.io.InputStreamReader;
+  
+  public class Main {
+  
+      static long [][] D;
+      static long [][] A;
+  
+      public static void main(String[] args) throws IOException {
+          BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
+  
+          int T = Integer.parseInt(bf.readLine());
+  
+          for (int i=0; i<T; i++) {
+              int n = Integer.parseInt(bf.readLine());
+              A = new long[2][n+1];
+              String[] datas = bf.readLine().split(" ");
+              String[] datas2 = bf.readLine().split(" ");
+              for (int k=0; k<n; k++) {
+                  A[0][k] = Long.parseLong(datas[k]);
+                  A[1][k] = Long.parseLong(datas2[k]);
+              }
+              System.out.println(bottomUp(n));
+          }
+      }
+  
+      public static long topDown (int n) {
+          return 0;
+      }
+  
+      public static long bottomUp(int n) {
+  
+          /*
+              초기값이 무엇일까?
+              D[0][0]
+  
+              D[0][1]
+              D[0][2]
+              
+              행렬 구분에 따라서 [0][i], [i][0] 순으로 변경됨
+              현재 코드는 [행][렬]
+          */
+  
+          long[][] d = new long[3][n+1];
+          for (int i=1; i<=n; i++) {
+              d[0][i] = Math.max(d[0][i-1], Math.max(d[1][i-1], d[2][i-1]));
+              d[1][i] = Math.max(d[0][i-1], d[2][i-1]) + A[0][i-1];
+              d[2][i] = Math.max(d[0][i-1], d[1][i-1]) + A[1][i-1];
+          }
+  
+          long ans = 0;
+          ans = Math.max(d[0][n], Math.max(d[1][n], d[2][n]));
+  
+          return ans;
+      }
+  }
+  ```
+
+  
 
 
 
