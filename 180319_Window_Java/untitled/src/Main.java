@@ -5,41 +5,49 @@ import java.io.InputStreamReader;
 public class Main {
 
     static long [][] D;
+    static long [][] A;
 
     public static void main(String[] args) throws IOException {
         BufferedReader bf = new BufferedReader(new InputStreamReader(System.in));
 
-        int N = Integer.parseInt(bf.readLine());
+        int T = Integer.parseInt(bf.readLine());
 
-        D = new long [N+1][10];
-
-//        System.out.println(topDown(N));
-        System.out.println(bottomUp(N));
+        for (int i=0; i<T; i++) {
+            int n = Integer.parseInt(bf.readLine());
+            A = new long[2][n+1];
+            String[] datas = bf.readLine().split(" ");
+            String[] datas2 = bf.readLine().split(" ");
+            for (int k=0; k<n; k++) {
+                A[0][k] = Long.parseLong(datas[k]);
+                A[1][k] = Long.parseLong(datas2[k]);
+            }
+            System.out.println(bottomUp(n));
+        }
     }
 
     public static long topDown (int n) {
         return 0;
     }
 
-    public static long bottomUp (int n) {
+    public static long bottomUp(int n) {
 
-        final long mod = 10007;
+        /*
+            초기값이 무엇일까?
+            D[0][0]
 
-        for (int i=0; i<=9; i++) D[1][i] = 1;
-        for (int i=2; i<=n; i++) {
-            for (int j=0; j<=9; j++) {
-                // k = 0~J 까지의 범위를 뜻함
-                // 인접한 수가 같아도 오름차순으로 치기 때문에
-                // 해당 J까지의 반복문이 필요
-                for (int k=0; k<=j; k++) {
-                    D[i][j] += D[i-1][k];
-                    D[i][j] %= mod;
-                }
-            }
+            D[0][1]
+            D[0][2]
+         */
+
+        long[][] d = new long[3][n+1];
+        for (int i=1; i<=n; i++) {
+            d[0][i] = Math.max(d[0][i-1], Math.max(d[1][i-1], d[2][i-1]));
+            d[1][i] = Math.max(d[0][i-1], d[2][i-1]) + A[0][i-1];
+            d[2][i] = Math.max(d[0][i-1], d[1][i-1]) + A[1][i-1];
         }
+
         long ans = 0;
-        for (int i=0; i<=9; i++) ans += D[n][i];
-        ans %= mod;
+        ans = Math.max(d[0][n], Math.max(d[1][n], d[2][n]));
 
         return ans;
     }
