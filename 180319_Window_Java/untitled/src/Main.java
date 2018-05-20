@@ -7,40 +7,36 @@ import java.io.InputStreamReader;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        System.out.println(Integer.toBinaryString(6));
-        System.out.println(Integer.toBinaryString(20));
-        System.out.println(Integer.toBinaryString(1041));
-        System.out.println(Integer.toBinaryString(51712));
+        int[] A = {3, 8, 9, 7, 6};
 
-        System.out.println(solution(6));
-        System.out.println(solution(20));
-        System.out.println(solution(1041));
-        System.out.println(solution(51712));
+        System.out.print(solution(A, 3));
 
     }
 
-    public static int solution(int N) {
+    public static int[] solution(int[] A, int K) {
         // write your code in Java SE 8
-        String line = Integer.toBinaryString(N);
+        int al = A.length;
 
-        int t = line.length();
-        int zeroCount = 0;
-        int result = 0;
-        boolean oneMode = false;
-        String[] ss = line.split("");
+        if (al == 0) return A;
 
-        while (t-- > 0) {
+        K %= al;
 
-            if (ss[t].equals("1")) {
-                oneMode = true;
-                result = (result < zeroCount) ? zeroCount : result;
-                zeroCount = 0;
-            } else if (oneMode && ss[t].equals("0")) {
-                zeroCount++;
+        while (K-- > 0) {
+            int temp = 0;
+            int temp2 = 0;
+
+            temp = temp2 = A[1];
+            A[1] = A[0];
+
+            for (int i=1; i<al-1; i++) {
+                temp2 = A[i+1];
+                A[i+1] = temp;
+                temp = temp2;
             }
 
+            A[0] = temp;
         }
 
-        return result;
+        return A;
     }
 }
