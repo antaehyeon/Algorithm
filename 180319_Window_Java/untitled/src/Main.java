@@ -8,27 +8,13 @@ import java.util.Set;
 public class Main {
     public static void main(String[] args) throws IOException {
 
-        int[] A = {9, 3, 9, 3, 9, 7, 9};
-
-        System.out.print(solution(A));
+        System.out.print(solution(10, 85, 30));
 
     }
 
-    public static int solution(int[] A) {
+    public static int solution(int X, int Y, int D) {
         // write your code in Java SE 8
-
-        Set<Integer> s = new HashSet<Integer>();
-        int i = A.length;
-
-        while(i-- > 0) {
-            if (s.contains(A[i])) {
-                s.remove(A[i]);
-            } else {
-                s.add(A[i]);
-            }
-        }
-
-        return s.iterator().next();
+        return ((Y-X) % D > 0) ? ((Y-X) / D + 1) : (Y-X) / D;
     }
 }
 
