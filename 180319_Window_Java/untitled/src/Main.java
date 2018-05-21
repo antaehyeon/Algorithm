@@ -1,83 +1,46 @@
 import java.io.IOException;
-import java.util.*;
-
 
 public class Main {
 
-    static Stack<Integer> stack = new Stack<>();
-
     public static void main(String[] args) throws IOException {
 
-        String s = "3 DUP 5 - -";
-
-        System.out.print(solution(s));
+        System.out.print(solution("A586QK", "JJ653K"));
 
     }
 
-    public static int solution(String S) {
-        boolean exit = false;
-        String[] list = spliter(S);
+    public static int solution(String A, String B) {
+        // write your code in Java SE 8
+        int result = 0;
+        String[] ALEC = splitter(A);
+        String[] BOB = splitter(B);
 
-        for (int i=0; i<list.length; i++) {
+        for (int i=0; i<ALEC.length; i++) {
+            ALEC[i] = transNumeric(ALEC[i]);
+            BOB[i] = transNumeric(BOB[i]);
 
-            if (exit) return -1;
-
-            if (isNumeric(list[i])) {
-                stack.push(Integer.parseInt(list[i]));
-            } else if (list[i].equals("POP")) {
-                stack.pop();
-            } else if (list[i].equals("DUP")) {
-                stack.push(stack.peek());
-            } else if (list[i].equals("+")) {
-                PLUS();
-            } else if (list[i].equals("-")) {
-                exit = MINUS();
-            } else {
-                System.out.println("ELSE _ PLEASE ERROR CHECK");
+            if (stringToNum(ALEC[i]) > stringToNum(BOB[i])) {
+                result++;
             }
         }
 
-        if (exit) return -1;
-        return stack.peek();
+        return result;
     }
 
-    public static String[] spliter(String S) {
-        return S.split(" ");
+    public static String[] splitter(String S) {
+        return S.split("");
     }
 
-    public static boolean isNumeric(String s)
-    {
-        return s.matches("-?\\d+(\\.\\d+)?");
+    public static String transNumeric(String s) {
+        if (s.equals("A")) return "14";
+        else if (s.equals("K")) return "13";
+        else if (s.equals("Q")) return "12";
+        else if (s.equals("J")) return "11";
+        else if (s.equals("T")) return "10";
+        else return s;
     }
 
-    public static void PLUS() {
-        int a = stack.pop();
-        int b = stack.pop();
-        stack.push(a + b);
-    }
-
-    public static boolean MINUS() {
-
-        if (stack.size() < 2) {
-            return true;
-        }
-
-        int tmp = stack.pop();
-        int peek = stack.peek();
-
-        if (tmp-peek > 0) {
-            stack.pop();
-            stack.push(tmp-peek);
-        } else {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static void exit() {
-        System.out.println(-1);
-        System.exit(-1);
+    public static int stringToNum(String s) {
+        return Integer.parseInt(s);
     }
 }
 
