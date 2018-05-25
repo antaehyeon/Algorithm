@@ -39,7 +39,17 @@ public class Main {
     }
 
     public static String solution(int N) {
-        return Integer.toHexString(N);
+
+        if (N % 4 == 0) {
+            if (N % 100 == 0) {
+                if (N % 400 == 0) {
+                    return "Leap Year";
+                }
+                return "Not Leap Year";
+            }
+            return "Leap Year";
+        }
+        return "";
     }
 }
 
