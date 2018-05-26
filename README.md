@@ -2,7 +2,7 @@
 
 > ### 프로그래밍 대회에서 사용하는 Java
 
-1. #### [Java 입/출력](https://github.com/antaehyeon/Algorithm/blob/master/%20README/JAVA%20%EC%9E%85:%EC%B6%9C%EB%A0%A5.md)
+1. #### [Java 입/출력](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-%EC%9E%85%EC%B6%9C%EB%A0%A5.md)
 
    1. [Hello World](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-%EC%9E%85%EC%B6%9C%EB%A0%A5.md#hello-world)
    2. [Scanner](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-%EC%9E%85%EC%B6%9C%EB%A0%A5.md#scanner)
@@ -10,7 +10,7 @@
    4. [stringTokenizer](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-%EC%9E%85%EC%B6%9C%EB%A0%A5.md#bufferedreader)
    5. [StringBuilder](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-%EC%9E%85%EC%B6%9C%EB%A0%A5.md#stringbuilder-javalangstringbuilder)
 
-2. #### [Java - Collections](https://github.com/antaehyeon/Algorithm/blob/master/%20README/Java%20-%20Collections.md)
+2. #### [Java - Collections](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-%EC%9E%85%EC%B6%9C%EB%A0%A5.md)
 
    1. [ArrayList](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-Collections.md#arraylist)
    2. [Stack](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-Collections.md#stack)
@@ -22,7 +22,7 @@
    5. [Queue](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-Collections.md#queue)
    6. [PriorityQueue](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-Collections.md#priorityqueue)
 
-3. [Java 정렬](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-Sort.md)
+3. #### [Java 정렬](https://github.com/antaehyeon/Algorithm/blob/master/README/Java-Sort.md)
 
 
 

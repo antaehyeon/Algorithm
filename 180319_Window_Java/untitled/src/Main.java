@@ -40,16 +40,15 @@ public class Main {
 
     public static String solution(int N) {
 
-        if (N % 4 == 0) {
-            if (N % 100 == 0) {
-                if (N % 400 == 0) {
-                    return "Leap Year";
-                }
-                return "Not Leap Year";
+        String result = "";
+
+        for (int i=1; i<=N; i++) {
+            if (N%i == 0) {
+                result += Integer.toString(i) + " ";
             }
-            return "Leap Year";
         }
-        return "";
+
+        return result;
     }
 }
 
