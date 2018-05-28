@@ -34,77 +34,47 @@ public class Main {
 
         int x = 0, y = 0;
         int n = fs.nextInt();
+        int d = fs.nextInt();
+        int k = fs.nextInt();
+        int j = fs.nextInt();
 
-        for (int i=0; i<n; i++) {
-            x = fs.nextInt();
-            y = fs.nextInt();
+        System.out.println(solution(n, d, k, j));
+    }
 
-            for (int j=x; j<=y; j++) {
-                list.add(j);
+    public static int solution(int n, int d, int k, int j) {
+
+        LinkedList<Integer> list = new LinkedList<>();
+
+        if (d==1) {
+            for (int i=1; i<=n; i++) {
+                list.add(i);
+            }
+        } else {
+            list.add(1);
+            n += 1;
+            while (n-- > 2) {
+                list.add(n);
             }
         }
 
-        Collections.sort(list);
+        int movePosition = k;
+        int index = movePosition;
+        list.remove(index);
+        index -= 1;
 
-        int maxSize = list.get(list.size()-1);
+        while(list.size() != 1) {
+            movePosition += j;
+            index += movePosition;
 
-        int[] array = new int[maxSize+1];
+            if (index >= list.size()) {
+                index %= list.size();
+            }
 
-        for (int t : list) {
-            array[t]++;
+            list.remove(index);
+            index -= 1;
         }
 
-        boolean firstMode = false;
-        boolean mode2 = false;
-        boolean mode3 = false;
-        int startNumberTwoIndex = 0;
-        int endNumberTwoIndex = 0;
-
-        for (int i=1; i<=maxSize; i++) {
-            if (i == maxSize) {
-                sb.append("(");
-                sb.append(i);
-                sb.append(", +)");
-                continue;
-            }
-
-            if (!firstMode && array[i] == 1) {
-                firstMode = true;
-                sb.append("(-, ");
-                sb.append(i);
-                sb.append(")\n");
-                continue;
-            }
-
-            if (!mode2 && array[i] == 2) {
-                mode2 = true;
-                startNumberTwoIndex = i;
-                continue;
-            }
-
-            if (!mode3 && array[i] == 1) {
-                mode2 = false; mode3 = true;
-                endNumberTwoIndex = i-1;
-                sb.append("[");
-                sb.append(startNumberTwoIndex);
-                sb.append(", ");
-                sb.append(endNumberTwoIndex);
-                sb.append("]\n");
-                continue;
-            }
-
-            if (mode3 && array[i] == 1) {
-                endNumberTwoIndex++;
-                sb.append("(");
-                sb.append(endNumberTwoIndex);
-                sb.append(", ");
-                sb.append(i);
-                sb.append(")\n");
-                continue;
-            }
-        }
-
-        System.out.println(sb.toString());
+        return list.getFirst();
     }
 }
 
