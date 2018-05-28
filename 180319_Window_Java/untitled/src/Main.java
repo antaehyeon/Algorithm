@@ -3,10 +3,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 class FastScanner {
     BufferedReader br;
@@ -32,23 +29,82 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
+        ArrayList<Integer> list = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
 
+        int x = 0, y = 0;
         int n = fs.nextInt();
 
-        System.out.println(solution(n));
-    }
+        for (int i=0; i<n; i++) {
+            x = fs.nextInt();
+            y = fs.nextInt();
 
-    public static String solution(int N) {
-
-        String result = "";
-
-        for (int i=1; i<=N; i++) {
-            if (N%i == 0) {
-                result += Integer.toString(i) + " ";
+            for (int j=x; j<=y; j++) {
+                list.add(j);
             }
         }
 
-        return result;
+        Collections.sort(list);
+
+        int maxSize = list.get(list.size()-1);
+
+        int[] array = new int[maxSize+1];
+
+        for (int t : list) {
+            array[t]++;
+        }
+
+        boolean firstMode = false;
+        boolean mode2 = false;
+        boolean mode3 = false;
+        int startNumberTwoIndex = 0;
+        int endNumberTwoIndex = 0;
+
+        for (int i=1; i<=maxSize; i++) {
+            if (i == maxSize) {
+                sb.append("(");
+                sb.append(i);
+                sb.append(", +)");
+                continue;
+            }
+
+            if (!firstMode && array[i] == 1) {
+                firstMode = true;
+                sb.append("(-, ");
+                sb.append(i);
+                sb.append(")\n");
+                continue;
+            }
+
+            if (!mode2 && array[i] == 2) {
+                mode2 = true;
+                startNumberTwoIndex = i;
+                continue;
+            }
+
+            if (!mode3 && array[i] == 1) {
+                mode2 = false; mode3 = true;
+                endNumberTwoIndex = i-1;
+                sb.append("[");
+                sb.append(startNumberTwoIndex);
+                sb.append(", ");
+                sb.append(endNumberTwoIndex);
+                sb.append("]\n");
+                continue;
+            }
+
+            if (mode3 && array[i] == 1) {
+                endNumberTwoIndex++;
+                sb.append("(");
+                sb.append(endNumberTwoIndex);
+                sb.append(", ");
+                sb.append(i);
+                sb.append(")\n");
+                continue;
+            }
+        }
+
+        System.out.println(sb.toString());
     }
 }
 
