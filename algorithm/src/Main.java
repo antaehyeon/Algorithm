@@ -25,34 +25,33 @@ class FastScanner {
     }
 }
 
+class Solution {
+    public int solution(int n) {
+        int answer = 0;
+        int temp = 0;
+        int j = 0;
+
+        for (int i=1; i<=n; i++) {
+            j = i;
+            while (n > temp) {
+                temp += j;
+                if (temp == n) answer++;
+                j++;
+            }
+            temp = 0;
+        }
+
+        return answer;
+    }
+}
+
 public class Main {
-
-    static int[] a = new int[10003];
-    static int[] dp = new int[10003];
-
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
+        Solution answer = new Solution();
 
         int n = fs.nextInt();
 
-        for (int i=1; i<=n; i++) {
-            a[i] = fs.nextInt();
-        }
-
-        dp[1] = a[1];
-        dp[2] = a[1] + a[2];
-
-        for (int i=3; i<=n; i++) {
-            dp[i] = dp[i-1];
-            if (dp[i] < dp[i-2] + a[i]) {
-                dp[i] = dp[i-2] + a[i];
-            }
-            if (dp[i] < dp[i-3] + a[i] + a[i-1]) {
-                dp[i] = dp[i-3] + a[i] + a[i-1];
-            }
-        }
-
-        System.out.println(dp[n]);
-
+        System.out.println(answer.solution(n));
     }
 }
