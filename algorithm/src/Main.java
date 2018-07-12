@@ -26,22 +26,30 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int n) {
+    public int solution(String s) {
         int answer = 0;
-        int temp = 0;
-        int j = 0;
 
-        for (int i=1; i<=n; i++) {
-            j = i;
-            while (n > temp) {
-                temp += j;
-                if (temp == n) answer++;
-                j++;
-            }
-            temp = 0;
+        if (checkPalindrome(s)) return s.length();
+
+        int n = 3;
+        String tmp = "";
+        answer = 2;
+
+        while(n <= s.length()) {
+            tmp = s.substring(0, n);
+            if (checkPalindrome(tmp)) answer = tmp.length();
+            n++;
         }
 
         return answer;
+    }
+
+    public boolean checkPalindrome(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        String ts = sb.reverse().toString();
+
+        if (s.equals(ts)) return true;
+        else return false;
     }
 }
 
@@ -50,8 +58,8 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int n = fs.nextInt();
+        String line = fs.next();
 
-        System.out.println(answer.solution(n));
+        System.out.println(answer.solution(line));
     }
 }
