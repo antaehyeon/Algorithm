@@ -27,18 +27,23 @@ class FastScanner {
 
 class Solution {
     public int solution(String s) {
-        int answer = 0;
+        int answer = 2;
+        int n;
+        String tmp = "";
 
         if (checkPalindrome(s)) return s.length();
+        if (s.length() == 1) return 1;
 
-        int n = 3;
-        String tmp = "";
-        answer = 2;
-
-        while(n <= s.length()) {
-            tmp = s.substring(0, n);
-            if (checkPalindrome(tmp)) answer = tmp.length();
-            n++;
+        for (int i=0; i<s.length()-2; i++) {
+            n = 3+i;
+            while(n <= s.length()) {
+                tmp = s.substring(i, n);
+                if (checkPalindrome(tmp)) {
+                    answer = (tmp.length() > answer) ? tmp.length() : answer;
+                }
+                if (answer == s.length()-1) return answer;
+                n++;
+            }
         }
 
         return answer;
