@@ -28,22 +28,25 @@ class FastScanner {
 class Solution {
     public int solution(String s) {
         int answer = 2;
-        int n;
+        int n = s.length()-1;
         String tmp = "";
 
         if (checkPalindrome(s)) return s.length();
         if (s.length() == 1) return 1;
 
-        for (int i=0; i<s.length()-2; i++) {
-            n = 3+i;
-            while(n <= s.length()) {
-                tmp = s.substring(i, n);
-                if (checkPalindrome(tmp)) {
-                    answer = (tmp.length() > answer) ? tmp.length() : answer;
-                }
-                if (answer == s.length()-1) return answer;
-                n++;
+        int j = 0;
+        int k = 0;
+        for (int i=0; i<s.length(); i++) {
+            if (n==2) return 2;
+            j = 0;
+            k = n;
+            while(true) {
+                tmp = s.substring(j, k);
+                if (checkPalindrome(tmp)) return tmp.length();
+                if (k == s.length()) break;
+                j++; k++;
             }
+            n--;
         }
 
         return answer;
@@ -51,9 +54,9 @@ class Solution {
 
     public boolean checkPalindrome(String s) {
         StringBuilder sb = new StringBuilder(s);
-        String ts = sb.reverse().toString();
+        String tmp = sb.reverse().toString();
 
-        if (s.equals(ts)) return true;
+        if (s.equals(tmp)) return true;
         else return false;
     }
 }
