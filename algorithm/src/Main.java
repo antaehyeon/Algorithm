@@ -26,38 +26,28 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(String s) {
-        int answer = 2;
-        int n = s.length()-1;
-        String tmp = "";
+    public int solution(int[] A, int[] B) {
 
-        if (checkPalindrome(s)) return s.length();
-        if (s.length() == 1) return 1;
+        int aliveFishNum = A.length;
+        int fishNum = A.length;
+        Stack<Integer> bottomFishes = new Stack<>();
 
-        int j = 0;
-        int k = 0;
-        for (int i=0; i<s.length(); i++) {
-            if (n==2) return 2;
-            j = 0;
-            k = n;
-            while(true) {
-                tmp = s.substring(j, k);
-                if (checkPalindrome(tmp)) return tmp.length();
-                if (k == s.length()) break;
-                j++; k++;
+        for (int i=0; i<fishNum; i++) {
+            if (B[i] == 1) {
+                bottomFishes.push(A[i]);
+                continue;
             }
-            n--;
+
+            while (bottomFishes.size() != 0) {
+                aliveFishNum--;
+                if (bottomFishes.peek() > A[i]) {
+                    break;
+                } else {
+                    bottomFishes.pop();
+                }
+            }
         }
-
-        return answer;
-    }
-
-    public boolean checkPalindrome(String s) {
-        StringBuilder sb = new StringBuilder(s);
-        String tmp = sb.reverse().toString();
-
-        if (s.equals(tmp)) return true;
-        else return false;
+        return aliveFishNum;
     }
 }
 
@@ -66,8 +56,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        String line = fs.next();
+        int[] A = {4, 3, 2, 1, 5};
+        int[] B = {0, 1, 0, 0, 0};
 
-        System.out.println(answer.solution(line));
+        System.out.println(answer.solution(A, B));
     }
 }
