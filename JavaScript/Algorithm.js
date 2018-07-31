@@ -15,7 +15,7 @@ function solution(N) {
 
         if (b === null) break;
         else {
-            let temp = b[0].length-2;
+            let temp = b[0].replace(/1/gi, '').length;
             max = (temp > max) ? temp : max;
         }
 
