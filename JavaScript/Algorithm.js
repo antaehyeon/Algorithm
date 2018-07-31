@@ -1,18 +1,20 @@
 /* Lesson 02 Arrays
 https://app.codility.com/programmers/lessons/2-arrays/ */
 
-function solution(A, K) {
+function solution(A) {
+    let arr = [];
+    let a;
 
-    let arrayLen = A.length;
-    let repeatNum = K % arrayLen;
-    let popNumData;
-
-    for (let i=0; i<repeatNum; i++) {
-        popNumData = A.pop();
-        A.unshift(popNumData);
-    }
+    A.forEach(element => {
+        a = arr.indexOf(element);
+        if (a !== -1) {
+            arr.splice(a, 1);
+        } else {
+            arr.push(element);
+        }
+    });
     
-    return A;
+    return arr[0];
 }
 
-console.log(solution([1,2,3,4,5], 3));
+console.log(solution([3, 3, 5, 5, 7]));
