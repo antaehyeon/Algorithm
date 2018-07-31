@@ -1,35 +1,18 @@
-/* Lesson 01 Iterations
-https://app.codility.com/programmers/lessons/1-iterations/ */
+/* Lesson 02 Arrays
+https://app.codility.com/programmers/lessons/2-arrays/ */
 
-function solution(N) {
-    let max = 0;
-    let s = N.toString(2);
-    let a = s.match(/1+0+1/);
-    let c = s;
+function solution(A, K) {
 
-    while(true) {
+    let arrayLen = A.length;
+    let repeatNum = K % arrayLen;
+    let popNumData;
 
-        if (a === null) return 0;
-
-        let b = c.match(/1+0+1/);
-
-        if (b === null) break;
-        else {
-            let temp = b[0].replace(/1/gi, '').length;
-            max = (temp > max) ? temp : max;
-        }
-
-        c = c.replace(/1+0+/, '');
+    for (let i=0; i<repeatNum; i++) {
+        popNumData = A.pop();
+        A.unshift(popNumData);
     }
-
-    return max;
+    
+    return A;
 }
 
-// console.log(solution(9));
-// console.log(solution(15));
-// console.log(solution(529));
-// console.log(solution(20));
-// console.log(solution(32));
-// console.log(solution(1041));
-// console.log(solution(1162));
-console.log(solution(51712));
+console.log(solution([1,2,3,4,5], 3));
