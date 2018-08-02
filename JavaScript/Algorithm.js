@@ -2,19 +2,24 @@
 https://app.codility.com/programmers/lessons/2-arrays/ */
 
 function solution(A) {
-    let arr = [];
-    let a;
+    let toggle = true;
+    let sum = 0;
+
+    A.sort((a, b) => {
+        return b - a;
+    });
 
     A.forEach(element => {
-        a = arr.indexOf(element);
-        if (a !== -1) {
-            arr.splice(a, 1);
+        if (toggle) {
+            sum += element;
+            toggle = false;
         } else {
-            arr.push(element);
+            sum -= element;
+            toggle = true;
         }
     });
     
-    return arr[0];
+    return sum;
 }
 
 console.log(solution([3, 3, 5, 5, 7]));
