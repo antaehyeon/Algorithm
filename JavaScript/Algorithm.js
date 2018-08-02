@@ -1,25 +1,18 @@
-/* Lesson 02 Arrays
-https://app.codility.com/programmers/lessons/2-arrays/ */
+function solution(X, Y, D) {
 
-function solution(A) {
-    let toggle = true;
-    let sum = 0;
+    let a = Y-X;
 
-    A.sort((a, b) => {
-        return b - a;
-    });
+    if (a === 0) {
+        return 0;
+    }
 
-    A.forEach(element => {
-        if (toggle) {
-            sum += element;
-            toggle = false;
-        } else {
-            sum -= element;
-            toggle = true;
-        }
-    });
+    let b = Math.floor(a/D);
+
+    if (a % D !== 0) {
+        b++;
+    }
     
-    return sum;
+    return b;
 }
 
-console.log(solution([3, 3, 5, 5, 7]));
+console.log(solution(10, 85, 30));
