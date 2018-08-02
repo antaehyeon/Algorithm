@@ -1,18 +1,13 @@
-function solution(X, Y, D) {
+function solution(A) {
+    let arrayLen = A.length;
+    let newArr = Array.apply(null, new Array(arrayLen+1)).map(Number.prototype.valueOf, 0);
 
-    let a = Y-X;
+    A.forEach(element => {
+        newArr[element-1] = 1;
+    });
 
-    if (a === 0) {
-        return 0;
-    }
+    return newArr.indexOf(0) + 1;
 
-    let b = Math.floor(a/D);
-
-    if (a % D !== 0) {
-        b++;
-    }
-    
-    return b;
 }
 
-console.log(solution(10, 85, 30));
+console.log(solution([2,3,1,5]));
