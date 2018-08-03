@@ -1,26 +1,16 @@
 function solution(A) {
-    let arrayLen = A.length;
-    const arrayDataSum = A.reduceRight((a, b) => {return a+b;});
-    let arrayDataSumByIndex = 0;
-    const calculatedDataArr = [];
 
-    let leftSum = 0;
-    let rightSum = arrayDataSum;
+    let count = 1;
 
-    for (let i=1; i<arrayLen; i++) {
-        leftSum += A[i-1];
-        rightSum -= A[i-1];
-        const temp = Math.abs(leftSum - rightSum);
-        calculatedDataArr.push(temp);
+    A.sort();
+    
+    for (let element of A) {
+        if (element !== count) return 0;
+        count++;
     }
 
-    let minData = calculatedDataArr.reduce((previous, current) => {
-        return previous > current ? current : previous;
-    });
-
-    return minData;
+    return 1;
 }
 
-console.log(solution([3,1,2,4,3]));
-console.log(solution([0,1,2,-5,2]));
-console.log(solution([-1, 1]));
+console.log(solution([4,1,3,2]));
+console.log(solution([4,1,3]));
