@@ -10,6 +10,8 @@ function solution(X, A) {
         repeatCount++;
     });
 
+    if (repeatCount === A.length) return -1;
+
     return repeatCount;
 }
 
