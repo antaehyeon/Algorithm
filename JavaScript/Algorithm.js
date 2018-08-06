@@ -1,19 +1,19 @@
-function solution(X, A) {
+function solution(A) {
 
     const set = new Set();
-    let repeatCount = 0;
-    let endNum = (X * (X+1)) / 2;
+    const arrLen = A.length;
+    let i=1;
 
     A.forEach(element => {
         set.add(element);
-        if (set.size === X) return;
-        repeatCount++;
     });
 
-    if (repeatCount === A.length) return -1;
-
-    return repeatCount;
+    for (i=1; i<=arrLen+1; i++) {
+        if (!set.has(i)) return i;
+    }
 }
 
 
-console.log(solution(5, [1,3,1,4,2,3,5,4]));
+console.log(solution([1,3,6,4,1,2]));
+console.log(solution([1,2,3]));
+console.log(solution([-1,-3]));
