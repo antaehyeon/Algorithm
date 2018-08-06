@@ -6,7 +6,7 @@ function solution(X, A) {
 
     A.forEach(element => {
         set.add(element);
-        if (Array.from(set).reduceRight((a,b) => {return a+b;}) === endNum) return;
+        if (set.size === X) return;
         repeatCount++;
     });
 
