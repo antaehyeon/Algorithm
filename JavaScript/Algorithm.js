@@ -1,21 +1,16 @@
-// function solution(A) {
-//     let count = 1;
-//     let arrayLen = A.length;
-
-//     A.sort();
-
-//     for (let i=0; i<arrayLen; i++) {
-//         if (count !== A[i]) return 0;
-//         count++;
-//     }
-
-//     return 1;
-// }
-
 function solution(X, A) {
 
-    return A.indexOf(X);
+    const set = new Set();
+    let repeatCount = 0;
+    let endNum = (X * (X+1)) / 2;
 
+    A.forEach(element => {
+        set.add(element);
+        if (Array.from(set).reduceRight((a,b) => {return a+b;}) === endNum) return;
+        repeatCount++;
+    });
+
+    return repeatCount;
 }
 
 
