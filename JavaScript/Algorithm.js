@@ -2,8 +2,15 @@ function solution(A, B, K) {
 
     let COUNT = 0;
 
-    for (I=A; I<=B; I++) {
-        if (I % K === 0) COUNT++;
+    while(true) {
+        if (A % K === 0) break;
+        A++;
+    }
+
+    while(true) {
+        if (A > B) break;
+        A += K;
+        COUNT++;
     }
 
     return COUNT;
