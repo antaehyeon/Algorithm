@@ -7,6 +7,7 @@ function solution(A) {
     for (I = 0; I < AL; I++) {
         if (A[I] === 0) PLUS++;
         else COUNT += PLUS;
+        if (COUNT > 1000000000) return -1;
     }
     
     return COUNT;
