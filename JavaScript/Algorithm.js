@@ -1,19 +1,23 @@
-function solution(A) {
+function solution(N, A) {
 
-    const set = new Set();
-    const arrLen = A.length;
-    let i=1;
+    const flagArr = Array.apply(null, new Array(N)).map(Number.prototype.valueOf, 0);
+    let max = 0;
+    let arrLen = A.length;
+    let count = 0;
 
-    A.forEach(element => {
-        set.add(element);
-    });
-
-    for (i=1; i<=arrLen+1; i++) {
-        if (!set.has(i)) return i;
+    while (arrLen !== count) {
+        if (A[count] === N+1) {
+            for (let i=0; i<N; i++) {
+                flagArr[i] = max;
+            }
+        } else {
+            flagArr[A[count]-1]++;
+            max = (max < flagArr[A[count]-1]) ? flagArr[A[count]-1] : max;
+        }
+        count++;
     }
+
+    return flagArr;
 }
 
-
-console.log(solution([1,3,6,4,1,2]));
-console.log(solution([1,2,3]));
-console.log(solution([-1,-3]));
+console.log(solution(5, [3,4,4,6,1,4,4]));
