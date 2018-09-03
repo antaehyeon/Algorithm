@@ -26,28 +26,16 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] A, int[] B) {
+    public int[] solution(int[] A, int K) {
 
-        int aliveFishNum = A.length;
-        int fishNum = A.length;
-        Stack<Integer> bottomFishes = new Stack<>();
+        int[] array = new int[A.length];
 
-        for (int i=0; i<fishNum; i++) {
-            if (B[i] == 1) {
-                bottomFishes.push(A[i]);
-                continue;
-            }
-
-            while (bottomFishes.size() != 0) {
-                aliveFishNum--;
-                if (bottomFishes.peek() > A[i]) {
-                    break;
-                } else {
-                    bottomFishes.pop();
-                }
-            }
+        for (int i=0; i<A.length; i++) {
+            int tempIndex = (i+K) % A.length;
+            array[tempIndex] = A[i];
         }
-        return aliveFishNum;
+
+        return array;
     }
 }
 
@@ -56,9 +44,12 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {4, 3, 2, 1, 5};
-        int[] B = {0, 1, 0, 0, 0};
+        int[] array = {3, 8, 9, 7, 6};
+        int[] result = answer.solution(array, 3);
 
-        System.out.println(answer.solution(A, B));
+        for(int i : result) {
+            System.out.print(i + " ");
+        }
+
     }
 }

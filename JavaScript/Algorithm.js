@@ -1,5 +1,14 @@
-function solution(A, B, K) {
-    return Math.floor(B/K) + ((A%K === 0) ? 1 : 0) - Math.floor(A/K);
-}
+const readline=require("readline");
 
-console.log(solution(6, 11, 2));
+const rl=readline.createInterface({
+  input:process.stdin,
+  output:process.stdout
+});
+
+rl.setPrompt("## ");
+
+rl.prompt();
+rl.on("line",(data)=>{
+  console.log(data);
+  rl.prompt();
+});
