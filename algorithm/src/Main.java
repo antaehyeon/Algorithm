@@ -26,12 +26,25 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int X, int Y, int D) {
+    public int solution(int[] A) {
 
-        int distance = Y-X;
+        int result = 0;
 
-        return (distance % D) == 0 ? distance/D : distance/D + 1;
+        Boolean[] checkArray = new Boolean[A.length + 2];
+        Arrays.fill(checkArray, false);
 
+        for (int arrayData : A) {
+            checkArray[arrayData] = true;
+        }
+
+        for (int i=1; i<=checkArray.length; i++) {
+            if (!checkArray[i]) {
+                result = i;
+                break;
+            }
+        }
+
+        return result;
     }
 }
 
@@ -40,8 +53,8 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int X = 10; int Y = 85; int D = 30;
-        int result = answer.solution(X, Y, D);
+        int[] testCase = {1, 3};
+        int result = answer.solution(testCase);
 
         System.out.print(result);
     }
