@@ -26,16 +26,20 @@ class FastScanner {
 }
 
 class Solution {
-    public int[] solution(int[] A, int K) {
+    public int solution(int[] A) {
 
-        int[] array = new int[A.length];
+        HashSet<Integer> intSet = new HashSet<>();
 
-        for (int i=0; i<A.length; i++) {
-            int tempIndex = (i+K) % A.length;
-            array[tempIndex] = A[i];
+        for (int arrayData : A) {
+            if (intSet.contains(arrayData)) {
+                intSet.remove(arrayData);
+                continue;
+            }
+
+            intSet.add(arrayData);
         }
 
-        return array;
+        return intSet.toArray(new Integer[intSet.size()])[0];
     }
 }
 
@@ -44,12 +48,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] array = {3, 8, 9, 7, 6};
-        int[] result = answer.solution(array, 3);
+        int[] testCase = {9, 3, 9, 3, 9, 7, 9};
+        int result = answer.solution(testCase);
 
-        for(int i : result) {
-            System.out.print(i + " ");
-        }
-
+        System.out.print(result);
     }
 }
