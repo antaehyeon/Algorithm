@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.util.*;
 
 class FastScanner {
@@ -28,20 +26,25 @@ class FastScanner {
 class Solution {
     public int solution(int[] A) {
 
-        int result = 0;
+        int front = 0; int back = 0;
+        int result = Integer.MAX_VALUE;
 
-        Boolean[] checkArray = new Boolean[A.length + 2];
-        Arrays.fill(checkArray, false);
-
-        for (int arrayData : A) {
-            checkArray[arrayData] = true;
+        for (int N : A) {
+            back += N;
         }
 
-        for (int i=1; i<=checkArray.length; i++) {
-            if (!checkArray[i]) {
-                result = i;
-                break;
-            }
+        int count = 0;
+
+        for (int N : A) {
+            count++;
+            if (count == A.length) break;
+
+            front += N;
+            back -= N;
+
+            int temp = Math.abs(front-back);
+
+            result = (result > temp) ? temp : result;
         }
 
         return result;
@@ -53,7 +56,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] testCase = {1, 3};
+        int[] testCase = {3, -1};
         int result = answer.solution(testCase);
 
         System.out.print(result);
