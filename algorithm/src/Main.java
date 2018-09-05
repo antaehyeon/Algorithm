@@ -26,25 +26,19 @@ class FastScanner {
 class Solution {
     public int solution(int[] A) {
 
-        int front = 0; int back = 0;
-        int result = Integer.MAX_VALUE;
+        int result = 1;
+        boolean[] check = new boolean[A.length + 1];
 
-        for (int N : A) {
-            back += N;
+        for (int i : A) {
+            if(i < check.length) {
+                check[i] = true;
+            }
         }
 
-        int count = 0;
-
-        for (int N : A) {
-            count++;
-            if (count == A.length) break;
-
-            front += N;
-            back -= N;
-
-            int temp = Math.abs(front-back);
-
-            result = (result > temp) ? temp : result;
+        for (int i=1; i<check.length; i++) {
+            if (!check[i]) {
+                result = 0;
+            }
         }
 
         return result;
@@ -56,7 +50,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] testCase = {3, -1};
+        int[] testCase = {2};
         int result = answer.solution(testCase);
 
         System.out.print(result);
