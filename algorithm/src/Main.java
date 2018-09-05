@@ -24,13 +24,18 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int X, int[] A) {
-        HashSet<Integer> set = new HashSet<>();
-        int result = -1;
+    public int solution(int[] A) {
 
-        for (int i=0; i<A.length; i++) {
-            set.add(A[i]);
-            if (set.size() == X && set.contains(X)) {
+        boolean[] check = new boolean[A.length + 1];
+        int result = check.length;
+
+        for (int i : A) {
+            if (i <= 0 || i >= check.length) continue;
+            check[i] = true;
+        }
+
+        for (int i=1; i<check.length; i++) {
+            if (!check[i]) {
                 result = i;
                 break;
             }
@@ -45,9 +50,8 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int X = 5;
-        int[] testCase = {1,3,1,4,2,3,5,4};
-        int result = answer.solution(X, testCase);
+        int[] testCase = {1,3,6,4,1,2};
+        int result = answer.solution(testCase);
 
         System.out.print(result);
     }
