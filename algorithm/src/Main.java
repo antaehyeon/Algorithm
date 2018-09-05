@@ -24,36 +24,19 @@ class FastScanner {
 }
 
 class Solution {
-    public int[] solution(int N, int[] A) {
+    public int solution(int X, int[] A) {
+        HashSet<Integer> set = new HashSet<>();
+        int result = -1;
 
-        int[] countArray = new int[N];
-        int afterSetMaxValue = 0;
-        boolean biggestMode = false;
-        int maxValue = 0;
-
-        for (int i : A) {
-
-            if (i > N) {
-                afterSetMaxValue = maxValue;
-                biggestMode = true;
-                continue;
-            }
-
-            if (biggestMode) {
-                countArray[i-1] = (countArray[i-1] < afterSetMaxValue) ? afterSetMaxValue : countArray[i-1];
-            }
-
-            countArray[i-1]++;
-            maxValue = (maxValue < countArray[i-1]) ? countArray[i-1] : maxValue;
-        }
-
-        for (int i=0; i<countArray.length; i++) {
-            if(countArray[i] < afterSetMaxValue) {
-                countArray[i] = afterSetMaxValue;
+        for (int i=0; i<A.length; i++) {
+            set.add(A[i]);
+            if (set.size() == X && set.contains(X)) {
+                result = i;
+                break;
             }
         }
 
-        return countArray;
+        return result;
     }
 }
 
@@ -62,9 +45,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int N = 5;
-        int[] testCase = {3,4,4,6,1,4,4};
-        int[] result = answer.solution(N, testCase);
+        int X = 5;
+        int[] testCase = {1,3,1,4,2,3,5,4};
+        int result = answer.solution(X, testCase);
 
         System.out.print(result);
     }
