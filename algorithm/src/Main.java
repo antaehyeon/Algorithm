@@ -24,18 +24,10 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] A) {
-        int zeroCount = 0;
-        long pairSum = 0;
-
-        for (int i : A) {
-            if (i == 0) zeroCount++;
-            else pairSum += zeroCount;
-        }
-
-        if (pairSum > 1000000000) return -1;
-
-        return (int)pairSum;
+    public int solution(int A, int B, int K) {
+        int result = B/K + 1;
+        if (A != 0) { result -= (A-1)/K + 1; }
+        return result;
     }
 }
 
@@ -44,8 +36,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] testCase = {0,1,0,1,1};
-        int result = answer.solution(testCase);
+//        int[] testCase = {0,1,0,1,1};
+        int A = 0; int B = 1; int K = 11;
+        int result = answer.solution(A, B, K);
 
         System.out.print(result);
     }
