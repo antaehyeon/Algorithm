@@ -25,23 +25,17 @@ class FastScanner {
 
 class Solution {
     public int solution(int[] A) {
-
-        boolean[] check = new boolean[A.length + 1];
-        int result = check.length;
+        int zeroCount = 0;
+        long pairSum = 0;
 
         for (int i : A) {
-            if (i <= 0 || i >= check.length) continue;
-            check[i] = true;
+            if (i == 0) zeroCount++;
+            else pairSum += zeroCount;
         }
 
-        for (int i=1; i<check.length; i++) {
-            if (!check[i]) {
-                result = i;
-                break;
-            }
-        }
+        if (pairSum > 1000000000) return -1;
 
-        return result;
+        return (int)pairSum;
     }
 }
 
@@ -50,7 +44,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] testCase = {1,3,6,4,1,2};
+        int[] testCase = {0,1,0,1,1};
         int result = answer.solution(testCase);
 
         System.out.print(result);
