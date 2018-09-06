@@ -24,10 +24,51 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int A, int B, int K) {
-        int result = B/K + 1;
-        if (A != 0) { result -= (A-1)/K + 1; }
-        return result;
+
+    public int letterToIntger(char letter) {
+        switch (letter) {
+            case 'A':
+                return 0;
+            case 'C':
+                return 1;
+            case 'G':
+                return 2;
+            case 'T':
+                return 3;
+        }
+        return 0;
+    }
+
+    public int[] solution(String S, int[] P, int[] Q) {
+
+        int SL = S.length(); // String Length
+        int[][] CA = new int[SL + 1][4]; // Count Array
+        int I; // Index
+
+        for (int i=0; i<SL; i++) {
+            for (int j=0; j<4; j++) {
+                CA[i+1][j] = CA[i][j];
+            }
+            I = letterToIntger(S.charAt(i));
+            CA[i+1][I]++;
+        }
+
+        int PL = P.length; // P array Length
+        int[] RA = new int[PL]; // Result Array
+
+        for (int i=0; i<PL; i++) {
+            int PD = P[i]; // P array Data
+            int QD = Q[i]; // Q array Data
+
+            for (int j=0; j<4; j++) {
+                if (CA[QD+1][j] - CA[PD+0][j] > 0) {
+                    RA[i] = j+1;
+                    break;
+                }
+            }
+        }
+
+        return RA;
     }
 }
 
@@ -36,9 +77,11 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-//        int[] testCase = {0,1,0,1,1};
-        int A = 0; int B = 1; int K = 11;
-        int result = answer.solution(A, B, K);
+        String S = "CAGCCTA";
+        int[] P = {2, 5, 0};
+        int[] Q = {4, 5, 6};
+
+        int[] result = answer.solution(S, P, Q);
 
         System.out.print(result);
     }
