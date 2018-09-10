@@ -24,51 +24,24 @@ class FastScanner {
 }
 
 class Solution {
+    public int solution(int[] A) {
+        double minAvg = Double.MAX_VALUE;
+        int minIndex = 0;
 
-    public int letterToIntger(char letter) {
-        switch (letter) {
-            case 'A':
-                return 0;
-            case 'C':
-                return 1;
-            case 'G':
-                return 2;
-            case 'T':
-                return 3;
-        }
-        return 0;
-    }
-
-    public int[] solution(String S, int[] P, int[] Q) {
-
-        int SL = S.length(); // String Length
-        int[][] CA = new int[SL + 1][4]; // Count Array
-        int I; // Index
-
-        for (int i=0; i<SL; i++) {
-            for (int j=0; j<4; j++) {
-                CA[i+1][j] = CA[i][j];
-            }
-            I = letterToIntger(S.charAt(i));
-            CA[i+1][I]++;
+        for(int i=1; i<A.length; i++) {
+            double tempAvg = (A[i-1] + A[i]) / 2.0;
+            minIndex = (minAvg > tempAvg) ? i-1 : minIndex;
+            minAvg = (minAvg > tempAvg) ? tempAvg : minAvg;
         }
 
-        int PL = P.length; // P array Length
-        int[] RA = new int[PL]; // Result Array
-
-        for (int i=0; i<PL; i++) {
-            int PD = P[i]; // P array Data
-            int QD = Q[i]; // Q array Data
-
-            for (int j=0; j<4; j++) {
-                if (CA[QD+1][j] - CA[PD+0][j] > 0) {
-                    RA[i] = j+1;
-                    break;
-                }
-            }
+        for (int i=2; i<A.length; i++) {
+            double tempAvg = (A[i-2] + A[i-1] + A[i]) / 3.0;
+            if (tempAvg >= minAvg) continue;
+            minAvg = tempAvg;
+            minIndex = i-2;
         }
 
-        return RA;
+        return minIndex;
     }
 }
 
@@ -77,11 +50,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        String S = "CAGCCTA";
-        int[] P = {2, 5, 0};
-        int[] Q = {4, 5, 6};
+        int[] A = {4, 2, 2, 5, 1, 5, 8};
 
-        int[] result = answer.solution(S, P, Q);
+        int result = answer.solution(A);
 
         System.out.print(result);
     }
