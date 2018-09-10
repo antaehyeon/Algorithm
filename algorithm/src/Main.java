@@ -24,30 +24,32 @@ class FastScanner {
 }
 
 class Solution {
-    public boolean checkTriplet (long A, long B, long C) {
-
-        if (!((A+B) > C)) return false;
-        if (!((B+C) > A)) return false;
-        if (!((A+C) > B)) return false;
-
-        return true;
-    }
-
     public int solution(int[] A) {
-        int arrLen = A.length;
-
-        if (arrLen < 3) return 0;
-
         int result = 0;
+        int arrLen = A.length;
+        int[] dps = new int[arrLen];
+        int[] dpe = new int[arrLen];
 
-        Arrays.sort(A);
+        for (int i=0; i<arrLen; i++) {
+            int t = A.length-1;
+            int s = (i > A[i]) ? i-A[i] : 0;
+            int e = (t-i > A[i]) ? i+A[i] : t;
+            dps[s]++;
+            dpe[e]++;
+        }
 
-        for (int i=2; i<arrLen; i++) {
-            boolean tripletResult = checkTriplet(A[i-2] , A[i-1], A[i]);
-            if (tripletResult) {
-                result = 1;
-                break;
+        int t=0;
+        for (int i=0; i<arrLen; i++) {
+//            System.out.println(i + " 번째 t : " + t);
+            if (dps[i] > 0) {
+//                System.out.println(i + " 번째 : " + t * dps[i]);
+                result += t * dps[i];
+//                System.out.println(i + " 번째 : " + dps[i] * (dps[i] - 1) / 2);
+                result += dps[i] * (dps[i] - 1) / 2;
+                if (10000000 < result) return -1;
+                t += dps[i];
             }
+            t -= dpe[i];
         }
 
         return result;
@@ -59,7 +61,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {2147483647, 2147483647, 2147483647};
+        int[] A = {1, 5, 2, 1, 4, 0};
 
         int result = answer.solution(A);
 
