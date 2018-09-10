@@ -25,13 +25,18 @@ class FastScanner {
 
 class Solution {
     public int solution(int[] A) {
-        HashSet<Integer> intSet = new HashSet<>();
+        int arrLen = A.length;
+        int result = 0;
 
-        for (int i : A) {
-            intSet.add(i);
-        }
+        Arrays.sort(A);
 
-        return intSet.size();
+        result = A[arrLen-3] * A[arrLen-2] * A[arrLen-1];
+
+        int tmpMultiple = A[0] * A[1] * A[arrLen-1];
+
+        result = (result < tmpMultiple) ? tmpMultiple : result;
+
+        return result;
     }
 }
 
@@ -40,7 +45,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {2,1,1,2,3,1};
+        int[] A = {-3, 1, 2, -2, 5, 6};
 
         int result = answer.solution(A);
 
