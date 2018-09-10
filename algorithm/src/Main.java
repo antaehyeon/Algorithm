@@ -25,23 +25,13 @@ class FastScanner {
 
 class Solution {
     public int solution(int[] A) {
-        double minAvg = Double.MAX_VALUE;
-        int minIndex = 0;
+        HashSet<Integer> intSet = new HashSet<>();
 
-        for(int i=1; i<A.length; i++) {
-            double tempAvg = (A[i-1] + A[i]) / 2.0;
-            minIndex = (minAvg > tempAvg) ? i-1 : minIndex;
-            minAvg = (minAvg > tempAvg) ? tempAvg : minAvg;
+        for (int i : A) {
+            intSet.add(i);
         }
 
-        for (int i=2; i<A.length; i++) {
-            double tempAvg = (A[i-2] + A[i-1] + A[i]) / 3.0;
-            if (tempAvg >= minAvg) continue;
-            minAvg = tempAvg;
-            minIndex = i-2;
-        }
-
-        return minIndex;
+        return intSet.size();
     }
 }
 
@@ -50,7 +40,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {4, 2, 2, 5, 1, 5, 8};
+        int[] A = {2,1,1,2,3,1};
 
         int result = answer.solution(A);
 
