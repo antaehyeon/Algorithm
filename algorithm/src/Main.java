@@ -24,17 +24,31 @@ class FastScanner {
 }
 
 class Solution {
+    public boolean checkTriplet (long A, long B, long C) {
+
+        if (!((A+B) > C)) return false;
+        if (!((B+C) > A)) return false;
+        if (!((A+C) > B)) return false;
+
+        return true;
+    }
+
     public int solution(int[] A) {
         int arrLen = A.length;
+
+        if (arrLen < 3) return 0;
+
         int result = 0;
 
         Arrays.sort(A);
 
-        result = A[arrLen-3] * A[arrLen-2] * A[arrLen-1];
-
-        int tmpMultiple = A[0] * A[1] * A[arrLen-1];
-
-        result = (result < tmpMultiple) ? tmpMultiple : result;
+        for (int i=2; i<arrLen; i++) {
+            boolean tripletResult = checkTriplet(A[i-2] , A[i-1], A[i]);
+            if (tripletResult) {
+                result = 1;
+                break;
+            }
+        }
 
         return result;
     }
@@ -45,7 +59,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {-3, 1, 2, -2, 5, 6};
+        int[] A = {2147483647, 2147483647, 2147483647};
 
         int result = answer.solution(A);
 
