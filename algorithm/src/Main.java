@@ -24,24 +24,29 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(String S) {
-        Stack<Character> stack = new Stack<>();
+    public int solution(int[] A, int[] B) {
+        Stack<Integer> downStreamFishes = new Stack<>();
+        int aliveFishNum = 0;
 
-        if (S == null) return 1;
-        char[] strArr = S.toCharArray();
-        if (strArr.length == 1) return 1;
+        for (int i=0; i<A.length; i++) {
+            if (B[i] == 0) {
+                aliveFishNum++;
 
+                if (downStreamFishes.isEmpty()) continue;
 
-        for(char letter : strArr) {
-            if (letter == '(') {
-                stack.push('(');
+                while (!downStreamFishes.isEmpty()) {
+                    aliveFishNum--;
+                    if (downStreamFishes.peek() > A[i]) {
+                        break;
+                    }
+                    else downStreamFishes.pop();
+                }
             } else {
-                if (stack.isEmpty()) return 0;
-                if (!stack.peek().equals('(')) return 0;
-                stack.pop();
+                aliveFishNum++;
+                downStreamFishes.push(A[i]);
             }
         }
-        return stack.isEmpty() ? 1 : 0;
+        return aliveFishNum;
     }
 }
 
@@ -50,9 +55,10 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        String S = "())";
+        int[] A = {4, 3, 2, 1, 5};
+        int[] B = {0, 1, 0, 0, 0};
 
-        int result = answer.solution(S);
+        int result = answer.solution(A, B);
 
         System.out.print(result);
     }
