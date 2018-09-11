@@ -24,35 +24,21 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] A) {
-        int result = 0;
-        int arrLen = A.length;
-        int[] dps = new int[arrLen];
-        int[] dpe = new int[arrLen];
+    public int solution(String S) {
+        Stack<String> stack = new Stack<>();
 
-        for (int i=0; i<arrLen; i++) {
-            int t = A.length-1;
-            int s = (i > A[i]) ? i-A[i] : 0;
-            int e = (t-i > A[i]) ? i+A[i] : t;
-            dps[s]++;
-            dpe[e]++;
-        }
+        String[] strArr = S.split("");
 
-        int t=0;
-        for (int i=0; i<arrLen; i++) {
-//            System.out.println(i + " 번째 t : " + t);
-            if (dps[i] > 0) {
-//                System.out.println(i + " 번째 : " + t * dps[i]);
-                result += t * dps[i];
-//                System.out.println(i + " 번째 : " + dps[i] * (dps[i] - 1) / 2);
-                result += dps[i] * (dps[i] - 1) / 2;
-                if (10000000 < result) return -1;
-                t += dps[i];
+        for(String letter : strArr) {
+            if (letter.equals("(")) {
+                stack.push("(");
+            } else {
+                if (stack.size() == 0) return 0;
+                if (!stack.peek().equals("(")) return 0;
+                stack.pop();
             }
-            t -= dpe[i];
         }
-
-        return result;
+        return 1;
     }
 }
 
@@ -61,9 +47,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {1, 5, 2, 1, 4, 0};
+        String S = "())";
 
-        int result = answer.solution(A);
+        int result = answer.solution(S);
 
         System.out.print(result);
     }
