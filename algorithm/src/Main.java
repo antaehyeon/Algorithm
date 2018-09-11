@@ -25,20 +25,23 @@ class FastScanner {
 
 class Solution {
     public int solution(String S) {
-        Stack<String> stack = new Stack<>();
+        Stack<Character> stack = new Stack<>();
 
-        String[] strArr = S.split("");
+        if (S == null) return 1;
+        char[] strArr = S.toCharArray();
+        if (strArr.length == 1) return 1;
 
-        for(String letter : strArr) {
-            if (letter.equals("(")) {
-                stack.push("(");
+
+        for(char letter : strArr) {
+            if (letter == '(') {
+                stack.push('(');
             } else {
-                if (stack.size() == 0) return 0;
-                if (!stack.peek().equals("(")) return 0;
+                if (stack.isEmpty()) return 0;
+                if (!stack.peek().equals('(')) return 0;
                 stack.pop();
             }
         }
-        return 1;
+        return stack.isEmpty() ? 1 : 0;
     }
 }
 
