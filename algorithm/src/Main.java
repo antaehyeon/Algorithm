@@ -42,7 +42,7 @@ class Solution {
         }
 
         if (A.length == 1) return 0;
-        if (count < (A.length/2)) return -1;
+        if (count <= (A.length/2)) return -1;
 
         for (int i=0; i<A.length; i++) {
             if (A[i] == dominator) return i;
@@ -60,7 +60,9 @@ public class Main {
 //        int[] H = {3, 4, 3, 2, 3, -1, 3, 3};
 //        int[] H = {1, 2, 3, 4, 4, 5};
 //        int[] H = {3, 4, 3, 2, 3, 4, 3, 3, 4};
-        int[] H = {2147483647};
+//        int[] H = {2147483647};
+
+        int[] H = {2, 1, 1, 3 };
 
         int result = answer.solution(H);
 
