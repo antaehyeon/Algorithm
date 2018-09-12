@@ -41,6 +41,7 @@ class Solution {
             } else hashMap.put(i, 1);
         }
 
+        if (A.length == 1) return 0;
         if (count < (A.length/2)) return -1;
 
         for (int i=0; i<A.length; i++) {
@@ -48,14 +49,6 @@ class Solution {
         }
         return -1;
     }
-
-//        ArrayList<Integer> list = new ArrayList<>();
-//
-//        for (int i=0; i<A.length; i++) {
-//            if (A[i] == dominator) list.add(i);
-//        }
-//
-//        return list.toArray();
 }
 
 
@@ -66,7 +59,8 @@ public class Main {
 
 //        int[] H = {3, 4, 3, 2, 3, -1, 3, 3};
 //        int[] H = {1, 2, 3, 4, 4, 5};
-        int[] H = {3, 4, 3, 2, 3, 4, 3, 3, 4};
+//        int[] H = {3, 4, 3, 2, 3, 4, 3, 3, 4};
+        int[] H = {2147483647};
 
         int result = answer.solution(H);
 
