@@ -24,22 +24,20 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(String S) {
-        Stack<Character> letterStack = new Stack<>();
-
-        for (char letter : S.toCharArray()) {
-            if (letter == '(' || letter == '{' || letter == '[') {
-                letterStack.push(letter);
-            } else {
-                if (letterStack.isEmpty()) return 0;
-                char stackPeekData = letterStack.peek();
-                if (letter == ')' && stackPeekData != '(') return 0;
-                else if (letter == '}' && stackPeekData != '{') return 0;
-                else if (letter == ']' && stackPeekData != '[') return 0;
-                letterStack.pop();
+    public int solution(int[] H) {
+        Stack<Integer> stack = new Stack<>();
+        int result = 0;
+        for (int h : H) {
+            while(!stack.isEmpty() && stack.peek() > h) {
+                stack.pop();
+            }
+            if (!stack.isEmpty() && stack.peek() == h) continue;
+            if (stack.isEmpty() || stack.peek() < h) {
+                stack.push(h);
+                result++;
             }
         }
-        return (letterStack.isEmpty()) ? 1 : 0;
+        return result;
     }
 }
 
@@ -48,9 +46,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        String S = "{[()()]}";
+        int[] H = {8, 8, 5, 7, 9, 8, 7, 4, 8};
 
-        int result = answer.solution(S);
+        int result = answer.solution(H);
 
         System.out.print(result);
     }
