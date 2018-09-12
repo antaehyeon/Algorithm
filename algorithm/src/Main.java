@@ -25,29 +25,17 @@ class FastScanner {
 
 class Solution {
     public int solution(int[] A) {
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
-        int dominator = 0;
-        int count = 0;
+        if (A.length == 0 || A.length == 1) return 0;
 
-        for (int i : A) {
-            if (hashMap.containsKey(i)) {
-                int tmpCount = hashMap.get(i);
-                tmpCount++;
-                hashMap.put(i, tmpCount);
-                if (tmpCount > count) {
-                    count = tmpCount;
-                    dominator = i;
-                }
-            } else hashMap.put(i, 1);
+        int nMaxOfDifference = Integer.MIN_VALUE;
+        int nMin = Integer.MAX_VALUE;
+
+        for (int n : A) {
+            nMin = Math.min(nMin, n);
+            nMaxOfDifference = Math.max(nMaxOfDifference, n - nMin);
         }
 
-        if (A.length == 1) return 0;
-        if (count <= (A.length/2)) return -1;
-
-        for (int i=0; i<A.length; i++) {
-            if (A[i] == dominator) return i;
-        }
-        return -1;
+        return nMaxOfDifference;
     }
 }
 
@@ -57,14 +45,10 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-//        int[] H = {3, 4, 3, 2, 3, -1, 3, 3};
-//        int[] H = {1, 2, 3, 4, 4, 5};
-//        int[] H = {3, 4, 3, 2, 3, 4, 3, 3, 4};
-//        int[] H = {2147483647};
+        int[] A = {23171, 21011, 21123, 21366, 21013, 21367};
+//        int[] A = {};
 
-        int[] H = {2, 1, 1, 3 };
-
-        int result = answer.solution(H);
+        int result = answer.solution(A);
 
         System.out.print(result);
     }
