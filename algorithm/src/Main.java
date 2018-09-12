@@ -24,29 +24,22 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] A, int[] B) {
-        Stack<Integer> downStreamFishes = new Stack<>();
-        int aliveFishNum = 0;
+    public int solution(String S) {
+        Stack<Character> letterStack = new Stack<>();
 
-        for (int i=0; i<A.length; i++) {
-            if (B[i] == 0) {
-                aliveFishNum++;
-
-                if (downStreamFishes.isEmpty()) continue;
-
-                while (!downStreamFishes.isEmpty()) {
-                    aliveFishNum--;
-                    if (downStreamFishes.peek() > A[i]) {
-                        break;
-                    }
-                    else downStreamFishes.pop();
-                }
+        for (char letter : S.toCharArray()) {
+            if (letter == '(' || letter == '{' || letter == '[') {
+                letterStack.push(letter);
             } else {
-                aliveFishNum++;
-                downStreamFishes.push(A[i]);
+                if (letterStack.isEmpty()) return 0;
+                char stackPeekData = letterStack.peek();
+                if (letter == ')' && stackPeekData != '(') return 0;
+                else if (letter == '}' && stackPeekData != '{') return 0;
+                else if (letter == ']' && stackPeekData != '[') return 0;
+                letterStack.pop();
             }
         }
-        return aliveFishNum;
+        return (letterStack.isEmpty()) ? 1 : 0;
     }
 }
 
@@ -55,10 +48,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {4, 3, 2, 1, 5};
-        int[] B = {0, 1, 0, 0, 0};
+        String S = "{[()()]}";
 
-        int result = answer.solution(A, B);
+        int result = answer.solution(S);
 
         System.out.print(result);
     }
