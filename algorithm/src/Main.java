@@ -25,52 +25,48 @@ class FastScanner {
 
 class Solution {
     public int solution(int[] A) {
-        int leader=-1;
-        int countOfLeader=0;
-
         HashMap<Integer, Integer> hashMap = new HashMap<>();
+        int dominator = 0;
+        int count = 0;
 
-        for(int i=0;i<A.length;i++){
-            if(hashMap.containsKey(A[i])){
-                int count=hashMap.get(A[i]);
-                count++;
-                hashMap.put(A[i],count);
-                if(countOfLeader<count){
-                    countOfLeader=count;
-                    leader=A[i];
+        for (int i : A) {
+            if (hashMap.containsKey(i)) {
+                int tmpCount = hashMap.get(i);
+                tmpCount++;
+                hashMap.put(i, tmpCount);
+                if (tmpCount > count) {
+                    count = tmpCount;
+                    dominator = i;
                 }
-            }else{
-                hashMap.put(A[i], 1);
-            }
-        }
-        if(countOfLeader<A.length/2){
-            return 0;
+            } else hashMap.put(i, 1);
         }
 
-        int countEquil=0;
-        int counterOfrLeaderInRight=0;
-        int counterOfrLeaderInLeft=countOfLeader;
-        for(int i=A.length-1;i>=0;i--){
-            if(A[i]==leader){
-                counterOfrLeaderInRight++;
-                counterOfrLeaderInLeft--;
-            }
+        if (count < (A.length/2)) return -1;
 
-            if(counterOfrLeaderInLeft>i/2 && counterOfrLeaderInRight>((A.length-i)/2)){
-                countEquil++;
-            }
+        for (int i=0; i<A.length; i++) {
+            if (A[i] == dominator) return i;
         }
-        return countEquil;
+        return -1;
     }
+
+//        ArrayList<Integer> list = new ArrayList<>();
+//
+//        for (int i=0; i<A.length; i++) {
+//            if (A[i] == dominator) list.add(i);
+//        }
+//
+//        return list.toArray();
 }
+
 
 public class Main {
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] H = {4, 3, 4, 4, 4, 2};
+//        int[] H = {3, 4, 3, 2, 3, -1, 3, 3};
 //        int[] H = {1, 2, 3, 4, 4, 5};
+        int[] H = {3, 4, 3, 2, 3, 4, 3, 3, 4};
 
         int result = answer.solution(H);
 
