@@ -25,17 +25,25 @@ class FastScanner {
 
 class Solution {
     public int solution(int[] A) {
-        if (A.length == 0 || A.length == 1) return 0;
 
-        int nMaxOfDifference = Integer.MIN_VALUE;
-        int nMin = Integer.MAX_VALUE;
+        int[] maxLeft = new int[A.length];
+        int[] maxRight = new int[A.length];
 
-        for (int n : A) {
-            nMin = Math.min(nMin, n);
-            nMaxOfDifference = Math.max(nMaxOfDifference, n - nMin);
+        for (int i=1; i<A.length; i++) {
+            maxLeft[i] = Math.max(0, maxLeft[i-1] + A[i]);
         }
 
-        return nMaxOfDifference;
+        for (int i=A.length-2; i>=0; i--) {
+            maxRight[i] = Math.max(0, maxRight[i+1] + A[i]);
+        }
+
+        int maxOfSum = Integer.MIN_VALUE;
+
+        for (int i=1; i<A.length-1; i++) {
+            maxOfSum = Math.max(maxOfSum, maxLeft[i-1] + maxRight[i+1]);
+        }
+
+        return maxOfSum;
     }
 }
 
@@ -45,8 +53,7 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {23171, 21011, 21123, 21366, 21013, 21367};
-//        int[] A = {};
+        int[] A = {3, 2, 6, -1, 4, 5, -1, 2};
 
         int result = answer.solution(A);
 
