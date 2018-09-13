@@ -24,26 +24,23 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] A) {
+    public int solution(int N) {
+        int sqrtN = (int) Math.sqrt(N);
+        int numFactor =0; // number of factors
 
-        int[] maxLeft = new int[A.length];
-        int[] maxRight = new int[A.length];
-
-        for (int i=1; i<A.length; i++) {
-            maxLeft[i] = Math.max(0, maxLeft[i-1] + A[i]);
+        for(int i=1; i <= sqrtN; i++){
+            if (N % i ==0) {
+                numFactor++;
+            }
         }
 
-        for (int i=A.length-2; i>=0; i--) {
-            maxRight[i] = Math.max(0, maxRight[i+1] + A[i]);
+        numFactor = numFactor * 2;
+
+        if(sqrtN * sqrtN == N) {
+            numFactor = numFactor - 1;
         }
 
-        int maxOfSum = Integer.MIN_VALUE;
-
-        for (int i=1; i<A.length-1; i++) {
-            maxOfSum = Math.max(maxOfSum, maxLeft[i-1] + maxRight[i+1]);
-        }
-
-        return maxOfSum;
+        return numFactor;
     }
 }
 
@@ -53,9 +50,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {3, 2, 6, -1, 4, 5, -1, 2};
+        int N = 24;
 
-        int result = answer.solution(A);
+        int result = answer.solution(N);
 
         System.out.print(result);
     }
