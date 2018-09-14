@@ -24,20 +24,15 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int N, int M) {
-        int answer = 0;
-        int originalN = N;
+    public int solution(int[] A) {
+        HashSet<Integer> set = new HashSet<>();
 
-        while(N % M != 0) {
-            N %= M;
-            // swap
-            int tmp = N;
-            N = M;
-            M = tmp;
+        for (int n : A) {
+            int nAbsolute = Math.abs(n);
+            set.add(nAbsolute);
         }
-        answer = originalN / M;
 
-        return answer;
+        return set.size();
     }
 }
 
@@ -47,9 +42,8 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int N = 10;
-        int M = 2;
-        int result = answer.solution(N, M);
+        int[] A = {-5, -3, -1, 0, 3, 6};
+        int result = answer.solution(A);
 
         System.out.print(result);
     }
