@@ -24,15 +24,33 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] A) {
-        HashSet<Integer> set = new HashSet<>();
+    public int solution(int A, int B) {
+        Vector<Integer> vPrize2017 = new Vector<>();
+        Vector<Integer> vPrize2018 = new Vector<>();
 
-        for (int n : A) {
-            int nAbsolute = Math.abs(n);
-            set.add(nAbsolute);
+        int[] prize2017 = {500, 300, 200, 50, 30, 10};
+        int[] prize2018 = {512, 256, 128, 64, 32};
+
+        int people2018 = 1;
+        int prizeSum = 0;
+
+        for (int i=0; i<6; i++) {
+            for (int j=0; j<i+1; j++) {
+                vPrize2017.add(prize2017[i]);
+            }
         }
 
-        return set.size();
+        for (int i=0; i<5; i++) {
+            for (int j=0; j<people2018; j++) {
+                vPrize2018.add(prize2018[i]);
+            }
+            people2018 *= 2;
+        }
+
+        if (1 <= A && A <= 21) prizeSum += vPrize2017.get(A-1);
+        if (1 <= B && B <= 31) prizeSum += vPrize2018.get(B-1);
+
+        return prizeSum * 10000;
     }
 }
 
@@ -42,9 +60,14 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] A = {-5, -3, -1, 0, 3, 6};
-        int result = answer.solution(A);
+        int nRepeat = fs.nextInt();
 
-        System.out.print(result);
+        for (int i=0; i<nRepeat; i++) {
+            int rank2017 = fs.nextInt();
+            int rank2018 = fs.nextInt();
+            int prizeMoney = answer.solution(rank2017, rank2018);
+            System.out.println(prizeMoney);
+        }
+
     }
 }
