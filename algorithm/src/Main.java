@@ -24,18 +24,20 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int N) {
-        int minPeriphery = Integer.MAX_VALUE;
-        int nSqrt = (int)Math.sqrt(N);
+    public int solution(int N, int M) {
+        int answer = 0;
+        int originalN = N;
 
-        for (int i=1; i<=nSqrt; i++) {
-            if (N % i == 0) {
-                int quotient = N / i;
-                int periphery = (i + quotient) * 2;
-                minPeriphery = Math.min(minPeriphery, periphery);
-            }
+        while(N % M != 0) {
+            N %= M;
+            // swap
+            int tmp = N;
+            N = M;
+            M = tmp;
         }
-        return minPeriphery;
+        answer = originalN / M;
+
+        return answer;
     }
 }
 
@@ -45,8 +47,9 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int N = 30;
-        int result = answer.solution(N);
+        int N = 10;
+        int M = 2;
+        int result = answer.solution(N, M);
 
         System.out.print(result);
     }
