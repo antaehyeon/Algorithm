@@ -24,67 +24,43 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(String[][] relation) {
+    public int solution(int[] food_times, long k) {
         int answer = 0;
-        int nTuple = relation.length;
-        int nAttribute = relation[0].length;
-        int primaryKeyIdx = 0;
-        int nOnekey = 0;
-        int nTwoKey = 0;
-        int nThreeKey = 0;
+        int arraySize = food_times.length;
+        int quotient;
+        int rest;
 
-        HashSet<String> setForDuplicationExam = new HashSet<>();
-
-        while(true) {
-            for (String[] tuple : relation) {
-                setForDuplicationExam.add(tuple[primaryKeyIdx]);
-            }
-            primaryKeyIdx++;
-            if (primaryKeyIdx == nTuple) break;
-            if (setForDuplicationExam.size() == nTuple) {
-                nOnekey++;
-                break;
-            } else {
-                setForDuplicationExam.clear();
+        if (arraySize >= k) {
+            int startIdx = (arraySize == k) ? 0 : (int)k;
+            for (int i=startIdx; i<arraySize; i++) {
+                if (food_times[i] > 0)
+                    return i;
             }
         }
 
-        setForDuplicationExam.clear();
+        quotient = (int)k / arraySize;
+        rest = (int)k % arraySize;
 
-        for (int i=0; i<nAttribute; i++) {
-            for (int k=i+1; k<nAttribute; k++) {
-                for (int j=0; j<nTuple; j++) {
-                    String combineData = relation[j][i] + relation[j][k];
-                    setForDuplicationExam.add(combineData);
-                }
-                if (setForDuplicationExam.size() == nTuple) nTwoKey++;
-                setForDuplicationExam.clear();
+        for (int i=0; i<arraySize; i++) {
+            food_times[i] -= quotient;
+        }
+
+        for (int i=0; i<arraySize-1; i++) {
+            if (food_times[i] < 0) {
+                food_times[i+1] += food_times[i];
             }
         }
 
-        setForDuplicationExam.clear();
+        food_times[0] += food_times[arraySize-1];
 
-        for (int i=0; i<nAttribute; i++) {
-            for (int k=i+1; k<nAttribute-1; k++) {
-                for (int j=0; j<nTuple; j++) {
-                    String combineData = relation[j][i] + relation[j][k] + relation[j][k+1];
-                    setForDuplicationExam.add(combineData);
-                }
-                if (setForDuplicationExam.size() == nTuple) nThreeKey++;
-                setForDuplicationExam.clear();
-            }
+        int startIdx = rest;
+
+        while (answer != 0) {
+            if (food_times[startIdx] > 0)
+                answer = startIdx;
         }
 
-        if (nOnekey == 1) {
-            nTwoKey -= nAttribute-1;
-            if (nTwoKey > 0) {
-                nThreeKey -= nAttribute-1;
-                nThreeKey -= (nAttribute-2);
-            }
-        }
-        answer = nOnekey + nTwoKey;
-
-        return answer;
+        return answer+1;
     }
 }
 
@@ -94,8 +70,11 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        String[][] testCase = {{"100","ryan","music","2"},{"200","apeach","math","2"},{"300","tube","computer","3"},{"400","con","computer","4"},{"500","muzi","music","3"},{"600","apeach","music","2"}};
+        int[] food_times = {3, 1, 2};
+        int K = 5;
 
-        System.out.println(answer.solution(testCase));
+        int result = answer.solution(food_times, K);
+
+        System.out.print(result);
     }
 }
