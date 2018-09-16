@@ -24,33 +24,37 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int A, int B) {
-        Vector<Integer> vPrize2017 = new Vector<>();
-        Vector<Integer> vPrize2018 = new Vector<>();
+    public String[] solution(String[] record) {
+        ArrayList<String> result = new ArrayList<>();
+        HashMap<String, String> userDB = new HashMap<>();
 
-        int[] prize2017 = {500, 300, 200, 50, 30, 10};
-        int[] prize2018 = {512, 256, 128, 64, 32};
-
-        int people2018 = 1;
-        int prizeSum = 0;
-
-        for (int i=0; i<6; i++) {
-            for (int j=0; j<i+1; j++) {
-                vPrize2017.add(prize2017[i]);
+        for (String cmd : record) {
+            String[] userData = cmd.split(" ");
+            String command = userData[0];
+            if (command.equals("Enter") || command.equals("Change")) {
+                String userID = userData[1];
+                String userNickName = userData[2];
+                userDB.put(userID, userNickName);
             }
         }
 
-        for (int i=0; i<5; i++) {
-            for (int j=0; j<people2018; j++) {
-                vPrize2018.add(prize2018[i]);
-            }
-            people2018 *= 2;
+        for (String cmd : record) {
+            String[] userData = cmd.split(" ");
+            String command = userData[0];
+            String userID = userData[1];
+            String nickName = userDB.get(userID);
+            String logData = "";
+
+            if (command.equals("Enter"))
+                logData = nickName + "님이 들어왔습니다.";
+            else if (command.equals("Leave"))
+                logData = nickName + "님이 나갔습니다.";
+            else continue;
+
+            result.add(logData);
         }
 
-        if (1 <= A && A <= 21) prizeSum += vPrize2017.get(A-1);
-        if (1 <= B && B <= 31) prizeSum += vPrize2018.get(B-1);
-
-        return prizeSum * 10000;
+        return result.toArray(new String[result.size()]);
     }
 }
 
@@ -60,14 +64,12 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int nRepeat = fs.nextInt();
+        String[] record = {"Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"};
 
-        for (int i=0; i<nRepeat; i++) {
-            int rank2017 = fs.nextInt();
-            int rank2018 = fs.nextInt();
-            int prizeMoney = answer.solution(rank2017, rank2018);
-            System.out.println(prizeMoney);
+        String[] result = answer.solution(record);
+
+        for (String s : result) {
+            System.out.println(s);
         }
-
     }
 }
