@@ -24,37 +24,34 @@ class FastScanner {
 }
 
 class Solution {
-    public String[] solution(String[] record) {
-        ArrayList<String> result = new ArrayList<>();
-        HashMap<String, String> userDB = new HashMap<>();
+    public int[] solution(int N, int[] stages) {
+        int[] answer = new int[N];
+        int[] stageClearPlayerNum = new int[N+2];
+        TreeMap<Double, Integer> rank = new TreeMap<>();
 
-        for (String cmd : record) {
-            String[] userData = cmd.split(" ");
-            String command = userData[0];
-            if (command.equals("Enter") || command.equals("Change")) {
-                String userID = userData[1];
-                String userNickName = userData[2];
-                userDB.put(userID, userNickName);
+        for (int playerPositionIdx : stages) {
+            for (int i=1; i<=playerPositionIdx; i++)
+                stageClearPlayerNum[i]++;
+        }
+
+        double dummyData = 0.0000000001;
+
+        for (int i=1; i<=N; i++) {
+            double playerOfCurrentPlayer = (double)stageClearPlayerNum[i] - stageClearPlayerNum[i+1];
+            double failureRatio = playerOfCurrentPlayer / stageClearPlayerNum[i+1];
+            if (rank.containsKey(failureRatio)) {
+                failureRatio -= dummyData;
+                dummyData += 0.0000000001;
             }
+            rank.put(failureRatio, i);
         }
 
-        for (String cmd : record) {
-            String[] userData = cmd.split(" ");
-            String command = userData[0];
-            String userID = userData[1];
-            String nickName = userDB.get(userID);
-            String logData = "";
-
-            if (command.equals("Enter"))
-                logData = nickName + "님이 들어왔습니다.";
-            else if (command.equals("Leave"))
-                logData = nickName + "님이 나갔습니다.";
-            else continue;
-
-            result.add(logData);
+        for (int i=0; i<N; i++) {
+            answer[i] = rank.get(rank.lastKey());
+            rank.remove(rank.lastKey());
         }
 
-        return result.toArray(new String[result.size()]);
+        return answer;
     }
 }
 
@@ -64,12 +61,22 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        String[] record = {"Enter uid1234 Muzi", "Enter uid4567 Prodo","Leave uid1234","Enter uid1234 Prodo","Change uid4567 Ryan"};
+        int N = 5;
+        int[] stages = {2, 1, 2, 6, 2, 4, 3, 3};
 
-        String[] result = answer.solution(record);
+//        int N = 4;
+//        int[] stages = {4,4,4,4,4};
 
-        for (String s : result) {
-            System.out.println(s);
+//        int N = 1;
+//        int[] stages = {200000};
+
+//        int N = 5;
+//        int[] stages = {6, 6, 6, 6, 6, 6, 6, 6};
+
+        int[] result = answer.solution(N, stages);
+
+        for (int n : result) {
+            System.out.print(n + " ");
         }
     }
 }
