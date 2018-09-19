@@ -24,43 +24,16 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int[] food_times, long k) {
-        int answer = 0;
-        int arraySize = food_times.length;
-        int quotient;
-        int rest;
+    public void solution(int A, int B, int C) {
+        int answerA = (A+B)%C;
+        int answerB = (A%C + B%C)%C;
+        int answerC = (A*B)%C;
+        int answerD = (A%C * B%C)%C;
 
-        if (arraySize >= k) {
-            int startIdx = (arraySize == k) ? 0 : (int)k;
-            for (int i=startIdx; i<arraySize; i++) {
-                if (food_times[i] > 0)
-                    return i;
-            }
-        }
-
-        quotient = (int)k / arraySize;
-        rest = (int)k % arraySize;
-
-        for (int i=0; i<arraySize; i++) {
-            food_times[i] -= quotient;
-        }
-
-        for (int i=0; i<arraySize-1; i++) {
-            if (food_times[i] < 0) {
-                food_times[i+1] += food_times[i];
-            }
-        }
-
-        food_times[0] += food_times[arraySize-1];
-
-        int startIdx = rest;
-
-        while (answer != 0) {
-            if (food_times[startIdx] > 0)
-                answer = startIdx;
-        }
-
-        return answer+1;
+        System.out.println(answerA);
+        System.out.println(answerB);
+        System.out.println(answerC);
+        System.out.println(answerD);
     }
 }
 
@@ -70,11 +43,11 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int[] food_times = {3, 1, 2};
-        int K = 5;
+        int A = fs.nextInt();
+        int B = fs.nextInt();
+        int C = fs.nextInt();
 
-        int result = answer.solution(food_times, K);
+        answer.solution(A, B, C);
 
-        System.out.print(result);
     }
 }
