@@ -24,16 +24,16 @@ class FastScanner {
 }
 
 class Solution {
-    public void solution(int A, int B, int C) {
-        int answerA = (A+B)%C;
-        int answerB = (A%C + B%C)%C;
-        int answerC = (A*B)%C;
-        int answerD = (A%C * B%C)%C;
+    public int solution(int A, int B) {
+        while(A % B != 0) {
+            A %= B;
+            // swap
+            int tmp = A;
+            A = B;
+            B = tmp;
+        }
 
-        System.out.println(answerA);
-        System.out.println(answerB);
-        System.out.println(answerC);
-        System.out.println(answerD);
+        return B;
     }
 }
 
@@ -45,9 +45,11 @@ public class Main {
 
         int A = fs.nextInt();
         int B = fs.nextInt();
-        int C = fs.nextInt();
 
-        answer.solution(A, B, C);
+        int gcd = answer.solution(A, B);
+        int lcm = (A * B) / gcd;
 
+        System.out.println(gcd);
+        System.out.println(lcm);
     }
 }
