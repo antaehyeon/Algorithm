@@ -24,16 +24,17 @@ class FastScanner {
 }
 
 class Solution {
-    public int solution(int A, int B) {
-        while(A % B != 0) {
-            A %= B;
-            // swap
-            int tmp = A;
-            A = B;
-            B = tmp;
+    public int checkPrimeNum(int N) {
+
+//        double nSqrt = Math.sqrt(N);
+
+        if (N == 1) return 0;
+
+        for (int i=2; i<N; i++) {
+            if (N % i == 0) return 0;
         }
 
-        return B;
+        return 1;
     }
 }
 
@@ -43,13 +44,14 @@ public class Main {
         FastScanner fs = new FastScanner(System.in);
         Solution answer = new Solution();
 
-        int A = fs.nextInt();
-        int B = fs.nextInt();
+        int nRepeat = fs.nextInt();
+        int nPrimeCount = 0;
 
-        int gcd = answer.solution(A, B);
-        int lcm = (A * B) / gcd;
+        for (int i=0; i<nRepeat; i++) {
+            int n = fs.nextInt();
+            nPrimeCount += answer.checkPrimeNum(n);
+        }
 
-        System.out.println(gcd);
-        System.out.println(lcm);
+        System.out.println(nPrimeCount);
     }
 }
