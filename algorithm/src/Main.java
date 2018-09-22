@@ -23,60 +23,88 @@ class FastScanner {
     }
 }
 
-class Solution {
-    public String solution(boolean[] isPrimeNum, int N) {
-
-        String answer = "";
-        boolean flag = false;
-
-        for (int i=2; i<=N/2; i++) {
-            int A, B;
-
-            if (isPrimeNum[i] && isPrimeNum[N-i]) {
-                A = i;
-                B = N-i;
-                flag = true;
-
-                answer = N + " = " + A + " + " + B;
-                break;
-            }
-        }
-
-        if (!flag) return "Goldbach's conjecture is wrong.";
-
-        return answer;
-    }
-}
-
-
 public class Main {
-    public static final int MAX = 1000000;
+
+    static int N;
+    static int M;
+    static int max;
+
+    static int[][] tetrominoMap;
+    static boolean[][] visited;
+
+    static int[] dx = {-1, 0, 1, 0};
+    static int[] dy = {0, -1, 0, 1};
+
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
-        Solution answer = new Solution();
 
-        boolean[] isPrimeNum = new boolean[MAX+1];
-        int nSqrt = (int)Math.sqrt(MAX);
+        N = fs.nextInt();
+        M = fs.nextInt();
 
-        // 배열 초기화 (false >> true)
-        for (int i=2; i<=MAX; i++)
-            isPrimeNum[i] = true;
+        tetrominoMap = new int[N][M];
+        visited = new boolean[N][M];
 
-        // 에라토스테네스의 체 코드
-        for (int i=2; i<=nSqrt; i++) {
-            if (!isPrimeNum[i]) continue;
-            for (int j=i+i; j<=MAX; j+=i) {
-                isPrimeNum[j] = false;
+        for (int i=0; i<N; i++) {
+            for (int j=0; j<M; j++) {
+                tetrominoMap[i][j] = fs.nextInt();
             }
         }
 
-        while (true) {
-            int n = fs.nextInt();
-
-            if (n == 0) break;
-
-            String result = answer.solution(isPrimeNum, n);
-            System.out.println(result);
+        for (int i=0; i<N; i++) {
+            for (int j=0; j<M; j++) {
+                DFS(i, j, 0, 0);
+                Exception(i, j);
+            }
         }
+
+        System.out.println(max);
+    }
+
+    public static void DFS (int x, int y, int depth, int sum) {
+        if (depth == 4) {
+            max = Math.max(max, sum);
+            return;
+        }
+
+        for (int i=0; i<4; i++) {
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
+
+            if (nextX < 0 || nextY < 0 || nextX >= N || nextY >= M)
+                continue;
+
+            if (visited[nextX][nextY])
+                continue;
+
+            visited[nextX][nextY] = true;
+            DFS(nextX, nextY, depth+1, sum+tetrominoMap[nextX][nextY]);
+            visited[nextX][nextY] = false;
+        }
+    }
+
+    public static void Exception(int x, int y) {
+        int wing = 4;
+        int min = Integer.MAX_VALUE;
+        int sum = tetrominoMap[x][y];
+
+        for (int i=0; i<4; i++) {
+            int nextX = x + dx[i];
+            int nextY = y + dy[i];
+
+            if (wing <= 2) return;
+
+            if (nextX < 0 || nextY < 0 || nextX >= N || nextY >= M) {
+                wing--;
+                continue;
+            }
+
+            min = Math.min(min, tetrominoMap[nextX][nextY]);
+            sum = sum + tetrominoMap[nextX][nextY];
+        }
+
+        if (wing == 4)
+            sum -= min;
+
+        max = Math.max(max, sum);
     }
 }
