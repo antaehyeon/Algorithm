@@ -24,8 +24,6 @@ class FastScanner {
 }
 
 public class Main {
-
-
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
@@ -38,10 +36,10 @@ public class Main {
             data[i] = fs.nextInt();
 
         if (nextPermutation(data)) {
-            for (int i=0; i<data.length-1; i++) {
+            for (int i=0; i<n; i++) {
                 System.out.print(data[i] + " ");
             }
-            System.out.print(data[data.length-1]);
+            System.out.println();
         } else {
             System.out.println("-1");
         }
@@ -54,18 +52,18 @@ public class Main {
 
         int i = arraySize; // Array Length
 
-        // 순열을 확인한다
+        // 순열의 위치를 잡는다
         while (i>0 && data[i-1] >= data[i]) {
             i--;
         }
 
-        // 마지막 순열
+        // 다음 순열이 없다면 리턴
         if (i<=0) {
             return false;
         }
 
         int j = arraySize;
-        while (data[j] <= data[j-1]) {
+        while (data[j] <= data[i-1]) {
             j--;
         }
 
@@ -77,11 +75,10 @@ public class Main {
         while (i<j) {
             temp = data[i];
             data[i] = data[j];
-            data[i] = temp;
+            data[j] = temp;
             i++;
             j--;
         }
-
         return true;
     }
 }
