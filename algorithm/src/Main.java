@@ -25,71 +25,49 @@ class FastScanner {
 }
 
 public class Main {
-    static int n;
-    static StringBuilder sb = new StringBuilder();
+    static int N;
+    static int max = Integer.MIN_VALUE;
+    static int cnt = 0;
+    static int repeatNum = 1;
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        n = fs.nextInt();
-        int[] array = new int[n];
+        N = fs.nextInt();
+        int[] array = new int[N];
 
-        for (int i=0; i<n; i++) {
-            array[i] = i+1;
-            sb.append((i+1) + " ");
-        }
-        sb.append("\n");
+        for (int i=0; i<N; i++)
+            array[i] = fs.nextInt();
 
-        while(printPermutation(array)) {};
+        permutation(array, 0);
 
-        System.out.println(sb);
+        System.out.println(max);
     }
 
-    public static boolean printPermutation(int[] array) {
-
-        final int arrLen = array.length-1;
-
-        int i = arrLen;
-        while(i>0 && array[i-1] >= array[i])
-            i--;
-
-        if (i<=0)
-            return false;
-
-        // 피벗 : array[i-1]
-        // 위의 피벗과 스왑할 위의 피벗을 초과한 가장 큰 오른쪽 요소를 찾는다
-        int j = arrLen;
-        while (array[j] <= array[i-1])
-            j--;
-
-        // 조건 : array[j] <= array[i-1]
-        // 사전순으로 경우의 수를 돌려야하기 때문에
-        // array[i-1] 과 array[j] 를 이용하여 새로운 피벗을 구함
-        // array[j] 가 새로운 피벗
-        // Assertion j >= i
-
-        // swap
-        // pivot1 : i-1
-        // pivot2 : j
-        int temp = array[i-1];
-        array[i-1] = array[j];
-        array[j] = temp;
-
-        // 접미사 인덱스를 이용해 반대로 만들어줌
-        j = arrLen;
-        while (i < j) {
-            // swap
-            temp = array[i];
-            array[i] = array[j];
-            array[j] = temp;
-            i++;
-            j--;
+    public static void permutation(int[] arr, int d) {
+        if (d == N) {
+            cnt++;
+            return;
         }
 
-        for (int k=0; k<n; k++) {
-            sb.append(array[k] + " ");
+        for (int i=d; i<N; i++) {
+            swap(arr, d, i);
+            permutation(arr, d+1);
+            maxDifferece(arr);
+            swap(arr, d, i);
         }
-        sb.append("\n");
+    }
 
-        return true;
+    public static void swap (int[] arr, int d, int i) {
+        int temp = arr[i];
+        arr[i] = arr[d];
+        arr[d] = temp;
+    }
+
+    public static void maxDifferece(int[] array) {
+        int sum = 0;
+        for (int i=0; i<array.length-1; i++) {
+            sum += Math.abs(array[i]-array[i+1]);
+        }
+        max = Math.max(max, sum);
     }
 }
