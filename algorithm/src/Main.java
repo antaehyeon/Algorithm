@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.Buffer;
 import java.util.*;
 
 class FastScanner {
@@ -24,61 +25,71 @@ class FastScanner {
 }
 
 public class Main {
+    static int n;
+    static StringBuilder sb = new StringBuilder();
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        int n = fs.nextInt();
-        int[] data = new int[n];
+        n = fs.nextInt();
+        int[] array = new int[n];
 
-        data = new int[n];
-
-        for (int i=0; i<n; i++)
-            data[i] = fs.nextInt();
-
-        if (nextPermutation(data)) {
-            for (int i=0; i<n; i++) {
-                System.out.print(data[i] + " ");
-            }
-            System.out.println();
-        } else {
-            System.out.println("-1");
+        for (int i=0; i<n; i++) {
+            array[i] = i+1;
+            sb.append((i+1) + " ");
         }
+        sb.append("\n");
 
+        while(printPermutation(array)) {};
+
+        System.out.println(sb);
     }
 
-    public static boolean nextPermutation(int[] data) {
+    public static boolean printPermutation(int[] array) {
 
-        final int arraySize = data.length-1;
+        final int arrLen = array.length-1;
 
-        int i = arraySize; // Array Length
-
-        // 순열의 위치를 잡는다
-        while (i>0 && data[i-1] <= data[i]) {
+        int i = arrLen;
+        while(i>0 && array[i-1] >= array[i])
             i--;
-        }
 
-        // 다음 순열이 없다면 리턴
-        if (i<=0) {
+        if (i<=0)
             return false;
-        }
 
-        int j = arraySize;
-        while (data[j] >= data[i-1]) {
+        // 피벗 : array[i-1]
+        // 위의 피벗과 스왑할 위의 피벗을 초과한 가장 큰 오른쪽 요소를 찾는다
+        int j = arrLen;
+        while (array[j] <= array[i-1])
             j--;
-        }
 
-        int temp = data[i-1];
-        data[i-1] = data[j];
-        data[j] = temp;
+        // 조건 : array[j] <= array[i-1]
+        // 사전순으로 경우의 수를 돌려야하기 때문에
+        // array[i-1] 과 array[j] 를 이용하여 새로운 피벗을 구함
+        // array[j] 가 새로운 피벗
+        // Assertion j >= i
 
-        j = arraySize;
-        while (i<j) {
-            temp = data[i];
-            data[i] = data[j];
-            data[j] = temp;
+        // swap
+        // pivot1 : i-1
+        // pivot2 : j
+        int temp = array[i-1];
+        array[i-1] = array[j];
+        array[j] = temp;
+
+        // 접미사 인덱스를 이용해 반대로 만들어줌
+        j = arrLen;
+        while (i < j) {
+            // swap
+            temp = array[i];
+            array[i] = array[j];
+            array[j] = temp;
             i++;
             j--;
         }
+
+        for (int k=0; k<n; k++) {
+            sb.append(array[k] + " ");
+        }
+        sb.append("\n");
+
         return true;
     }
 }
