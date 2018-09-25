@@ -53,7 +53,7 @@ public class Main {
         int i = arraySize; // Array Length
 
         // 순열의 위치를 잡는다
-        while (i>0 && data[i-1] >= data[i]) {
+        while (i>0 && data[i-1] <= data[i]) {
             i--;
         }
 
@@ -63,7 +63,7 @@ public class Main {
         }
 
         int j = arraySize;
-        while (data[j] <= data[i-1]) {
+        while (data[j] >= data[i-1]) {
             j--;
         }
 
