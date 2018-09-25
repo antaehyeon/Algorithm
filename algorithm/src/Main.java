@@ -25,28 +25,63 @@ class FastScanner {
 
 public class Main {
 
-    static int[] map = new int[11];
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        int nRepeat = fs.nextInt();
+        int n = fs.nextInt();
+        int[] data = new int[n];
 
-        for (int i=0; i<nRepeat; i++) {
-            System.out.println(bottomUp(fs.nextInt()));
+        data = new int[n];
+
+        for (int i=0; i<n; i++)
+            data[i] = fs.nextInt();
+
+        if (nextPermutation(data)) {
+            for (int i=0; i<data.length-1; i++) {
+                System.out.print(data[i] + " ");
+            }
+            System.out.print(data[data.length-1]);
+        } else {
+            System.out.println("-1");
         }
 
     }
 
-    public static int bottomUp(int n) {
-        map[0] = 1; // DP 에서는 0도 1로 인식
-        map[1] = 1; // 1
-        map[2] = 2; // 1+1, 2
+    public static boolean nextPermutation(int[] data) {
 
-        for (int i=3; i<=n; i++) {
-            map[i] = map[i-1] + map[i-2] + map[i-3];
+        final int arraySize = data.length-1;
+
+        int i = arraySize; // Array Length
+
+        // 순열을 확인한다
+        while (i>0 && data[i-1] >= data[i]) {
+            i--;
         }
 
-        return map[n];
+        // 마지막 순열
+        if (i<=0) {
+            return false;
+        }
+
+        int j = arraySize;
+        while (data[j] <= data[j-1]) {
+            j--;
+        }
+
+        int temp = data[i-1];
+        data[i-1] = data[j];
+        data[j] = temp;
+
+        j = arraySize;
+        while (i<j) {
+            temp = data[i];
+            data[i] = data[j];
+            data[i] = temp;
+            i++;
+            j--;
+        }
+
+        return true;
     }
 }
