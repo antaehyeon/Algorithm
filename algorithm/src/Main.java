@@ -26,41 +26,71 @@ class FastScanner {
 
 public class Main {
 
+    static int min = Integer.MAX_VALUE;
+    static int max = Integer.MIN_VALUE;
     static int N;
-    static int[] arr;
-    static int cnt = 0;
-    static StringBuilder sb = new StringBuilder("");
+    static int[] numbers;
+    static int[] operator;
+    static boolean[] visit;
+
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        while ((N = fs.nextInt()) != 0) {
+        int idx = 0;
+        N = fs.nextInt();
 
-            arr = new int[N];
+        numbers = new int[N];
+        operator = new int[N-1];
+        visit = new boolean[N];
 
-            for (int i=0; i<N; i++)
-                arr[i] = fs.nextInt();
+        for (int i=0; i<N; i++)
+            numbers[i] = fs.nextInt();
 
-            for (int i=0; i<N; i++) {
-                cnt = 1;
-                DFS(i, arr[i] + " ");
-            }
+//        for (int i=0; i<4; i++)
+//            operator[i] = fs.nextInt();
 
-            sb.append("\n");
+        for (int i=0; i<4; i++) {
+            int cnt = fs.nextInt();
+            for (int j=0; j<cnt; j++)
+                operator[idx++] = i+1;
         }
-        System.out.println(sb.toString());
+
+        DFS(0, 1, numbers[0], 0);
+        System.out.println(max);
+        System.out.println(min);
     }
 
-    public static void DFS(int v, String str) {
-        if (cnt == 6)
-            sb.append(str + "\n");
-        else {
-            for (int i=v+1; i<N; i++) {
-                cnt++;
-                DFS(i, str+arr[i] + " ");
+    public static void DFS(int v, int idx, int n, int len) {
+        int result = 0;
+
+        if (len == N-1) {
+            max = Math.max(max, n);
+            min = Math.min(min, n);
+        } else {
+            for (int i=0; i<N-1; i++) {
+                if (!visit[i]) {
+                    switch (operator[i]) {
+                        case 1:
+                            result = n + numbers[idx];
+                            break;
+                        case 2:
+                            result = n - numbers[idx];
+                            break;
+                        case 3:
+                            result = n * numbers[idx];
+                            break;
+                        case 4:
+                            result = n / numbers[idx];
+                            break;
+                    }
+                    visit[i] = true;
+                    DFS(i, idx+1, result, len+1);
+                }
             }
         }
-        cnt--;
+        // backtracking
+        visit[v] = false;
     }
 
 }
