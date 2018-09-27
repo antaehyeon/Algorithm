@@ -26,71 +26,69 @@ class FastScanner {
 
 public class Main {
 
-    static int min = Integer.MAX_VALUE;
-    static int max = Integer.MIN_VALUE;
-    static int N;
-    static int[] numbers;
-    static int[] operator;
+    static StringBuilder sb = new StringBuilder("");
+    static int L;
+    static int C;
+    static char[] alphabets;
     static boolean[] visit;
 
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        int idx = 0;
-        N = fs.nextInt();
+        L = fs.nextInt();
+        C = fs.nextInt();
 
-        numbers = new int[N];
-        operator = new int[N-1];
-        visit = new boolean[N];
+        alphabets = new char[C];
+        visit = new boolean[26]; // 알파벳 갯수만큼 초기화
 
-        for (int i=0; i<N; i++)
-            numbers[i] = fs.nextInt();
+        for (int i=0; i<C; i++)
+            alphabets[i] = fs.next().charAt(0);
 
-//        for (int i=0; i<4; i++)
-//            operator[i] = fs.nextInt();
+        Arrays.sort(alphabets);
 
-        for (int i=0; i<4; i++) {
-            int cnt = fs.nextInt();
-            for (int j=0; j<cnt; j++)
-                operator[idx++] = i+1;
-        }
+        for (int i=0; i<=C-1; i++)
+            DFS(i, 1, "" + alphabets[i]);
 
-        DFS(0, 1, numbers[0], 0);
-        System.out.println(max);
-        System.out.println(min);
+        System.out.println(sb);
     }
 
-    public static void DFS(int v, int idx, int n, int len) {
-        int result = 0;
+    public static void DFS(int v, int cnt, String s) {
+        int idx = alphabets[v] - 'a';
+        visit[idx] = true;
 
-        if (len == N-1) {
-            max = Math.max(max, n);
-            min = Math.min(min, n);
+        if (L == cnt) {
+            if (isSatisfy())
+                sb.append(s + "\n");
         } else {
-            for (int i=0; i<N-1; i++) {
-                if (!visit[i]) {
-                    switch (operator[i]) {
-                        case 1:
-                            result = n + numbers[idx];
-                            break;
-                        case 2:
-                            result = n - numbers[idx];
-                            break;
-                        case 3:
-                            result = n * numbers[idx];
-                            break;
-                        case 4:
-                            result = n / numbers[idx];
-                            break;
-                    }
-                    visit[i] = true;
-                    DFS(i, idx+1, result, len+1);
-                }
+            for (int i=v+1; i<C; i++) {
+                if (!visit[alphabets[i] - 'a'])
+                    DFS(i, cnt+1, s+alphabets[i]);
             }
         }
+
         // backtracking
-        visit[v] = false;
+        visit[idx] = false;
+    }
+
+    public static boolean isSatisfy() {
+        int vowel = 0; // 모음
+        int consonant = 0; // 자음
+
+        for (int i=0; i<26; i++) {
+            // 모음갯수 판별
+            if (i==0 || i==4 || i==8 || i==14 || i==20) {
+                if (visit[i])
+                    vowel++;
+            // 나머지 자음
+            } else if (visit[i])
+                consonant++;
+        }
+
+        if (vowel > 0 && consonant > 1)
+            return true;
+
+        return false;
     }
 
 }
