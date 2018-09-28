@@ -30,48 +30,43 @@ class FastScanner {
 
 public class Main {
 
-    static StringBuilder sb = new StringBuilder("");
+    static int N;
+    static int[][] map = new int[101][101];
+    static int[] area;
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
-        int M = fs.nextInt();
 
-        int n;
-        int bitSet = 0;
+        N = fs.nextInt();
+        area = new int[N+1];
 
-        for (int i=0; i<M; i++) {
-            String[] cmd = fs.nextLine().split(" ");
-
-            switch (cmd[0]) {
-                case "add":
-                    n = Integer.parseInt(cmd[1]);
-                    bitSet = bitSet | (1<<n);
-                    break;
-                case "remove":
-                    n = Integer.parseInt(cmd[1]);
-                    bitSet = bitSet & ~(1<<n);
-                    break;
-                case "check":
-                    n = Integer.parseInt(cmd[1]);
-                    int result = (bitSet & (1<<n));
-                    if (result > 0)
-                        sb.append("1\n");
-                    else if (result == 0)
-                        sb.append("0\n");
-                    break;
-                case "toggle":
-                    n = Integer.parseInt(cmd[1]);
-                    bitSet = bitSet ^ (1<<n);
-                    break;
-                case "all":
-                    bitSet = (1 << 21) - 1;
-                    bitSet = bitSet & ~(1);
-                    break;
-                case "empty":
-                    bitSet = 0;
-                    break;
+        for (int i=0; i<N; i++) {
+            int X = fs.nextInt();
+            int Y = 100-fs.nextInt();
+            int sizeX = fs.nextInt();
+            int sizeY = fs.nextInt();
+            int tmpX = X;
+            for (int j=0; j<sizeY; j++) {
+                for (int k=0; k<sizeX; k++, X++) {
+                    map[X][Y] = i+1;
+                }
+                X = tmpX;
+                Y--;
             }
         }
-        System.out.println(sb);
+
+        for (int i=0; i<101; i++) {
+            for (int j=0; j<101; j++) {
+                if (map[i][j] == 0) continue;
+                else {
+                    int paperId = map[i][j];
+                    area[paperId]++;
+                }
+            }
+        }
+
+        for (int i=1; i<N+1; i++) {
+            System.out.println(area[i]);
+        }
     }
 }
