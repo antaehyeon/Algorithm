@@ -1,11 +1,14 @@
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
 
 class FastScanner {
+
     BufferedReader br;
     StringTokenizer st;
+
 
     FastScanner(InputStream i) throws Exception {
         br = new BufferedReader(new InputStreamReader(i));
@@ -18,80 +21,75 @@ class FastScanner {
         return st.nextToken();
     }
 
-    String nextLine() throws Exception {
-        return br.readLine();
-    }
-
     int nextInt() throws Exception {
         return Integer.parseInt(next());
+    }
+
+    String nextString() throws Exception {
+        String result = br.readLine();
+        return result;
     }
 }
 
 public class Main {
-    static int[] bag = new int[3];
-    static StringBuilder sb = new StringBuilder("");
+
+    static ArrayList<Integer> landSizes = new ArrayList<>();
+
+    static final int[] dRow = {0, -1, 0, 1, -1, 1, -1, 1};
+    static final int[] dCol = {-1, 0, 1, 0, 1, 1, -1, -1};
+
+    static int W, H;
+    static int[][] map;
+
+    static int landSize = 0;
+
+    public static void DFS(int row, int col) {
+
+        map[row][col] = 0;
+
+        for (int i=0; i<8; i++) {
+            int nextRow = row + dRow[i];
+            int nextCol = col + dCol[i];
+            // 상, 좌, 하, 우, 왼쪽아래대각선, 오른쪽위대각선, 왼쪽위대각, 오른쪽아래대각
+
+            if (nextRow < 0 || nextRow >= H || nextCol < 0 || nextCol >= W) continue;
+            if (map[nextRow][nextCol] == 1) {
+                landSize++;
+                DFS(nextRow, nextCol);
+            }
+        }
+    }
 
     public static void main(String[] args) throws Exception {
+
         FastScanner fs = new FastScanner(System.in);
-        String command = fs.nextLine();
-        String[] nums = command.split(" ");
 
-        for (String s : nums) {
-            int item = Integer.parseInt(s);
-            int bagSize = calBagSize();
+        W = H = fs.nextInt();
+        map = new int[W][H];
 
-            if (bagSize < 3) {
-                bag[bagSize] = item;
-                continue;
+        for (int i=0; i<H; i++) {
+            for (int j=0; j<W; j++) {
+                map[i][j] = fs.nextInt();
             }
+        }
 
-            if(isContainItem(item)) {
-                int idx = calItemIdx(item);
-                if (idx == 0) {
-                    swap(0,1);
-                    swap(1,2);
-                    bag[2] = item;
-                } else if (idx == 1) {
-                    swap(1,2);
-                } else {
-                    continue;
+        int result = 0;
+
+        for (int i=0; i<H; i++) {
+            for (int j=0; j<W; j++) {
+                if (map[i][j] == 1) {
+                    DFS(i, j);
+                    result++;
+                    landSizes.add(landSize+1);
+                    landSize = 0;
                 }
-            } else {
-                swap(0, 1);
-                swap(1, 2);
-                sb.append(bag[2] + "\n");
-                bag[2] = item;
             }
         }
-        if (sb.toString().equals("")) sb.append(0);
-        System.out.println(sb);
-    }
 
-    public static void swap (int a, int b) {
-        int temp = bag[a];
-        bag[a] = bag[b];
-        bag[b] = temp;
-    }
-
-    public static boolean isContainItem(int n) {
-        for (int item : bag) {
-            if (n == item) return true;
+        System.out.println(result);
+        Collections.sort(landSizes);
+        for (int size : landSizes) {
+            System.out.print(size + " ");
         }
-        return false;
-    }
-
-    public static int calItemIdx(int n) {
-        for (int i=0; i<3; i++) {
-            if (n == bag[i]) return i;
-        }
-        return -1;
-    }
-
-    public static int calBagSize() {
-        int size = 0;
-        for (int item : bag) {
-            if (item != 0) size++;
-        }
-        return size;
     }
 }
