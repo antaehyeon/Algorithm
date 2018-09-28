@@ -30,43 +30,30 @@ class FastScanner {
 
 public class Main {
 
-    static int N;
-    static int[][] map = new int[101][101];
-    static int[] area;
+    static int D1;
+    static int D2;
+    static boolean seat[][] = new boolean[2001][2001];
+    static int count = 0;
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        N = fs.nextInt();
-        area = new int[N+1];
+        D1 = fs.nextInt();
+        D2 = fs.nextInt();
 
-        for (int i=0; i<N; i++) {
-            int X = fs.nextInt();
-            int Y = 100-fs.nextInt();
-            int sizeX = fs.nextInt();
-            int sizeY = fs.nextInt();
-            int tmpX = X;
-            for (int j=0; j<sizeY; j++) {
-                for (int k=0; k<sizeX; k++, X++) {
-                    map[X][Y] = i+1;
-                }
-                X = tmpX;
-                Y--;
-            }
-        }
-
-        for (int i=0; i<101; i++) {
-            for (int j=0; j<101; j++) {
-                if (map[i][j] == 0) continue;
-                else {
-                    int paperId = map[i][j];
-                    area[paperId]++;
+        for (int i=D1; i<=D2; i++) {
+            for (int j=1; j<=i; j++) {
+                int sum = GCD(i, j);
+                if (!seat[i/sum][j/sum]) {
+                    seat[i/sum][j/sum] = true;
+                    count++;
                 }
             }
         }
+        System.out.println(count);
+    }
 
-        for (int i=1; i<N+1; i++) {
-            System.out.println(area[i]);
-        }
+    public static int GCD(int p, int q) {
+        return q == 0 ? p : GCD(q, p%q);
     }
 }
