@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.*;
@@ -33,38 +32,59 @@ class FastScanner {
 
 public class Main {
 
-    static int N, M;
-    static ArrayList<String> list = new ArrayList<String>();
-    static ArrayList<String> answerPeople = new ArrayList<>();
+    static int N, M, K;
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
         N = fs.nextInt();
         M = fs.nextInt();
+        K = fs.nextInt();
 
-        for (int i=0; i<N; i++)
-            list.add(fs.next());
+        K = K == 0 ? K : K-1;
 
-        Collections.sort(list);
-        String[] peoples = new String[list.size()];
-        peoples = list.toArray(peoples);
+        int[][] dp = new int[N][M];
+        dp[0][0] = 1;
 
-        list.clear();
+        // 경유지가 있는 경우
+        if (K > 0) {
 
-        for (int i=0; i<M; i++) {
-            String name = fs.next();
-            list.add(name);
-            int idx = Arrays.binarySearch(peoples, name);
-            if (idx >= 0)
-                answerPeople.add(name);
+            int kRow = K / M;
+            int kCol = K - M * kRow;
+
+            for (int row = 0; row <= kRow; row++) {
+                for (int col = 0; col <= kCol; col++) {
+                    if (row == 0 && col == 0) continue;
+                    dp[row][col] = (row - 1 < 0 ? 0 : dp[row - 1][col]) + (col - 1 < 0 ? 0 : dp[row][col - 1]);
+                }
+            }
+
+            int temp = dp[kRow][kCol];
+            dp[kRow][kCol] = 1;
+
+            for (int row = kRow; row < N; row++) {
+                for (int col = kCol; col < M; col++) {
+
+                    if (row == kRow && col == kCol) continue;
+                    dp[row][col] = (row - 1 < kRow ? 0 : dp[row - 1][col]) + (col - 1 < kCol ? 0 : dp[row][col - 1]);
+                }
+            }
+
+            dp[N - 1][M - 1] *= temp;
+        }
+        // 경유지가 없는 경우
+        else {
+
+            for (int row = 0; row < N; row++) {
+                for (int col = 0; col < M; col++) {
+
+                    if (row == 0 && col == 0) continue;
+                    dp[row][col] = (row - 1 < 0 ? 0 : dp[row - 1][col]) + (col - 1 < 0 ? 0 : dp[row][col - 1]);
+                }
+            }
         }
 
-        Collections.sort(answerPeople);
-
-        System.out.println(answerPeople.size());
-        for (String s : answerPeople)
-            System.out.println(s);
+        System.out.println(dp[N - 1][M - 1]);
 
     }
 }
