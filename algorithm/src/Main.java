@@ -32,59 +32,66 @@ class FastScanner {
 
 public class Main {
 
-    static int N, M, K;
+    static Vector<Integer> priceList = new Vector<>();
+    static boolean[] index;
+    static Stack<Integer> stack = new Stack<>();
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        N = fs.nextInt();
-        M = fs.nextInt();
-        K = fs.nextInt();
+        int days = fs.nextInt();
+        index = new boolean[5];
 
-        K = K == 0 ? K : K-1;
+        for (int i=0; i<days; i++) {
+            int price = fs.nextInt();
+            priceList.add(price);
 
-        int[][] dp = new int[N][M];
-        dp[0][0] = 1;
+            if (i>0) {
+                int now = price;
+                int before = priceList.get(i-1);
 
-        // 경유지가 있는 경우
-        if (K > 0) {
-
-            int kRow = K / M;
-            int kCol = K - M * kRow;
-
-            for (int row = 0; row <= kRow; row++) {
-                for (int col = 0; col <= kCol; col++) {
-                    if (row == 0 && col == 0) continue;
-                    dp[row][col] = (row - 1 < 0 ? 0 : dp[row - 1][col]) + (col - 1 < 0 ? 0 : dp[row][col - 1]);
-                }
-            }
-
-            int temp = dp[kRow][kCol];
-            dp[kRow][kCol] = 1;
-
-            for (int row = kRow; row < N; row++) {
-                for (int col = kCol; col < M; col++) {
-
-                    if (row == kRow && col == kCol) continue;
-                    dp[row][col] = (row - 1 < kRow ? 0 : dp[row - 1][col]) + (col - 1 < kCol ? 0 : dp[row][col - 1]);
-                }
-            }
-
-            dp[N - 1][M - 1] *= temp;
-        }
-        // 경유지가 없는 경우
-        else {
-
-            for (int row = 0; row < N; row++) {
-                for (int col = 0; col < M; col++) {
-
-                    if (row == 0 && col == 0) continue;
-                    dp[row][col] = (row - 1 < 0 ? 0 : dp[row - 1][col]) + (col - 1 < 0 ? 0 : dp[row][col - 1]);
+                if (now == before) {
+                    stack.push(i-1);
+                } else if (now > before) {
+                    index[i-1] = true;
+                    for (int j=0; j<stack.size(); j++) {
+                        int idx = stack.get(j);
+                        index[idx] = true;
+                    }
+                    stack.clear();
+                } else if (now < before) {
+                    index[i-1] = false;
+                    for (int j=0; j<stack.size(); j++) {
+                        int idx = stack.get(j);
+                        index[idx] = false;
+                    }
+                    stack.clear();
                 }
             }
         }
 
-        System.out.println(dp[N - 1][M - 1]);
+        int cnt = 0;
+        long money = 0;
+        int cellPrice = 0;
+        for (int i=0; i<priceList.size(); i++) {
+            if (index[i]) {
+                money -= priceList.get(i);
+                cnt++;
+            } else if (!index[i]) {
+                if (cnt > 0) {
+                    money += (priceList.get(i) * cnt) - 1;
+                    if (cellPrice == priceList.get(i)) {
+                        money++;
+                    }
+                    cellPrice = priceList.get(i);
+                    cnt = 0;
+                } else {
+                    continue;
+                }
+            }
+        }
+
+        System.out.println(money);
 
     }
 }
