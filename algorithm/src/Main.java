@@ -36,29 +36,24 @@ public class Main {
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        int[] testData = {1, 0, 0, 1, 0, 0};
+        String testData = "Forget  CVS..Save time . x x";
 
-        System.out.print(solution(testData));
+        System.out.println(solution(testData));
 
     }
 
-    public static int solution(int[] A) {
-        final int heads = 0;
+    public static int solution(String S) {
+        int maxWordNum = Integer.MIN_VALUE;
 
-        int headCount = 0;
-        int tailCount = 0;
-        int result;
+        String[] sentences = S.split("\\.|\\?|\\!");
 
-
-        for (int coinStatus : A) {
-            if (coinStatus == heads) {
-                headCount++;
-            } else {
-                tailCount++;
-            }
+        for (String sentence : sentences) {
+            sentence = sentence.trim();
+            if (sentence.equals("")) continue;
+            String[] words = sentence.split("\\s+");
+            maxWordNum = Math.max(maxWordNum, words.length);
         }
 
-        result = Math.min(headCount, tailCount);
-        return result;
+        return maxWordNum;
     }
 }
