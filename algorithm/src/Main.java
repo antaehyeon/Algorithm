@@ -32,66 +32,33 @@ class FastScanner {
 
 public class Main {
 
-    static Vector<Integer> priceList = new Vector<>();
-    static boolean[] index;
-    static Stack<Integer> stack = new Stack<>();
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        int days = fs.nextInt();
-        index = new boolean[5];
+        int[] testData = {1, 0, 0, 1, 0, 0};
 
-        for (int i=0; i<days; i++) {
-            int price = fs.nextInt();
-            priceList.add(price);
+        System.out.print(solution(testData));
 
-            if (i>0) {
-                int now = price;
-                int before = priceList.get(i-1);
+    }
 
-                if (now == before) {
-                    stack.push(i-1);
-                } else if (now > before) {
-                    index[i-1] = true;
-                    for (int j=0; j<stack.size(); j++) {
-                        int idx = stack.get(j);
-                        index[idx] = true;
-                    }
-                    stack.clear();
-                } else if (now < before) {
-                    index[i-1] = false;
-                    for (int j=0; j<stack.size(); j++) {
-                        int idx = stack.get(j);
-                        index[idx] = false;
-                    }
-                    stack.clear();
-                }
+    public static int solution(int[] A) {
+        final int heads = 0;
+
+        int headCount = 0;
+        int tailCount = 0;
+        int result;
+
+
+        for (int coinStatus : A) {
+            if (coinStatus == heads) {
+                headCount++;
+            } else {
+                tailCount++;
             }
         }
 
-        int cnt = 0;
-        long money = 0;
-        int cellPrice = 0;
-        for (int i=0; i<priceList.size(); i++) {
-            if (index[i]) {
-                money -= priceList.get(i);
-                cnt++;
-            } else if (!index[i]) {
-                if (cnt > 0) {
-                    money += (priceList.get(i) * cnt) - 1;
-                    if (cellPrice == priceList.get(i)) {
-                        money++;
-                    }
-                    cellPrice = priceList.get(i);
-                    cnt = 0;
-                } else {
-                    continue;
-                }
-            }
-        }
-
-        System.out.println(money);
-
+        result = Math.min(headCount, tailCount);
+        return result;
     }
 }
