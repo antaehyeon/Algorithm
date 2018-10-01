@@ -32,34 +32,37 @@ class FastScanner {
 
 public class Main {
 
+    static int[] alphabets = new int[26];
+    static StringBuilder sb = new StringBuilder("");
 
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
 
-        int[] testData = {1, 4, -1, 3, 2};
+        int T = fs.nextInt();
 
-        int result = solution(testData);
-        System.out.println(result);
+        for (int i=0; i<T; i++) {
+            String line = fs.nextString();
+            String[] data = line.split("");
 
-    }
-
-    public static int solution(int[] A) {
-        int cnt = 1;
-        int idx = A[0];
-
-        if (idx == -1) {
-            return 1;
-        }
-
-        for (int i=0; i<A.length; i++) {
-            cnt++;
-            if (A[idx] == -1) {
-                return cnt;
+            for (int j=0; j<data.length; j++) {
+                int idx = data[j].charAt(0) - 'A';
+                alphabets[idx]++;
             }
 
-            idx = A[idx];
+            RLE();
+            Arrays.fill(alphabets, 0);
         }
 
-        return 1;
+        System.out.println(sb);
+    }
+
+    public static void RLE() {
+        for (int i=0; i<26; i++) {
+            if (alphabets[i] == 0) continue;
+            char alphabet = (char)(i + 65);
+            sb.append(alphabets[i]);
+            sb.append(alphabet);
+        }
+        sb.append("\n");
     }
 }
