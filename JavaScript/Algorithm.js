@@ -1,41 +1,33 @@
-// 프로그래머스 스킬 체크 테스트 LEVEL 1
 /*
-문제 설명
-배열 array의 i번째 숫자부터 j번째 숫자까지 자르고 정렬했을 때, k번째에 있는 수를 구하려 합니다.
+프로그래머스 스킬 체크 테스트 LEVEL 2-1
+Finn은 요즘 수학공부에 빠져 있습니다. 수학 공부를 하던 Finn은 자연수 n을 연속한 자연수들로 표현 하는 방법이 여러개라는 사실을 알게 되었습니다. 예를들어 15는 다음과 같이 4가지로 표현 할 수 있습니다.
 
-예를 들어 array가 [1, 5, 2, 6, 3, 7, 4], i = 2, j = 5, k = 3이라면
-
-array의 2번째부터 5번째까지 자르면 [5, 2, 6, 3]입니다.
-1에서 나온 배열을 정렬하면 [2, 3, 5, 6]입니다.
-2에서 나온 배열의 3번째 숫자는 5입니다.
-배열 array, [i, j, k]를 원소로 가진 2차원 배열 commands가 매개변수로 주어질 때, commands의 모든 원소에 대해 앞서 설명한 연산을 적용했을 때 나온 결과를 배열에 담아 return 하도록 solution 함수를 작성해주세요.
-
-제한사항
-array의 길이는 1 이상 100 이하입니다.
-array의 각 원소는 1 이상 100 이하입니다.
-commands의 길이는 1 이상 50 이하입니다.
-commands의 각 원소는 길이가 3입니다.
+1 + 2 + 3 + 4 + 5 = 15
+4 + 5 + 6 = 15
+7 + 8 = 15
+15 = 15
+자연수 n이 매개변수로 주어질 때, 연속된 자연수들로 n을 표현하는 방법의 수를 return하는 solution를 완성해주세요.
 */
 
-function solution(array, commands) {
-  const I = 0;
-  const J = 1;
-  const K = 2;
-  const ADJUST_ARRAY_IDX = 1;
+function solution(n) {
+  var answer = 0;
+  let sum = 0;
+  console.log(n / 2);
 
-  const answer = [];
-
-  for (const param of commands) {
-    const splitedArray = array.slice(param[I] - ADJUST_ARRAY_IDX, param[J]);
-    splitedArray.sort((a, b) => {
-      return a - b;
-    });
-
-    answer.push(splitedArray[param[K] - ADJUST_ARRAY_IDX]);
+  for (let i = 1; i <= n / 2; i++) {
+    for (let j = i; j < n; j++) {
+      sum += j;
+      console.log(j, sum, j);
+      if (sum === n) {
+        console.log("SUM === N", sum, n);
+        answer++;
+        break;
+      } else if (sum > n) break;
+    }
+    sum = 0;
   }
-
+  answer++;
   return answer;
 }
 
-const answer = solution([1, 5, 2, 6, 3, 7, 4], [[2, 5, 3], [4, 4, 1], [1, 7, 3]]);
-console.log(answer);
+console.log(solution(15));
