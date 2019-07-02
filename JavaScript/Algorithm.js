@@ -1,33 +1,38 @@
 /*
 프로그래머스 스킬 체크 테스트 LEVEL 2-1
-Finn은 요즘 수학공부에 빠져 있습니다. 수학 공부를 하던 Finn은 자연수 n을 연속한 자연수들로 표현 하는 방법이 여러개라는 사실을 알게 되었습니다. 예를들어 15는 다음과 같이 4가지로 표현 할 수 있습니다.
+피보나치 수는 F(0) = 0, F(1) = 1일 때, 1 이상의 n에 대하여 F(n) = F(n-1) + F(n-2) 가 적용되는 수 입니다.
 
-1 + 2 + 3 + 4 + 5 = 15
-4 + 5 + 6 = 15
-7 + 8 = 15
-15 = 15
-자연수 n이 매개변수로 주어질 때, 연속된 자연수들로 n을 표현하는 방법의 수를 return하는 solution를 완성해주세요.
+예를들어
+
+F(2) = F(0) + F(1) = 0 + 1 = 1
+F(3) = F(1) + F(2) = 1 + 1 = 2
+F(4) = F(2) + F(3) = 1 + 2 = 3
+F(5) = F(3) + F(4) = 2 + 3 = 5
+와 같이 이어집니다.
+
+2 이상의 n이 입력되었을 때, n번째 피보나치 수를 1234567으로 나눈 나머지를 리턴하는 함수, solution을 완성해 주세요.
+
+제한 사항
+* n은 1이상, 100000이하인 자연수입니다.
 */
 
-function solution(n) {
-  var answer = 0;
-  let sum = 0;
-  console.log(n / 2);
+// 런타임 에러
+function fibonacci(num, memo) {
+  memo = memo || {};
 
-  for (let i = 1; i <= n / 2; i++) {
-    for (let j = i; j < n; j++) {
-      sum += j;
-      console.log(j, sum, j);
-      if (sum === n) {
-        console.log("SUM === N", sum, n);
-        answer++;
-        break;
-      } else if (sum > n) break;
-    }
-    sum = 0;
-  }
-  answer++;
-  return answer;
+  if (num <= 1) return num;
+  if (memo[num]) return memo[num];
+
+  return (memo[num] = (fibonacci(num - 1, memo) + fibonacci(num - 2, memo)) % 1234567);
 }
 
-console.log(solution(15));
+function solution(n) {
+  const arr = [0, 1];
+  for (let i = 1; i <= n; i++) {
+    arr.push((arr[i - 1] + arr[i]) % 1234567);
+  }
+  return arr[n];
+}
+
+console.log(fibonacci(3));
+console.log(fibonacci(5));
