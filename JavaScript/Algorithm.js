@@ -2,29 +2,43 @@
 프로그래머스 - 프린터
 */
 
-const FIRST = 0;
+// 정확성 50 효율성 0
+// function solution(participant, completion) {
+//   var answer = "";
 
-function solution(priorities, location) {
-  let answer = 0;
-  let tasks = priorities.map((v, i) => ({
-    lo: i === location,
-    value: v
-  }));
+//   participant.some(t => {
+//     completion.map((v, i) => {
+//       if (t === v) {
+//         completion.splice(i, 1);
+//         return;
+//       }
+//     });
 
-  while (true) {
-    let current = tasks.splice(0, 1)[FIRST];
-    if (tasks.some(t => t.value > current.value)) {
-      tasks.push(current);
-    } else {
-      answer++;
-      if (current.lo) return answer;
+//   });
+
+//   return answer;
+// }
+
+function solution(participant, completion) {
+  let answer;
+  let idx = 0;
+  participant.sort();
+  completion.sort();
+
+  // console.log({ participant, completion });
+
+  participant.some(value => {
+    if (completion[idx] != value) {
+      answer = value;
+      return true;
     }
-  }
+    idx++;
+  });
 
   return answer;
 }
 
-const priorities = [2, 1, 3, 2];
-const location = 2;
+const participant = ["mislav", "stanko", "mislav", "ana"];
+const completion = ["stanko", "ana", "mislav"];
 
-console.log(solution(priorities, location));
+console.log(solution(participant, completion));
