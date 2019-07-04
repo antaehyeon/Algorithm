@@ -1,28 +1,30 @@
 /*
-프로그래머스 - 탑
+프로그래머스 - 프린터
 */
 
-function solution(heights) {
-  var answer = [];
-  const topNumbers = heights.length;
+const FIRST = 0;
 
-  heights.reverse();
+function solution(priorities, location) {
+  let answer = 0;
+  let tasks = priorities.map((v, i) => ({
+    lo: i === location,
+    value: v
+  }));
 
-  for (const topIdx in heights) {
-    for (let i = parseInt(topIdx) + 1; i <= topNumbers; i++) {
-      if (heights[topIdx] < heights[i]) {
-        answer.push(topNumbers - i);
-        break;
-      }
-      if (i === topNumbers) {
-        answer.push(0);
-      }
+  while (true) {
+    let current = tasks.splice(0, 1)[FIRST];
+    if (tasks.some(t => t.value > current.value)) {
+      tasks.push(current);
+    } else {
+      answer++;
+      if (current.lo) return answer;
     }
   }
-
-  answer.reverse();
 
   return answer;
 }
 
-console.log(solution([6, 9, 5, 7, 4]));
+const priorities = [2, 1, 3, 2];
+const location = 2;
+
+console.log(solution(priorities, location));
