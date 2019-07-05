@@ -1,35 +1,43 @@
 /*
-프로그래머스 - 정렬 - K번째 수
+프로그래머스 - 완전탐색 - 모의고사 (LV1)
 */
 
-// function solution(numbers) {
-//   var answer = "";
+const F1 = [1, 2, 3, 4, 5];
+const F2 = [2, 1, 2, 3, 2, 4, 2, 5];
+const F3 = [3, 3, 1, 1, 2, 2, 4, 4, 5, 5];
 
-//   numbers.sort().reverse();
-//   // console.log(numbers);
+const A = 0;
+const B = 1;
+const C = 2;
 
-//   numbers.map((n, i) => {
-//     if (numbers.length - 1 != i && (n + "").split("").includes("0")) {
-//       numbers.push(numbers.splice(i, 1));
-//       // console.log(1, numbers);
-//       // console.log(2, numbers[i + 1]);
-//       answer += numbers[i];
-//       // console.log(3, answer);
-//       // console.log(4, n);
-//     } else answer += n;
-//   });
+function solution(answers) {
+  const answer = [];
+  const players = [{ player: 1, score: 0 }, { player: 2, score: 0 }, { player: 3, score: 0 }];
 
-//   return answer;
-// }
-function solution(numbers) {
-  const answer = numbers
-    .map(v => v + "")
-    .sort((a, b) => (b + a) * 1 - (a + b) * 1)
-    .join("");
+  answers.map((ans, idx) => {
+    const A_IDX = idx % 5;
+    const B_IDX = idx % 8;
+    const C_IDX = idx % 10;
 
-  return answer[0] === "0" ? "0" : answer;
+    if (F1[A_IDX] === ans) players[A].score++;
+    if (F2[B_IDX] === ans) players[B].score++;
+    if (F3[C_IDX] === ans) players[C].score++;
+  });
+
+  players.sort((a, b) => b.score - a.score);
+
+  answer.push(players[A].player);
+
+  if (players[A].score === players[B].score) answer.push(players[B].player);
+  if (players[A].score === players[C].score) answer.push(players[C].player);
+
+  answer.sort();
+
+  return answer;
 }
 
-const t1 = [6, 10, 2];
-const t2 = [3, 30, 34, 5, 9];
-console.log(solution(t1));
+const answers1 = [1, 2, 3, 4, 5];
+const answers2 = [1, 3, 2, 4, 2];
+const a3 = [2, 3, 2, 1, 5];
+
+console.log(solution(a3));
