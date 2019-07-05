@@ -1,24 +1,37 @@
-/*
-프로그래머스 - 완전탐색 - 카펫 (LV2)
-*/
+const ADJUST_IDX = 1;
 
-function solution(brown, red) {
-  var answer = [];
+function solution(n, lost, reserve) {
+  let answer = 0;
 
-  const sumXY = brown / 2 + 2;
-  let x = sumXY;
-  let y = 1;
+  const newLost = lost.filter(a => !reserve.includes(a));
+  const newReserve = reserve.filter(a => !lost.includes(a));
 
-  while (y <= x) {
-    x = sumXY - y;
-    if (x * y === brown + red) break;
-    else y++;
-  }
+  const arr = Array(n).fill(true);
 
-  return [x, y];
+  newLost.map(v => {
+    arr[v - ADJUST_IDX] = false;
+  });
+
+  newReserve.map(v => {
+    if (v - 2 >= 0) {
+      if (!arr[v - 2]) {
+        arr[v - 2] = true;
+        return;
+      }
+    }
+
+    if (v != n) {
+      if (!arr[v]) arr[v] = true;
+    }
+  });
+
+  answer = arr.filter((v, i) => arr[i]).length;
+
+  return answer;
 }
 
-const brown = 24;
-const red = 24;
+const n = 3;
+const lost = [1, 2];
+const reserve = [2, 3];
 
-console.log(solution(brown, red));
+console.log(solution(n, lost, reserve));
