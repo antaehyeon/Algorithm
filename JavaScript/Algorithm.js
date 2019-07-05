@@ -2,31 +2,34 @@
 프로그래머스 - 정렬 - K번째 수
 */
 
-const TRIM_START_IDX = 0;
-const TRIM_END_IDX = 1;
-const FIND_IDX = 2;
-const ADJUST_IDX = 1;
+// function solution(numbers) {
+//   var answer = "";
 
-function solution(array, commands) {
-  const answer = [];
+//   numbers.sort().reverse();
+//   // console.log(numbers);
 
-  commands.map((command, idx) => {
-    const i = command[TRIM_START_IDX];
-    const j = command[TRIM_END_IDX];
-    const k = command[FIND_IDX];
+//   numbers.map((n, i) => {
+//     if (numbers.length - 1 != i && (n + "").split("").includes("0")) {
+//       numbers.push(numbers.splice(i, 1));
+//       // console.log(1, numbers);
+//       // console.log(2, numbers[i + 1]);
+//       answer += numbers[i];
+//       // console.log(3, answer);
+//       // console.log(4, n);
+//     } else answer += n;
+//   });
 
-    // console.log(0, array);
-    const trimedArr = array.slice(i - ADJUST_IDX, j);
-    // console.log(1, trimedArr);
-    trimedArr.sort((a, b) => a - b);
-    // console.log(2, trimedArr);
-    answer.push(trimedArr[k - ADJUST_IDX]);
-    // console.log(3, trimedArr[k - ADJUST_IDX]);
-  });
+//   return answer;
+// }
+function solution(numbers) {
+  const answer = numbers
+    .map(v => v + "")
+    .sort((a, b) => (b + a) * 1 - (a + b) * 1)
+    .join("");
 
-  return answer;
+  return answer[0] === "0" ? "0" : answer;
 }
 
-const array = [1, 5, 2, 6, 3, 7, 4];
-const commands = [[2, 5, 3], [4, 4, 1], [1, 7, 3]];
-console.log(solution(array, commands));
+const t1 = [6, 10, 2];
+const t2 = [3, 30, 34, 5, 9];
+console.log(solution(t1));
