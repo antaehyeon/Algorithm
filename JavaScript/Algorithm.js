@@ -1,78 +1,61 @@
 /*
-프로그래머스 - 부스트캠프 2019 데모테스트 1
+프로그래머스 - 해시 - 위장
 */
 
-<<<<<<< Updated upstream
-// 정확성 50 효율성 0
-// function solution(participant, completion) {
-//   var answer = "";
+const CLOTHE = 0;
+const CLOTHE_TYPE = 1;
 
-//   participant.some(t => {
-//     completion.map((v, i) => {
-//       if (t === v) {
-//         completion.splice(i, 1);
-//         return;
+// 21.4 / 100
+// function solution(clothes) {
+//   let answer = 0;
+
+//   let isExisting = false;
+//   const t = [];
+
+//   clothes.some(v => {
+//     t.some(value => {
+//       if (value.clotheType === v[CLOTHE_TYPE]) {
+//         isExisting = true;
+//         value.clotheNum++;
+//         return true;
 //       }
 //     });
 
+//     if (!isExisting) {
+//       isExisting = false;
+//       t.push({
+//         clotheType: v[CLOTHE_TYPE],
+//         clotheNum: 1
+//       });
+//     }
 //   });
 
-//   return answer;
+//   t.map((value, idx) => {
+//     for (let i = idx + 1; i < t.length; i++) {
+//       answer += value.clotheNum * t[i].clotheNum;
+//     }
+//   });
+
+//   return answer + clothes.length;
 // }
 
-function solution(participant, completion) {
-  let answer;
-  let idx = 0;
-  participant.sort();
-  completion.sort();
+function solution(clothes) {
+  let answer = 1;
+  const map = new Map();
 
-  // console.log({ participant, completion });
-
-  participant.some(value => {
-    if (completion[idx] != value) {
-      answer = value;
-      return true;
-    }
-    idx++;
+  clothes.map((clothe, idx) => {
+    const clotheType = clothe[CLOTHE_TYPE];
+    if (!map.get(clotheType)) map.set(clotheType, 1);
+    else map.set(clotheType, map.get(clotheType) + 1);
   });
 
-  return answer;
-}
-
-const participant = ["mislav", "stanko", "mislav", "ana"];
-const completion = ["stanko", "ana", "mislav"];
-
-console.log(solution(participant, completion));
-=======
-const X = 0;
-const Y = 1;
-
-const ONE = 1;
-
-function solution(v) {
-  const answer = [];
-
-  const x = [];
-  const y = [];
-
-  v.some(lo => {
-    console.log(x.includes(lo[X]));
-    console.log(y.includes(lo[Y]));
-
-    if (x.includes(lo[X])) x.splice(x.indexOf(lo[X]), ONE);
-    else x.push(lo[X]);
-
-    if (y.includes(lo[Y])) y.splice(y.indexOf(lo[Y]), ONE);
-    else y.push(lo[Y]);
+  Array.from(map.values()).some(clotheN => {
+    answer *= clotheN + 1;
   });
 
-  console.log(x);
-  console.log(y);
-  // console.log(x.concat(y));
-
-  return x.concat(y);
+  return answer - 1;
 }
-const v = [[1, 4], [3, 4], [3, 10]];
 
-console.log(solution(v));
->>>>>>> Stashed changes
+const t1 = [["yellow_hat", "headgear"], ["blue_sunglasses", "eyewear"], ["green_turban", "headgear"]];
+const t2 = [["crow_mask", "face"], ["blue_sunglasses", "face"], ["smoky_makeup", "face"]];
+console.log(solution(t1));
