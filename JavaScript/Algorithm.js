@@ -1,61 +1,55 @@
 /*
 프로그래머스 - 해시 - 위장
 */
+// 33.3 / 100
+const GENRE = 0;
+const PLAY_NUM = 1;
+const INDEX = 0;
+const VALUE = 1;
 
-const CLOTHE = 0;
-const CLOTHE_TYPE = 1;
+function solution(genres, plays) {
+  const answer = [];
 
-// 21.4 / 100
-// function solution(clothes) {
-//   let answer = 0;
+  const a = new Map();
+  const b = [];
+  let chkCount = 0;
 
-//   let isExisting = false;
-//   const t = [];
+  genres.map((genre, i) => {
+    if (!a.get(genre)) a.set(genre, plays[i]);
+    else a.set(genre, plays[i]);
 
-//   clothes.some(v => {
-//     t.some(value => {
-//       if (value.clotheType === v[CLOTHE_TYPE]) {
-//         isExisting = true;
-//         value.clotheNum++;
-//         return true;
-//       }
-//     });
-
-//     if (!isExisting) {
-//       isExisting = false;
-//       t.push({
-//         clotheType: v[CLOTHE_TYPE],
-//         clotheNum: 1
-//       });
-//     }
-//   });
-
-//   t.map((value, idx) => {
-//     for (let i = idx + 1; i < t.length; i++) {
-//       answer += value.clotheNum * t[i].clotheNum;
-//     }
-//   });
-
-//   return answer + clothes.length;
-// }
-
-function solution(clothes) {
-  let answer = 1;
-  const map = new Map();
-
-  clothes.map((clothe, idx) => {
-    const clotheType = clothe[CLOTHE_TYPE];
-    if (!map.get(clotheType)) map.set(clotheType, 1);
-    else map.set(clotheType, map.get(clotheType) + 1);
+    b.push({
+      genre,
+      value: { index: i, playNum: plays[i] }
+    });
   });
 
-  Array.from(map.values()).some(clotheN => {
-    answer *= clotheN + 1;
+  const sortedA = [...a.entries()];
+  sortedA.sort((a, b) => b[PLAY_NUM] - a[PLAY_NUM]);
+  b.sort((a, b) => a.value.index - b.value.index && b.value.playNum - a.value.playNum);
+
+  // console.log(1, sortedA);
+  // console.log(2, b);
+
+  sortedA.some(p => {
+    const genre = p[GENRE];
+
+    chkCount = 0;
+
+    b.some(data => {
+      if (genre === data.genre) {
+        chkCount++;
+        answer.push(data.value.index);
+      }
+
+      return chkCount === 2;
+    });
   });
 
-  return answer - 1;
+  return answer;
 }
 
-const t1 = [["yellow_hat", "headgear"], ["blue_sunglasses", "eyewear"], ["green_turban", "headgear"]];
-const t2 = [["crow_mask", "face"], ["blue_sunglasses", "face"], ["smoky_makeup", "face"]];
-console.log(solution(t1));
+const genres = ["classic", "pop", "classic", "classic", "pop"];
+const plays = [800, 2500, 150, 800, 2500];
+
+console.log(solution(genres, plays));
