@@ -1,37 +1,27 @@
 const ADJUST_IDX = 1;
 
-function solution(n, lost, reserve) {
-  let answer = 0;
+function solution(param) {
+  const answer = [];
+  let checkedArr;
+  let maxNum = 0;
 
-  const newLost = lost.filter(a => !reserve.includes(a));
-  const newReserve = reserve.filter(a => !lost.includes(a));
+  param.sort((a, b) => a - b);
 
-  const arr = Array(n).fill(true);
+  maxNum = param[param.length - 1];
 
-  newLost.map(v => {
-    arr[v - ADJUST_IDX] = false;
+  checkedArr = Array(maxNum).fill(0);
+
+  param.map(v => checkedArr[v - ADJUST_IDX]++);
+
+  checkedArr.map(n => {
+    if (n > 1) answer.push(n);
   });
 
-  newReserve.map(v => {
-    if (v - 2 >= 0) {
-      if (!arr[v - 2]) {
-        arr[v - 2] = true;
-        return;
-      }
-    }
-
-    if (v != n) {
-      if (!arr[v]) arr[v] = true;
-    }
-  });
-
-  answer = arr.filter((v, i) => arr[i]).length;
-
-  return answer;
+  return answer.length === 0 ? [-1] : answer;
 }
 
-const n = 3;
-const lost = [1, 2];
-const reserve = [2, 3];
+const t1 = [1, 2, 3, 3, 3, 4, 4];
+const t2 = [3, 2, 4, 4, 2, 5, 2, 5, 5];
+const t3 = [3, 5, 7, 9, 1];
 
-console.log(solution(n, lost, reserve));
+console.log(solution(t1));
