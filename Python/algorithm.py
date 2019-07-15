@@ -1,12 +1,24 @@
-def gcd(a, b):
-    if b == 0: return a
-    else: return gcd(b, a % b)
+primes = []
+n = 1000000
+check = [True, True] + [False] * (n - 1)
+isFlag = False
 
+for i in range(2, n + 1):
+    if not check[i]:
+        primes.append(i)
+        for j in range(i * i, n + 1, i):
+            check[j] = True
 
-for _ in range(int(input())):
-    n, *a = map(int, input().split())
-    s = 0
-    for i in range(0, n - 1):
-        for j in range(i + 1, n):
-            s += gcd(a[i], a[j])
-    print(s)
+while True:
+    n = int(input())
+    if n == 0:
+        break
+
+    for p in primes:
+        if not check[n - p]:
+            print(n, "=", p, "+", n - p)
+            isFlag = True
+            break
+
+if not isFlag:
+    print("Goldbach's conjecture is wrong.")
