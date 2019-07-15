@@ -3,7 +3,10 @@ def gcd(a, b):
     else: return gcd(b, a % b)
 
 
-r = int(input())
-for i in range(r):
-    a, b = map(int, input().split())
-    print(int(a / gcd(a, b) * b))
+for _ in range(int(input())):
+    n, *a = map(int, input().split())
+    s = 0
+    for i in range(0, n - 1):
+        for j in range(i + 1, n):
+            s += gcd(a[i], a[j])
+    print(s)
