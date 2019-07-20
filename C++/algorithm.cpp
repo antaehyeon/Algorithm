@@ -9,11 +9,12 @@ int main() {
 
     vector<int> v(N);
 
-    for (int i=0; i<N; i++) cin >> v[i];
+    for (int i=0; i<N; i++) v[i] = i+1;
 
-    if (next_permutation(v.begin(), v.end())) {
+    do {
         for (auto i : v) cout << i << " ";
-    } else cout << "-1";
+        cout << "\n";
+    } while (next_permutation(v.begin(), v.end()));
 
     return 0;
 }
