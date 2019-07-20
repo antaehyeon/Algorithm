@@ -32,31 +32,33 @@ class FastScanner {
 
 public class Main {
 
-    static int[] a = new int[9];
-    static int n = 9;
-
     public static void main(String[] args) throws Exception {
         FastScanner fs = new FastScanner(System.in);
-        int sum = 0;
+        int y = 1;
+        int e = 1;
+        int s = 1;
+        int m = 1;
+        int E,S,M;
 
+        E = fs.nextInt();
+        S = fs.nextInt();
+        M = fs.nextInt();
 
-        for (int i=0; i<n; i++) {
-            a[i] = fs.nextInt();
-            sum += a[i];
-        }
-
-        Arrays.sort(a);
-
-        for (int i=0; i<n; i++) {
-            for (int j=i+1; j<n; j++) {
-                if (sum-a[i] - a[j] == 100) {
-                    for (int k=0; k<n; k++) {
-                        if (i==k || j==k) continue;
-                        System.out.println(a[k]);
-                    }
-                    return;
-                }
+        while(true) {
+            if (e == E && s == S && m == M) {
+                System.out.println(y);
+                return;
             }
+
+            e += 1;
+            s += 1;
+            m += 1;
+
+            if (e == 16) e = 1;
+            if (s == 29) s = 1;
+            if (m == 20) m = 1;
+
+            y++;
         }
         return;
     }
