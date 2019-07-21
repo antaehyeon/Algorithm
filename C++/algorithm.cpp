@@ -6,32 +6,30 @@
 using namespace std;
 
 int main() {
-
-    int ans = INT_MAX;
     int N;
-    cin >> N;
+    while (N != 0) {
+        vector<int> a;
 
-    int w[N][N];
-    vector<int> d(N);
+        cin >> N;
 
-    for (int i=0; i<N; i++) d[i] = i;
+        for (int i=0; i<N; i++) {
+            if (i >= 6) a.push_back(0);
+            else a.push_back(1);
+        }
 
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<N; j++) cin >> w[i][j];
+        vector<int> v(N);
+
+        for (int i=0; i<N; i++) cin >> v[i];
+
+        do {
+            for (int i=0; i<N; i++) {
+                if (a[i] == 1) {
+                        cout << v[i] << " ";
+                    }
+                }
+            cout << "\n";
+        } while (prev_permutation(a.begin(), a.end()));
+
+        cout << "\n";
     }
-
-    do {
-        bool ok = true;
-        int sum = 0;
-        for (int i=0; i<N-1; i++) {
-            if (w[d[i]][d[i+1]] == 0)  ok = false;
-            else sum += w[d[i]][d[i+1]];
-        }
-        if (ok && w[d[N-1]][d[0]] != 0) {
-            sum += w[d[N-1]][d[0]];
-            if (ans > sum) ans = sum;
-        }
-    } while (next_permutation(d.begin(), d.end()));
-
-    cout << ans;
 }
