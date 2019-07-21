@@ -2,30 +2,36 @@
 #include <algorithm>
 #include <vector>
 #include <cstdlib>
+#include <climits>
 using namespace std;
 
-int cal(vector<int> v) {    
-    int sum = 0;
-    for (int i=0; i<v.size()-1; i++) {
-        sum += (abs(v[i] - v[i+1]));
+int main() {
+
+    int ans = INT_MAX;
+    int N;
+    cin >> N;
+
+    int w[N][N];
+    vector<int> d(N);
+
+    for (int i=0; i<N; i++) d[i] = i;
+
+    for (int i=0; i<N; i++) {
+        for (int j=0; j<N; j++) cin >> w[i][j];
     }
 
-    return sum;
-}
-
-int main() {
-    int N, ans = -101;
-    cin >> N;
-    vector<int> a(N);
-
-    for (int i=0; i<N; i++) cin >> a[i];
-
-    sort(a.begin(), a.end());
-
     do {
-        int temp = cal(a);
-        ans = max(ans, temp);
-    } while (next_permutation(a.begin(), a.end()));
+        bool ok = true;
+        int sum = 0;
+        for (int i=0; i<N-1; i++) {
+            if (w[d[i]][d[i+1]] == 0)  ok = false;
+            else sum += w[d[i]][d[i+1]];
+        }
+        if (ok && w[d[N-1]][d[0]] != 0) {
+            sum += w[d[N-1]][d[0]];
+            if (ans > sum) ans = sum;
+        }
+    } while (next_permutation(d.begin(), d.end()));
 
     cout << ans;
 }
