@@ -3,52 +3,38 @@
 #include <vector>
 #include <cstdlib>
 #include <climits>
+#define N 1000000
 using namespace std;
 
-int cal(int m, int a, int b) {
-    if (m == 0) return a+b;
-    else if (m == 1) return a-b;
-    else if (m == 2) return a*b;
-    else return a/b;
-}
 
 int main() {
-
-    int max = INT_MIN;
-    int min = INT_MAX;
-
-    int N;
-    cin >> N;
-
-    int A[N];
-    for (int i=0; i<N; i++) cin >> A[i];
-
-    vector<int> B;
-    for (int i=0; i<4; i++) {
-        int t;
-        cin >> t;
-
-        if (t != 0) {
-            for (int j=0; j<t; j++) B.push_back(i);
+    int prime[N];
+    int pn = 0;
+    bool check[N+1];
+    for (int i=2; i*i<=N; i++) {
+        if (!check[i]) {
+            prime[pn++] = i;
+            // 이쪽 for문은 N에 따라서 i*i 또는 i*2로 바꾸는 것이 좋다 (i가 백만인 경우 i*i는 범위를 넘어감)
+            for(int j=i*i; j<=N; j+=i) check[j] = true;
         }
     }
-    
-    do {
-        int res = 0;
-        int prev = A[0];
-        for (int i=0; i<N-1; i++) {
-            res = cal(B[i], prev, A[i+1]);
-            cout << "res : " << res << " prev: " << prev << endl;
-            prev = res;
+
+    while(1) {
+        bool flag = false;
+        int n;
+        scanf("%d", &n);
+
+        if (n==0) break;
+
+        for(int i : prime) {
+            if (i == 2) continue;
+            if (!check[n-i]) {
+                flag = true;
+                printf("%d = %d + %d\n", n, i, n-i);
+                break;
+            }
         }
 
-        if (res > max) max = res;
-        if (res < min) min = res;
-
-        cout << "** max : " << max << " min : " << min << endl; 
-    } while (next_permutation(B.begin(), B.end()));
-
-    cout << max << "\n";
-    cout << min;
-
+        if (!flag) printf("Goldbach's conjecture is wrong.");
+    }
 }
