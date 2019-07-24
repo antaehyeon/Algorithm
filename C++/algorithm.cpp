@@ -32,6 +32,7 @@
 
 #include<iostream>
 #include<algorithm>
+#include<set>
 
 using namespace std;
 
@@ -55,43 +56,23 @@ int main(int argc, char** argv)
 	*/
 	for(test_case = 1; test_case <= T; ++test_case)
 	{
-
 		/////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 			 이 부분에 여러분의 알고리즘 구현이 들어갑니다.
 		 */
 		/////////////////////////////////////////////////////////////////////////////////////////////
-        int N, K;
-        cin >> N >> K;
-        int n=1;
+        set<int> s;
+        int X;
+        cin >> X;
 
-        int A[N][K];
-
-        for (int i=0; i<N; i++) {
-            if (i%2==1) {
-                for (int j=K-1; j>=0; j--) {
-                    A[i][j] = n;
-                    n++;
-                }
-            } else {
-                for (int j=0; j<K; j++) {
-                    A[i][j] = n;
-                    n++;
-                }
-            }
+        while (X != 0) {
+            int t = X % 10;
+            X /= 10;
+            s.insert(t);            
         }
 
-        cout << "#" << test_case << " ";
-
-        for (int i=0; i<K; i++) {
-            int sum = 0;
-            for (int j=0; j<N; j++) {
-                sum += A[j][i];
-            }
-            cout << sum << " ";
-        }
-
-        cout << "\n";
+        cout << "#" << test_case << " " << s.size() << "\n";
+        
 	}
 	return 0;//정상종료시 반드시 0을 리턴해야합니다.
 }
