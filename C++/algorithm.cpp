@@ -1,34 +1,63 @@
 #include <iostream>
 #include <algorithm>
-#define MAX 100
+#include <vector>
+#include <climits>
 
 using namespace std;
-int N, L, ans=0, i, j, c, cur, next;
-int arr[MAX*2][MAX];
+
+#define MAX 21
+
+int N, answer = INT_MAX;
+int S[MAX][MAX];
+bool chk[MAX];
+
+void DFS(int cur, int cnt) {
+    if (cnt == N/2) {
+        vector<int> linkTeam, startTeam;
+        for (int i=0; i<N; i++) {
+            if (chk[i]) startTeam.push_back(i);
+            else linkTeam.push_back(i);
+        }
+
+        // cout << "[DFS] cur:" << cur << ", cnt:" << cnt << endl;
+        // cout << "[DFS] startTeam.size: " << startTeam.size() << endl;
+        // cout << "[DFS] linkTeam.size: " << linkTeam.size() << endl;
+
+        int startStat=0, linkStat=0;
+        for (int i=0; i<startTeam.size(); i++) {
+            for (int j=i+1; j<startTeam.size(); j++) {
+                int startX = startTeam[i], startY = startTeam[j];
+                int linkX = linkTeam[i], linkY = linkTeam[j];
+                startStat += S[startX][startY] + S[startY][startX];
+                linkStat += S[linkX][linkY] + S[linkY][linkX];
+            }
+        }
+        
+        answer = min(answer, abs(startStat - linkStat));
+        return;
+    }
+
+    for (int i=cur+1; i<N; i++) {
+        if (!chk[i])  {
+            chk[i] = true;
+            DFS(i, cnt+1);
+            chk[i] = false;
+        }
+    }
+}
 
 int main() {
-    cin >> N >> L;
+    cin.tie(NULL); cout.tie(NULL);
+    ios_base::sync_with_stdio(false);
 
-    for (i=0; i<N; i++)
-        for (j=0; j<N; j++)
-            cin >> arr[i][j];
-    
-    for (i=0; i<N; i++)
-        for (j=0; j<N; j++)
-            arr[i+N][j] = arr[j][i];
+    cin >> N;
+    for (int i=0; i<N; i++)
+        for (int j=0; j<N; j++)
+            cin >> S[i][j];
 
-    for (i=0; i<N*2; i++) {
-        c=1;
-        for (j=0; j<N-1; j++) {
-            cur = arr[i][j];
-            next = arr[i][j+1];
-            if (cur == next c++;
-            else if (cur+1 == next && c >= L) c=1;
-            else if (cur-1 == next && c >= 0) c = -L+1;
-            else break;
-        }
-        if (j == N-1 && c >= 0) ans++;
-    }
-    cout << ans;
+    DFS(0, 0);
+    cout << answer;
+
+
     return 0;
 }
