@@ -14,6 +14,16 @@ int dY[4] = {-1, 0, 1, 0};
 
 bool isExit = false;
 
+void Print() {
+    for (int i=0; i<N; i++) {
+        cout << "\n";
+        for (int j=0; j<M; j++) {
+            cout << arr[i][j] << " ";
+        }
+    }
+    cout << "\n";
+}
+
 int calDirection(int p) {
     if (p == 0) return 3;
     else if (p == 3) return 2;
@@ -28,31 +38,31 @@ int backDirection(int p) {
     else return 3;
 }
 
-void moveBackTwoStep(int p) {
-    if (p==0) r+=2;
-    else if (p==1) c-=2;
-    else if (p==2) r-=2;
-    else c+=2;
+void moveBack(int p) {
+    if (p==0) r++;
+    else if (p==1) c--;
+    else if (p==2) r--;
+    else c++;
 }
 
 void movePosition(int cnt, int p) {
-    if (cnt == 5) {
+    if (cnt == 4) {
         int b = backDirection(p);
-        if (arr[r+dY[b]][c+dX[b]] != 0) {
+        if (arr[r+dY[b]][c+dX[b]] == 1) {
             isExit = true;
         } else {
-            moveBackTwoStep(p);
+            moveBack(p);
         }
         return;
     }
 
     int nD = calDirection(p);
 
-
     int nR = r + dY[nD];
     int nC = c + dX[nD];
 
     if (arr[nR][nC] == 0) {
+        d = nD;
         r = nR;
         c = nC;
     } else {
@@ -79,10 +89,12 @@ int main() {
         if (isExit) break;
     }
 
-    for (int i=0; i<N; i++)
-        for (int j=0; j<M; j++)
+    for (int i=0; i<N; i++) {
+        for (int j=0; j<M; j++) {
             if (arr[i][j] == -1) res++;
-
+        }
+    }
+            
     cout << res;
     return 0;
 }
