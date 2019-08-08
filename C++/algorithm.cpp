@@ -63,67 +63,73 @@ void left(int current, int mode) {
     // cout << "left [current:" << current << "][mode:" << mode << "]\n";
     // if (current < 1) return;
 
-    if (current == 1) {
-        isSpin[current] = true;
-        isDirection[current] = mode;
-        return;
-    }
+    // if (current == 1) {
+    //     isSpin[current] = true;
+    //     isDirection[current] = mode;
+    //     return;
+    // }
+    if (!(1<=current && current<=4)) return;
 
-    int cwv = w[current].at(6);
-    int pwv = w[current-1].at(2);
+    int cwv = w[current+1].at(6);
+    int pwv = w[current].at(2);
 
-    // cout << "LEFT [cwv:" << cwv << "][pwv:" << pwv << "]\n";
+    // cout << "left [cwv:" << cwv << "][pwv:" << pwv << "]\n";
 
     if (cwv != pwv) {
         left(current-1, (mode == cw) ? ccw : cw);
-        isSpin[current] = true;
-        isDirection[current] = mode;
+        // isSpin[current] = true;
+        // isDirection[current] = mode;
+        Spin(current, (mode == cw) ? ccw : cw);
     }
 }
 
 void right(int current, int mode) {
     // cout << "right [current:" << current << "][mode:" << mode << "]\n";
     // if (current >= 4) return;
+
+    if (!(1<=current && current<=4)) return;
     
-    if (current == 4) {
-        isSpin[current] = true;
-        isDirection[current] = mode;
-        return;
-    }
+    // if (current == 4) {
+    //     isSpin[current] = true;
+    //     isDirection[current] = mode;
+    //     return;
+    // }
 
-    int cwv = w[current].at(2);
-    int pwv = w[current+1].at(6);
+    int cwv = w[current-1].at(2);
+    int nwv = w[current].at(6);
 
-    // cout << "RIGHT [cwv:" << cwv << "][pwv:" << pwv << "]\n";
+    // cout << "right [cwv:" << cwv << "][nwv:" << nwv << "]\n";
 
-    if (cwv != pwv) {
+    if (cwv != nwv) {
         right(current+1, (mode == cw) ? ccw : cw);
-        isSpin[current] = true;
-        isDirection[current] = mode;
+        // isSpin[current] = true;
+        // isDirection[current] = mode;
+        Spin(current, (mode == cw) ? ccw : cw);
     }
 }
 
 void calResult() {
     // N-0, S-1
-    if (w[1].at(0) == 1) ans += 1;
-    if (w[2].at(0) == 1) ans += 2;
-    if (w[3].at(0) == 1) ans += 4;
-    if (w[4].at(0) == 1) ans += 8;
+    if (w[1].front() == 1) ans += 1;
+    if (w[2].front() == 1) ans += 2;
+    if (w[3].front() == 1) ans += 4;
+    if (w[4].front() == 1) ans += 8;
 }
 
 int main() {
     Input();
     // Print();
+    // cout << "\n";
 
     cin >> k;
     for (int i=0; i<k; i++) {
         cin >> a >> b;
-        left(a, b);
-        right(a, b);
-        isSpin[a] = true;
-        isDirection[a] = b;
-        processSpin();
-
+        left(a-1, b);
+        right(a+1, b);
+        // isSpin[a] = true;
+        // isDirection[a] = b;
+        // processSpin();
+        Spin(a, b);
         // Print();
     }
 
