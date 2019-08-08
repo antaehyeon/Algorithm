@@ -55,10 +55,9 @@ void move() {
 }
 
 void checkSquare() {
-    for (int i=1; i<MAX; i+=2) {
-        for (int j=1; j<MAX; j++) {
+    for (int i=0; i<100; i++) {
+        for (int j=0; j<100; j++) {
             if (map[i][j] == 1 && map[i][j+1] == 1 && map[i+1][j] == 1 && map[i+1][j+1] == 1) ans++;
-            if (map[i][j] == 1 && map[i-1][j] == 1 && map[i][j+1] == 1 && map[i-1][j+1] == 1) ans++;
         }
     }
 }
