@@ -1,100 +1,83 @@
 #include <iostream>
 #include <algorithm>
-#include <queue>
-#define MAX 51
+#include <deque>
+#define MAX 101
 
 using namespace std;
-int N, M;
-int r, c, d;
-int currentD;
 
-int arr[MAX][MAX];
-int dX[4] = {0, 1, 0, -1};
-int dY[4] = {-1, 0, 1, 0};
+int n, x, y, d, g, ans;
+int map[MAX][MAX] = {0, };
+int dX[4] = {1, 0, -1, 0};
+int dY[4] = {0, -1, 0, 1};
+deque<int> dq;
 
-bool isExit = false;
 
-void Print() {
-    for (int i=0; i<N; i++) {
+void Print(deque<int> deque) {
+    while (!deque.empty()) {
+        cout << deque.front() << " ";
+        deque.pop_front();
+    }
+    cout << '\n';
+}
+
+void PrintMap() {
+    for (int i=0; i<MAX; i++) {
         cout << "\n";
-        for (int j=0; j<M; j++) {
-            cout << arr[i][j] << " ";
+        for (int j=0; j<MAX; j++) {
+            cout << map[i][j] << " ";
         }
     }
-    cout << "\n";
 }
 
-int calDirection(int p) {
-    if (p == 0) return 3;
-    else if (p == 3) return 2;
-    else if (p == 2) return 1;
-    else return 0;
-}
+void makePath() {
+    dq.push_back(d);
 
-int backDirection(int p) {
-    if (p==0) return 2;
-    else if (p==2) return 0;
-    else if (p==3) return 1;
-    else return 3;
-}
-
-void moveBack(int p) {
-    if (p==0) r++;
-    else if (p==1) c--;
-    else if (p==2) r--;
-    else c++;
-}
-
-void movePosition(int cnt, int p) {
-    if (cnt == 4) {
-        int b = backDirection(p);
-        if (arr[r+dY[b]][c+dX[b]] == 1) {
-            isExit = true;
-        } else {
-            moveBack(p);
+    for (int i=1; i<=g; i++) {
+        for (int j=dq.size(); j>0; j--) {
+            int b = dq.at(j-1)+1 == 4 ? 0 : dq.at(j-1)+1;
+            // cout << "[push:" << b << "]\n";
+            dq.push_back(b);
         }
-        return;
+        // Print(dq);
     }
+    // cout << "[dq_size:" << dq.size() << "]\n";
+}
 
-    int nD = calDirection(p);
-
-    int nR = r + dY[nD];
-    int nC = c + dX[nD];
-
-    if (arr[nR][nC] == 0) {
-        d = nD;
-        r = nR;
-        c = nC;
-    } else {
-        movePosition(cnt+1, nD);
+void move() {
+    map[y][x] = 1;
+    while(!dq.empty()) {
+        int t = dq.front();
+        dq.pop_front();
+        x = x + dX[t];
+        y = y + dY[t];
+        map[y][x] = 1;
     }
-    return;
+}
+
+void checkSquare() {
+    for (int i=1; i<MAX; i+=2) {
+        for (int j=1; j<MAX; j++) {
+            if (map[i][j] == 1 && map[i][j+1] == 1 && map[i+1][j] == 1 && map[i+1][j+1] == 1) ans++;
+            if (map[i][j] == 1 && map[i-1][j] == 1 && map[i][j+1] == 1 && map[i-1][j+1] == 1) ans++;
+        }
+    }
 }
 
 int main() {
-    int res = 0;
 
-    cin >> N >> M;
-    cin >> r >> c >> d;
+    cin >> n;
 
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<M; j++) {
-            cin >> arr[i][j];
-        }
+    for (int i=0; i<n; i++) {
+        cin >> x >> y >> d >> g;
+        makePath();
+        move();
     }
 
-    while(1) {
-        arr[r][c] = -1;
-        movePosition(0, d);
-        if (isExit) break;
-    }
+    checkSquare();
 
-    for (int i=0; i<N; i++) {
-        for (int j=0; j<M; j++) {
-            if (arr[i][j] == -1) res++;
-        }
-    }
-            
-    cout << res;
+    // PrintMap();
+
+    cout << ans << "\n";
+
     return 0;
 }
