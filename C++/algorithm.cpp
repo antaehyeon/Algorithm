@@ -1,50 +1,101 @@
 #include <iostream>
 #include <algorithm>
-#include <utility>
+#include <cstring>
 #include <vector>
-#include <string>
+#define MAX 100
 
 using namespace std;
 
-int l, c;
-vector<char> alphabet;
+int r, c, k, ans=-1;
+int map[MAX][MAX] = {0, };
+int cntArr[MAX] = {0, };
 
-bool check(string pw) {
-    int mo=0, ja=0;
-    for (auto w : pw) {
-        if (w=='a' || w=='e' || w=='i' || w=='o' || w=='u') mo++;
-        else ja++;
+void Print() {
+    cout << "#####################################\n";
+    for (int i=0; i<MAX; i++) {
+        cout << "\n";
+        for (int j=0; i<MAX; j++) {
+            cout << map[i][j] << " ";
+        }
     }
-
-    return ja>=2 && mo>=1;
+    cout << "#####################################\n";
 }
 
-
-void makePW(string pw, int cnt) {
-    // cout << "[pw.length:" << pw.length() << "][pw:" << pw << "]\n";
-    if (pw.length() == l) {
-        if (check(pw)) cout << pw << "\n";
-        return;
+void Input() {
+    cin >> r >> c >> k;
+    for(int i=0; i<3; i++) {
+        for (int j=0; j<3; j++) {
+            cin >> map[i][j];
+        }
     }
-    if (cnt >= c) return;
-    makePW(pw+alphabet[cnt], cnt+1);
-    makePW(pw, cnt+1);
 }
 
-int main() {
+void Solution() {
+    int hang=3, yul=3;
+    int size = 0;
 
-    cin >> l >> c;
+    if (hang >= yul) {
+        for (int i=0; i<hang; i++) {
+            vector<pair<int ,int>> V;
+            memset(cntArr, 0, sizeof(cntArr));
+            for (int j=0; j<yul; j++) cntArr[map[i][j]]++;
+            for (int j=0; j<MAX; j++) {
+                if (cntArr[j] == 0) continue;
+                V.push_back(make_pair(cntArr[j], j));
+            }
+            sort(V.begin(), V.end());
+            for (int j=0; j<yul; j++) map[i][j]=0;
+            size = size > V.size() ? size : V.size();
+            for (int j=0; j<size; j+=2) {
+                int cnt=V[j/2].first;
+                int num=V[j/2].second;
+                map[i][j]=num;
+                map[i][j+1]=cnt;
+            }
+        }
+    } else {
+        for (int i=0; i<yul; i++) {
+            vector<pair<int ,int>> V;
+            memset(cntArr, 0, sizeof(cntArr));
+            for (int j=0; j<hang; j++) cntArr[map[j][i]]++;
+            for (int j=0; j<MAX; j++) {
+                if (cntArr[j] == 0) continue;
+                V.push_back(make_pair(cntArr[j], j));
+            }
+            sort(V.begin(), V.end());
+            for (int j=0; j<hang; j++) map[j][i]=0;
+            size = size > V.size() ? size : V.size();
+            for (int j=0; j<size; j+=2) {
+                int cnt=V[j/2].first;
+                int num=V[j/2].second;
+                map[j][i] = num;
+                map[j+1][i] = cnt;
+            }
+        }
+    }
+    ans++;
+}
 
-    for (int i=0; i<c; i++) {
-        char tmp;
-        cin >> tmp;
-        alphabet.push_back(tmp);
+bool Check() {
+    if (map[r][c] == k) return true;
+    else if (ans > 100) {
+        ans = -1;
+        return true;
+    }
+    return false;
+}
+
+int main () {
+    ios::sync_with_stdio(false);
+    cin.tie(0); cout.tie(0);
+
+    Input();
+    while(1) {
+        if (Check()) break;
+        Solution();
+        // Print();
     }
 
-    sort(alphabet.begin(), alphabet.end());
-
-    makePW("", 0);
-
+    cout << ans;
     return 0;
 }
-
