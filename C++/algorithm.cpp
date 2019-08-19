@@ -3,34 +3,44 @@
 #include <utility>
 #include <vector>
 #include <queue>
+#define MAX 15
+#define endl "\n"
 
 using namespace std;
 
 int a[20];
-int n, m;
+int n;
+int T[MAX] = { 0, };
+int P[MAX] = { 0, };
 int ans = 0;
 
-void go(int i, int sum) {
-	if (i == n) {
-		if (sum == m) ans += 1;
+void go(int day, int sum) {
+
+	if (day == n) {
+		ans = max(ans, sum);
 		return;
 	}
-	go(i + 1, sum + a[i]);
-	go(i + 1, sum);
+
+	if (day >= n) {
+		return;
+	}
+
+	go(day + T[day], sum + P[day]);
+	go(day + 1, sum);
+
 }
 
 int main() {
 	cin.tie(NULL);
 	cout.tie(NULL);
 
-	cin >> n >> m;
+	cin >> n;
 	for (int i = 0; i < n; i++) {
-		cin >> a[i];
+		cin >> T[i] >> P[i];
 	}
 
 	go(0, 0);
-	if (m == 0) ans -= 1;
-	cout << ans << "\n";
+	cout << ans << endl;
 
 	return 0;
 }
