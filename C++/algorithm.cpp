@@ -3,12 +3,11 @@
 
 using namespace std;
 
-bool c[10] ={false, }; int a[10];
+int a[10];
 int n, m;
 
-void go (int idx) {
-
-	if (idx == m) {
+void go(int idx, int selected) {
+	if (selected == m) {
 		for (int i=0; i<m; i++) {
 			cout << a[i] << " ";
 		}
@@ -16,20 +15,19 @@ void go (int idx) {
 		return;
 	}
 
-	for (int i=1; i<=n; i++) {
-		if (c[i]) continue;
-		c[i] = true; a[idx] = i;
-		go(idx+1);
-		c[i] = false;
-	}
+	if (idx > n) return;
+	a[selected] = idx;
+	go(idx+1, selected+1);
+	a[selected] = 0;
+	go(idx+1, selected);
+
 	return;
 }
 
 int main () {
-
 	cin >> n >> m;
 
-	go(0);
+	go(1, 0);
 
 	return 0;
 }
