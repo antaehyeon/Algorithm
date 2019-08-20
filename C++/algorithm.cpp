@@ -6,8 +6,8 @@ using namespace std;
 int a[10];
 int n, m;
 
-void go(int idx, int selected) {
-	if (selected == m) {
+void go(int idx) {
+	if (idx == m) {
 		for (int i=0; i<m; i++) {
 			cout << a[i] << " ";
 		}
@@ -15,19 +15,16 @@ void go(int idx, int selected) {
 		return;
 	}
 
-	if (idx > n) return;
-	a[selected] = idx;
-	go(idx+1, selected+1);
-	a[selected] = 0;
-	go(idx+1, selected);
-
-	return;
+	for (int i=1; i<=n; i++) {
+		a[idx]=i;
+		go(idx+1);
+	}
 }
 
 int main () {
 	cin >> n >> m;
 
-	go(1, 0);
+	go(0);
 
 	return 0;
 }
