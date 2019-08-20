@@ -4,12 +4,11 @@
 
 using namespace std;
 
-bool c[10];
 int a[10];
 vector<int> nums;
 int n, m;
 
-void go(int idx, int start) {
+void go(int idx) {
 	if (idx == m) {
 		for (int i=0; i<m; i++) {
 			cout << nums[a[i]] << " ";
@@ -18,11 +17,9 @@ void go(int idx, int start) {
 		return;
 	}
 
-	for (int i=start; i<n; i++) {
-		if (c[i]) continue;
-		c[i]=true; a[idx]=i;
-		go(idx+1, i+1);
-		c[i]=false;
+	for (int i=0; i<n; i++) {
+		a[idx]=i;
+		go(idx+1);
 	}
 }
 
@@ -37,7 +34,7 @@ int main () {
 
 	sort(nums.begin(), nums.end());
 
-	go(0, 0);
+	go(0);
 
 	return 0;
 }
