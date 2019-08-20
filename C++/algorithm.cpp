@@ -8,7 +8,7 @@ int a[10];
 vector<int> nums;
 int n, m;
 
-void go(int idx) {
+void go(int idx, int start) {
 	if (idx == m) {
 		for (int i=0; i<m; i++) {
 			cout << nums[a[i]] << " ";
@@ -17,9 +17,9 @@ void go(int idx) {
 		return;
 	}
 
-	for (int i=0; i<n; i++) {
+	for (int i=start; i<n; i++) {
 		a[idx]=i;
-		go(idx+1);
+		go(idx+1, i);
 	}
 }
 
@@ -34,7 +34,7 @@ int main () {
 
 	sort(nums.begin(), nums.end());
 
-	go(0);
+	go(0, 0);
 
 	return 0;
 }
