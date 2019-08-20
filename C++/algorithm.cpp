@@ -1,35 +1,35 @@
 #include <iostream>
 #include <algorithm>
-#include <utility>
-#include <vector>
-#include <queue>
-#define MAX 21
-#define endl "\n"
 
 using namespace std;
 
-int n, s, ans=0;
-int a[MAX] = {0, };
+bool c[10] ={false, }; int a[10];
+int n, m;
 
-int main() {
+void go (int idx) {
 
-	cin >> n >> s;
-	
-	for (int i=0; i<n; i++) {
-		cin >> a[i];
-	}
-
-	for (int i=1; i<(1<<n); i++) {
-		int sum = 0;
-		for (int k=0; k<n; k++) {
-			if (i&(1<<k)) {
-				sum += a[k];
-			}
+	if (idx == m) {
+		for (int i=0; i<m; i++) {
+			cout << a[i] << " ";
 		}
-		if (sum == s) ans += 1;
+		cout << "\n";
+		return;
 	}
 
-	cout << ans;
+	for (int i=1; i<=n; i++) {
+		if (c[i]) continue;
+		c[i] = true; a[idx] = i;
+		go(idx+1);
+		c[i] = false;
+	}
+	return;
+}
+
+int main () {
+
+	cin >> n >> m;
+
+	go(0);
 
 	return 0;
 }
