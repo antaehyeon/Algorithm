@@ -1,40 +1,23 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
+#include <string>
 
 using namespace std;
 
-int a[10];
-vector<int> nums;
-int n, m;
+int main() {
 
-void go(int idx, int start) {
-	if (idx == m) {
-		for (int i=0; i<m; i++) {
-			cout << nums[a[i]] << " ";
-		}
-		cout << "\n";
-		return;
-	}
-
-	for (int i=start; i<n; i++) {
-		a[idx]=i;
-		go(idx+1, i);
-	}
-}
-
-int main () {
-	cin >> n >> m;
+	int n, score, sum =0;
+	cin >> n;
 
 	for (int i=0; i<n; i++) {
-		int temp;
-		cin >> temp;
-		nums.push_back(temp);
+		for(int j=0; j<5; j++) {
+			cin >> score;
+			if (score <= 40) sum += 40;
+			else sum += score;
+		}
+		cout << "#" << i+1 << " " << sum/5 << endl;
+		sum = 0;
 	}
-
-	sort(nums.begin(), nums.end());
-
-	go(0, 0);
 
 	return 0;
 }
