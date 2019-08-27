@@ -2,148 +2,89 @@
 #include <algorithm>
 #include <vector>
 #include <utility>
-#include <string.h>
-#define MAX 8
+#include <math.h>
+#define MAX 51
+#define INF 987654321
 
 using namespace std;
 
-int n, m, ans = 987654321;
+int n, m, ans = INF;
 int map[MAX][MAX];
-vector <pair<int, pair<int, int>>> cctvList;
+vector<pair<int, int>> homeList;
+vector<pair<int, int>> chickenList;
+vector<vector<int>> permutation;
 
-void Print(int arr[MAX][MAX]) {
-	cout << "#########" << endl;
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			cout << arr[i][j] << " ";
-		}
-		cout << endl;
-	}
-	
+int calAbs(int a, int b, int c, int d) {
+	int t1 = a > b ? (a - b) : (b - a);
+	int t2 = c > d ? (c - d) : (d - c);
+
+	return t1 + t2;
 }
 
-void detect(int visited[][MAX], int y, int x, int dir) {
-	switch (dir) {
-	case 0: // right
-		for (int i = x; i < m; i++) {
-			if (visited[y][i] == 6) break;
-			visited[y][i] = 7;
+void cal(vector<pair<int, int>> v) {
+
+	int res = 0;
+	int cnt = INF;
+
+	for (pair<int, int> home : homeList) {
+		for (pair<int, int> c : v) {
+			cnt = min(cnt, calAbs(home.first, c.first, home.second, c.second));
 		}
-		break;
-	case 1: // bottom
-		for (int i = y; i < n; i++) {
-			if (visited[i][x] == 6) break;
-			visited[i][x] = 7;
-		}
-		break;
-	case 2: // left
-		for (int i = x; i >= 0; i--) {
-			if (visited[y][i] == 6) break;
-			visited[y][i] = 7;
-		}
-		break;
-	case 3: // top
-		for (int i = y; i >= 0; i--) {
-			if (visited[i][x] == 6) break;
-			visited[i][x] = 7;
-		}
-		break;
+		res += cnt;
+		cnt = INF;
 	}
+
+	ans = min(ans, res);
 }
 
-void search(int idx, int prev[][MAX]) {
-	int visited[MAX][MAX];
 
+void solution(vector<int> v) {
 
-	if (idx == cctvList.size()) {
-		int cnt = 0;
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < m; j++) {
-				if (prev[i][j] == 0) cnt++;
-			}
-		}
-
-		if (ans > cnt) ans = cnt;
+	vector<pair<int, int>> cl;
+	for (int idx : v) {
+		cl.push_back(make_pair(chickenList[idx].first, chickenList[idx].second));
 	}
-	else {
-		pair<int, pair<int, int>> p = cctvList.at(idx);
-		int y = p.first;
-		int x = p.second.first;
-		int type = p.second.second;
-
-		switch (type) {
-		case 1:
-			for (int i = 0; i < 4; i++) {
-				for (int k = 0; k < n; k++) {
-					memcpy(visited[k], prev[k], sizeof(prev[k]));
-				}
-				detect(visited, y, x, i);
-				search(idx + 1, visited);
-			}
-			break;
-		case 2:
-			for (int i = 0; i < 2; i++) {
-				for (int k = 0; k < n; k++) {
-					memcpy(visited[k], prev[k], sizeof(prev[k]));
-				}
-				detect(visited, y, x, i);
-				detect(visited, y, x, i + 2);
-				search(idx + 1, visited);
-			}
-			break;
-		case 3:
-			for (int i = 0; i < 4; i++) {
-				for (int k = 0; k < n; k++) {
-					memcpy(visited[k], prev[k], sizeof(prev[k]));
-				}
-				detect(visited, y, x, i);
-				detect(visited, y, x, (i + 1) % 4);
-				search(idx + 1, visited);
-			}
-			break;
-		case 4:
-			for (int i = 0; i < 4; i++) {
-				for (int k = 0; k < n; k++) {
-					memcpy(visited[k], prev[k], sizeof(prev[k]));
-				}
-				detect(visited, y, x, i);
-				detect(visited, y, x, (i + 1) % 4);
-				detect(visited, y, x, (i + 2) % 4);
-				search(idx + 1, visited);
-			}
-			break;
-		case 5:
-			for (int k = 0; k < n; k++) {
-				memcpy(visited[k], prev[k], sizeof(prev[k]));
-			}
-			detect(visited, y, x, 0);
-			detect(visited, y, x, 1);
-			detect(visited, y, x, 2);
-			detect(visited, y, x, 3);
-			search(idx + 1, visited);
-			break;
-		}
-	}
+	cal(cl);
 }
+
+void check() {
+	vector<int> tmp;
+	int chickenListN = chickenList.size();
+
+	if (chickenListN > m) {
+		for (int i = 0; i < chickenListN - m; i++) {
+			tmp.push_back(0);
+		}
+	}
+
+	for (int i = 0; i < m; i++) tmp.push_back(1);
+
+	do {
+		vector<int> selChickenIdx;
+		for (int i = 0; i < chickenListN; i++) {
+			if (tmp[i] == 1) selChickenIdx.push_back(i);
+		}
+		solution(selChickenIdx);
+	} while (next_permutation(tmp.begin(), tmp.end()));
+}
+
 
 
 int main() {
-	
+
 	cin >> n >> m;
 	
 	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
+		for (int j = 0; j < n; j++) {
 			cin >> map[i][j];
-			if (map[i][j] != 0 && map[i][j] != 6) {
-				cctvList.push_back(make_pair(i, make_pair(j, map[i][j])));
-			}
+			if (map[i][j] == 1) homeList.push_back(make_pair(i, j));
+			else if (map[i][j] == 2) chickenList.push_back(make_pair(i, j));
 		}
 	}
 
-	search(0, map);
+	check();
 
 	cout << ans;
 
 	return 0;
 }
-
