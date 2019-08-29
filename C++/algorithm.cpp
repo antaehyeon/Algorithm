@@ -1,53 +1,55 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <string.h>
-#define MAX 2001
+#define MAX 1001
 
 using namespace std;
 
 int n, m, ans = 0;
-bool visit[MAX] = { false, };
+bool visit[MAX];
 vector<int> graph[MAX];
-bool isAns = false;
 
-
-void DFS(int start, int cnt) {
-	if (cnt == 4) {
-		isAns = true; return;
-	}
-	visit[start] = true;
-	for (int i = 0; i < graph[start].size(); i++) {
-		int next = graph[start][i];
-		if (visit[next]) continue;
-		DFS(next, cnt + 1);
-	}
-	visit[start] = false;
-}
-
-
-int main() {
-	cin >> n >> m;
+void input() {
+	int v1, v2;
 	for (int i = 0; i < m; i++) {
-		int v1, v2;
 		cin >> v1 >> v2;
 		graph[v1].push_back(v2);
 		graph[v2].push_back(v1);
 	}
+}
 
-	for (int i = 0; i < n; i++) {
-		sort(graph[i].begin(), graph[i].end());
+void DFS(int start) {
+	visit[start] = true;
+
+	for (int i = 0; i < graph[start].size(); i++) {
+		int next = graph[start][i];
+		if (!visit[next]) {
+			DFS(next);
+		}
+	}
+}
+
+int check() {
+	for (int i = 1; i <= n; i++) {
+		if (!visit[i]) {
+			ans++;
+			return i;
+		}
+	}
+	return -1;
+}
+
+int main() {
+	cin >> n >> m;
+	input();
+
+	while (1) {
+		int idx = check();
+		if (idx == -1) break;
+		DFS(idx);
 	}
 
-	for (int i = 0; i < n; i++) {
-		memset(visit, false, sizeof(visit)); ans = 0;
-		DFS(i, 0);
-		if (isAns) break;
-	}
-
-	if (isAns) cout << 1 << endl;
-	else cout << 0 << endl;
+	cout << ans;
 
 	return 0;
 }
-
