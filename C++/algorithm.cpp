@@ -1,82 +1,67 @@
 #include <iostream>
 #include <algorithm>
 #include <string.h>
+#include <queue>
 #define endl "\n"
-#define MAX 50
+#define MAX 101
 
 using namespace std;
 
-int w, h, ans = 0;
+int n, m;
 int map[MAX][MAX];
 
-int dx[8] = { 1, -1, 0, 0, -1, 1, 1, -1 };
-int dy[8] = { 0, 0, 1, -1, -1, -1, 1, 1 };
+int dx[4] = { 1, -1, 0, 0 };
+int dy[4] = { 0, 0, 1, -1 };
 
 void input() {
-	for (int i = 0; i < h; i++) {
-		for (int j = 0; j < w; j++) {
-			cin >> map[i][j];
+	cin >> n >> m;
+
+	for (int i = 1; i <= n; i++) {
+		for (int j = 1; j <= m; j++) {
+			scanf("%1d", &map[i][j]);
 		}
 	}
 }
 
 bool isAccessable(int y, int x) {
-	return (y >= 0 && y < h) && (x >= 0 && x < w);
+	return (y > 0 && y <= n) && (x > 0 && x <= m);
 }
 
-void DFS(int y, int x) {
-	map[y][x] = 2;
+void BFS() {
+	int cv = 0;
+	queue<pair<int, int>> q;
 
-	for (int i = 0; i < 8; i++) {
-		int nextX = x + dx[i];
-		int nextY = y + dy[i];
+	q.push(make_pair(1, 1));
 
-		if (!isAccessable(nextY, nextX)) continue;
+	while (!q.empty()) {
+		int cx = q.front().second;
+		int cy = q.front().first;
+		q.pop();
+		cv = map[cy][cx];
 
-		if (map[nextY][nextX] == 1) {
-			DFS(nextY, nextX);
-		}
-	}
-}
+		for (int i = 0; i < 4; i++) {
+			int nx = cx + dx[i];
+			int ny = cy + dy[i];
 
-void solution() {
-	for (int i = 0; i < h; i++) {
-		for (int j = 0; j < w; j++) {
-			
-			if (map[i][j] == 1) {
-				ans++;
-				DFS(i, j);
+			if (!isAccessable(ny, nx)) continue;
+
+			if (map[ny][nx] == 1) {
+				map[ny][nx] = cv + 1;
+				q.push(make_pair(ny, nx));
 			}
-
 		}
 	}
 }
 
-void reset() {
-	for (int i = 0; i < h; i++) {
-		memset(map[i], 0, sizeof(map[i]));
-	}
-	ans = 0;
-}
 
 int main() {
-	ios_base :: sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+	// ios_base::sync_with_stdio(false);
+	// cin.tie(NULL); cout.tie(NULL);
 
-	while (1) {
-		cin >> w >> h;
+	input();
+	BFS();
 
-		if (w == 0 && h == 0) break;
+	cout << map[n][m] << endl;
 
-		input();
-		solution();
-		cout << ans << endl;
-		reset();
-	}
-
-	
-
-
-
+	return 0;
 }
