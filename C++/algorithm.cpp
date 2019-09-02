@@ -1,84 +1,79 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <string.h>
-#define MAX 200001
+#define MAX 25
 
 using namespace std;
 
-int k, n, m;
-bool isAnswer = true;
-bool visit[MAX];
-int flag[MAX] = { -1, };
-int f = 1;
-vector<int> graph[MAX];
-vector<string> answerList;
+int n, cnt = 0;
+vector<int> v;
+int map[MAX][MAX];
+
+int dx[4] = { 1, -1, 0, 0 };
+int dy[4] = { 0 ,0, 1, -1 };
 
 void input() {
-	int v1, v2;
-	for (int i = 0; i < m; i++) {
-		cin >> v1 >> v2;
-		graph[v1].push_back(v2);
-		graph[v2].push_back(v1);
-	}
-}
+	cin >> n;
 
-void DFS(int start) {
-	visit[start] = true;
-	flag[start] = f;
-	f = f == 1 ? 2 : 1;
-
-	for (int i = 0; i < graph[start].size(); i++) {
-		int next = graph[start][i];
-		if (flag[next] == flag[start]) {
-			isAnswer = false;
-			return;
-		}
-
-		if (!visit[next]) {
-			DFS(next);
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			scanf("%1d", &map[i][j]);
 		}
 	}
 }
 
-void reset() {
-	for (int i = 1; i < MAX; i++) {
-		graph[i].erase(graph[i].begin(), graph[i].end());
-	}
-	memset(visit, false, sizeof(visit));
-	memset(flag, -1, sizeof(flag));
-	f = 1;
-	isAnswer = true;
+bool isAccessable(int y, int x) {
+	return (y >= 0 && y < n) && (x >= 0 && x < n);
 }
 
-void storeAnswer() {
-	if (isAnswer) answerList.push_back("YES");
-	else answerList.push_back("NO");
-}
+void DFS(int y, int x) {
+	map[y][x] = 2;
+	for (int i = 0; i < 4; i++) {
+		int nextX = x + dx[i];
+		int nextY = y + dy[i];
 
-void printAnswer() {
-	int cnt = 0;
-	for (auto ans : answerList) {
-		cnt++;
-		if (cnt == answerList.size()) {
-			cout << ans;
-		}
-		else {
-			cout << ans << endl;
+		if (!isAccessable(nextY, nextX)) continue;
+
+		if (map[nextY][nextX] == 1) {
+			cnt++;
+			DFS(nextY, nextX);
 		}
 	}
+}
+
+void solution() {
+
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			int data = map[i][j];
+
+			if (data == 1) {
+				cnt++;
+				DFS(i, j);
+				v.push_back(cnt);
+				cnt = 0;
+			}
+		}
+	}
+
+}
+
+void print() {
+
+	cout << v.size() << endl;
+
+	sort(v.begin(), v.end());
+
+	for (auto i : v) {
+		cout << i << endl;
+	}
+
 }
 
 int main() {
-	cin >> k;
-	for (int i = 0; i < k; i++) {
-		cin >> n >> m;
-		if (i!=0) reset();
-		input();
-		DFS(1);
-		storeAnswer();
-	}
-	printAnswer();
+	input();
+	solution();
+	print();
 
 	return 0;
 }
