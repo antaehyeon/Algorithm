@@ -1,29 +1,39 @@
 #include <iostream>
 #include <algorithm>
-#include <unordered_set>
+#include <deque>
 #include <vector>
 
 using namespace std;
 
-int main() {
-	vector<int> A;
-	unordered_set<int> us;
+vector<int> test{ 3, 8, 9, 7, 6 };
+int K = 3;
 
-	A.push_back(9);
-	A.push_back(3);
-	A.push_back(9);
-	A.push_back(3);
-	A.push_back(9);
-	A.push_back(7);
-	A.push_back(9);
+vector<int> solution(vector<int>& A, int K) {
+	// write your code in C++14 (g++ 6.2.0)
+	vector<int> empty;
+	int len = A.size();
 
-	for (auto n : A) {
-		auto a = us.find(n);
-		
-		if (a == us.end()) us.insert(n);
-		else us.erase(a);
+	if (len == 0) return empty;
+
+	int r = K % len;
+
+	deque<int> dq({ A.begin(), A.end() });
+	
+	for (int i = 0; i < r; i++) {
+		int temp = dq.back();
+		dq.pop_back();
+		dq.push_front(temp);
 	}
 
-	cout << *us.begin() << endl;
-	return *us.begin();
+	return vector<int>({ dq.begin(), dq.end() });
+}
+
+
+int main() {
+	
+	for (auto i : solution(test, K)) {
+		cout << i << " ";
+	}
+
+	return 0;
 }
