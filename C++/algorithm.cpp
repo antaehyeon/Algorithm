@@ -1,36 +1,29 @@
 #include <iostream>
 #include <algorithm>
-#include <bitset>
-#include <string>
+#include <unordered_set>
+#include <vector>
 
 using namespace std;
 
 int main() {
+	vector<int> A;
+	unordered_set<int> us;
 
-	int ans = 0;
-	int test = 1041;
-	int cnt = 0;
-	bool isFlag = false;
+	A.push_back(9);
+	A.push_back(3);
+	A.push_back(9);
+	A.push_back(3);
+	A.push_back(9);
+	A.push_back(7);
+	A.push_back(9);
 
-	cout << bitset<32>(test) << endl;
-
-	string bitStr = bitset<32>(test).to_string();
-
-	
-	for (auto l : bitStr) {
-		if (isFlag && l == '0') {
-			cnt++;
-		}
-		else if (!isFlag && l == '1') {
-			isFlag = true;
-		}
-		else {
-			ans = ans > cnt ? ans : cnt;
-			cnt = 0;
-		}
+	for (auto n : A) {
+		auto a = us.find(n);
+		
+		if (a == us.end()) us.insert(n);
+		else us.erase(a);
 	}
 
-	cout << ans << endl;
-
-	return 0;
+	cout << *us.begin() << endl;
+	return *us.begin();
 }
