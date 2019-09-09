@@ -1,39 +1,79 @@
 #include <iostream>
 #include <algorithm>
+#include <set>
 #include <deque>
 #include <vector>
+#include <string>
+#include <sstream>
 
 using namespace std;
 
-vector<int> test{ 3, 8, 9, 7, 6 };
-int K = 3;
+vector<string> split(string str, char delimiter) {
+	vector<string> internal;
+	stringstream ss(str);
+	string temp;
 
-vector<int> solution(vector<int>& A, int K) {
-	// write your code in C++14 (g++ 6.2.0)
-	vector<int> empty;
-	int len = A.size();
-
-	if (len == 0) return empty;
-
-	int r = K % len;
-
-	deque<int> dq({ A.begin(), A.end() });
-	
-	for (int i = 0; i < r; i++) {
-		int temp = dq.back();
-		dq.pop_back();
-		dq.push_front(temp);
+	while (getline(ss, temp, delimiter)) {
+		internal.push_back(temp);
 	}
 
-	return vector<int>({ dq.begin(), dq.end() });
+	return internal;
+}
+
+string solution(string& message, int k) {
+	string ans = "";
+	vector<string> sv;
+	int firstSpaceIdx = 987654321;
+	bool isFlag = false;
+
+	int len = message.length();
+
+	if (len <= k) return message;
+
+	for (int i = 0; i < k; i++) {
+		ans += message[i];
+		if (!isFlag && message[i] == ' ') {
+			firstSpaceIdx = i;
+			isFlag = true;
+		}
+	}
+
+	if (ans.length() < firstSpaceIdx) return "";
+
+	if (message[k-1] != ' ' && message[k] != ' ') {
+		auto splited = split(ans, ' ');
+
+		ans = "";
+
+		if (splited.size() == 1) ans = splited[0];
+		else {
+			for (int i = 0; i < splited.size() - 1; i++) {
+				ans += splited[i];
+
+				if (splited.size() - 2 != i) ans += ' ';
+			}
+		}
+	}
+
+	if (ans[ans.length() - 1] == ' ') ans.erase(ans.length() - 1, 1);
+
+	cout << ans << endl;
 }
 
 
 int main() {
-	
-	for (auto i : solution(test, K)) {
-		cout << i << " ";
-	}
+
+	string test = "Codility we test corder";
+
+	solution(test, 18);
+	// solution(test, 2);
+	// solution(test, 3);
+	// solution(test, 4);
+	// solution(test, 5);
+	// solution(test, 6);
+	// solution(test, 7);
+	// solution(test, 8);
+	// solution(test, 9);
 
 	return 0;
 }
