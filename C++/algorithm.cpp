@@ -1,79 +1,68 @@
 #include <iostream>
 #include <algorithm>
-#include <set>
-#include <deque>
 #include <vector>
-#include <string>
-#include <sstream>
+#include <utility>
 
 using namespace std;
 
-vector<string> split(string str, char delimiter) {
-	vector<string> internal;
-	stringstream ss(str);
-	string temp;
+struct info {
+	int start;
+	int end;
+	int size;
+};
 
-	while (getline(ss, temp, delimiter)) {
-		internal.push_back(temp);
-	}
-
-	return internal;
+bool compare(info a, info b) {
+	return a.size > b.size;
 }
 
-string solution(string& message, int k) {
-	string ans = "";
-	vector<string> sv;
-	int firstSpaceIdx = 987654321;
+int solution(vector<int> &A) {
+	int start;
+	int end;
 	bool isFlag = false;
+	vector<info> v;
+	int size = A.size();
 
-	int len = message.length();
-
-	if (len <= k) return message;
-
-	for (int i = 0; i < k; i++) {
-		ans += message[i];
-		if (!isFlag && message[i] == ' ') {
-			firstSpaceIdx = i;
-			isFlag = true;
-		}
-	}
-
-	if (ans.length() < firstSpaceIdx) return "";
-
-	if (message[k-1] != ' ' && message[k] != ' ') {
-		auto splited = split(ans, ' ');
-
-		ans = "";
-
-		if (splited.size() == 1) ans = splited[0];
-		else {
-			for (int i = 0; i < splited.size() - 1; i++) {
-				ans += splited[i];
-
-				if (splited.size() - 2 != i) ans += ' ';
+	for (int i = 1; i < size; i++) {
+		if (isFlag) {
+			if (A[i - 1] > A[i]) {
+				isFlag = false;
+				v.push_back({ start, end, end - start + 1 });
+			}
+			else {
+				end = i;
 			}
 		}
+		else {
+			if (A[i - 1] < A[i]) {
+				isFlag = true;
+				start = i - 1;
+				end = i;
+			}
+		}
+
+		v.push_back({ i - 1, i, 1 });
 	}
 
-	if (ans[ans.length() - 1] == ' ') ans.erase(ans.length() - 1, 1);
+	v.push_back({ size-1, size-1, 1 });
 
-	cout << ans << endl;
+	sort(v.begin(), v.end(), compare);
+
+	// cout << v[0].start << endl;
+
+	//for (auto t : v) {
+	// 	cout << "start : " << t.start << " end : " << t.end << " size : " << t.size << endl;
+	//}
+
+	return v[0].start;
 }
 
 
 int main() {
 
-	string test = "Codility we test corder";
+	vector<int> A({ 2, 2, 2, 2, 1, 2, -1, 2, 1, 3 });
+	vector<int> B({30, 20, 10 });
 
-	solution(test, 18);
-	// solution(test, 2);
-	// solution(test, 3);
-	// solution(test, 4);
-	// solution(test, 5);
-	// solution(test, 6);
-	// solution(test, 7);
-	// solution(test, 8);
-	// solution(test, 9);
+	cout << solution(A) << endl;
 
 	return 0;
 }
