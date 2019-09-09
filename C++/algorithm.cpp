@@ -1,68 +1,35 @@
 #include <iostream>
 #include <algorithm>
 #include <vector>
-#include <utility>
 
 using namespace std;
 
-struct info {
-	int start;
-	int end;
-	int size;
-};
+vector<int> solution(int N) {
 
-bool compare(info a, info b) {
-	return a.size > b.size;
-}
+	vector<int> ans;
 
-int solution(vector<int> &A) {
-	int start;
-	int end;
-	bool isFlag = false;
-	vector<info> v;
-	int size = A.size();
-
-	for (int i = 1; i < size; i++) {
-		if (isFlag) {
-			if (A[i - 1] > A[i]) {
-				isFlag = false;
-				v.push_back({ start, end, end - start + 1 });
-			}
-			else {
-				end = i;
-			}
-		}
-		else {
-			if (A[i - 1] < A[i]) {
-				isFlag = true;
-				start = i - 1;
-				end = i;
-			}
-		}
-
-		v.push_back({ i - 1, i, 1 });
+	if (N == 1) {
+		ans.push_back(0);
+		return ans;
 	}
+	
+	for (int i = 1; i <= N / 2; i++) ans.push_back(i);
+	if (N % 2 != 0) ans.push_back(0);
+	for (int i = 1; i <= N / 2; i++) ans.push_back(-i);
 
-	v.push_back({ size-1, size-1, 1 });
-
-	sort(v.begin(), v.end(), compare);
-
-	// cout << v[0].start << endl;
-
-	//for (auto t : v) {
-	// 	cout << "start : " << t.start << " end : " << t.end << " size : " << t.size << endl;
-	//}
-
-	return v[0].start;
+	return ans;
 }
 
 
 int main() {
 
-	vector<int> A({ 2, 2, 2, 2, 1, 2, -1, 2, 1, 3 });
-	vector<int> B({30, 20, 10 });
+	for (int i : solution(10)) {
+		cout << i << " ";
+	}
 
-	cout << solution(A) << endl;
+	//cout << solution(3) << endl;
+	//cout << solution(4) << endl;
+	//cout << solution(3) << endl;
 
 	return 0;
 }
