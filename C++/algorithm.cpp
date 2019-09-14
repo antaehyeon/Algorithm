@@ -1,35 +1,58 @@
 #include <iostream>
 #include <algorithm>
-#include <vector>
+#include <utility>
+#include <string>
+
+int ans = 987654321;
 
 using namespace std;
 
-vector<int> solution(int N) {
+void solution(string &str, int k) {
+	int strSize = str.length();
+	int cnt = 0;
+	bool isFlag = false;
+	string prevStr = str.substr(0, k);
+	string nextStr = "";
 
-	vector<int> ans;
-
-	if (N == 1) {
-		ans.push_back(0);
-		return ans;
+	if (k == strSize) {
+		ans = ans > cnt ? cnt : ans;
+		return;
 	}
-	
-	for (int i = 1; i <= N / 2; i++) ans.push_back(i);
-	if (N % 2 != 0) ans.push_back(0);
-	for (int i = 1; i <= N / 2; i++) ans.push_back(-i);
 
-	return ans;
+	for (int i = k; i < strSize; i++) {
+		nextStr += str[i];
+		if (i % k == 0) {
+			if (prevStr.length() > strSize - i) {
+				cnt += (strSize - i);
+			}
+
+			if (prevStr != nextStr) {
+				if (!isFlag) cnt += k;
+				isFlag = false;
+			}
+			else if (prevStr == nextStr) {
+				if (!isFlag) cnt += (k + 1);
+				isFlag = true;
+			}
+
+			prevStr = nextStr;
+			nextStr = "";
+		}
+	}
+
+	ans = ans > cnt ? cnt : ans;
 }
-
 
 int main() {
 
-	for (int i : solution(10)) {
-		cout << i << " ";
+	string t1 = "aabbaccc";
+
+	for (int i = 1; i <= 8; i++) {
+		solution(t1, i);
 	}
 
-	//cout << solution(3) << endl;
-	//cout << solution(4) << endl;
-	//cout << solution(3) << endl;
+	cout << ans << endl;
+
 
 	return 0;
 }
