@@ -31,7 +31,7 @@ pos mainShark;
 
 void input() {
 	cin >> n;
-	
+
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < n; j++) {
 			cin >> map[i][j];
@@ -49,9 +49,6 @@ bool isAccessable(int y, int x) {
 }
 
 bool compare(pos p1, pos p2) {
-
-	// return (p1.x < p2.x) && (p1.y < p2.y) && (p1.s < p2.s);
-
 	return p1.x < p2.x;
 }
 
@@ -63,27 +60,46 @@ bool compare3(pos p1, pos p2) {
 	return p1.d < p2.d;
 }
 
+bool nc(pos p1, pos p2) {
+	if (p1.d <= p2.d) {
+		if (p1.d == p2.d) {
+			if (p1.y <= p2.y) {
+				if (p1.y == p2.y) {
+					if (p1.x < p2.x) {
+						return true;
+					}
+					return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+	return false;
+}
+
 void reset() {
 	// vector<pos> sv;
 	// sharks.swap(sv);
 	// sharks.erase(sharks.begin(), sharks.end() + 1);
 	sharks.clear();
 
-	for (int i = 0; i < n; i++) {
+	for (int i = 0; i < MAX; i++) {
 		memset(tmp[i], 0, sizeof(tmp[i]));
 	}
 }
 
 void BFS() {
 	queue<pos> list;
-	list.push({ mainShark.y, mainShark.x, mainShark.s });
+	list.push({ mainShark.y, mainShark.x, mainShark.s, 0 });
 
 	while (!list.empty()) {
 		int x = list.front().x;
 		int y = list.front().y;
 		int v = tmp[y][x];
 		list.pop();
-		
+
 		for (int i = 0; i < 4; i++) {
 			int nx = x + dx[i];
 			int ny = y + dy[i];
@@ -91,11 +107,11 @@ void BFS() {
 			if (!isAccessable(ny, nx)) continue;
 			if (tmp[ny][nx] > 0) continue;
 			if (map[ny][nx] > mainShark.s) continue;
-			if (map[ny][nx] > 0 && map[ny][nx] != 9 && map[ny][nx] != mainShark.s) {
+			if (map[ny][nx] > 0 && map[ny][nx] != 9 && map[ny][nx] < mainShark.s) {
 				sharks.push_back({ ny, nx, map[ny][nx], v+1 });
 			}
 			tmp[ny][nx] = v + 1;
-			list.push({ ny, nx, map[ny][nx] });
+			list.push({ ny, nx, map[ny][nx], v+1 });
 		}
 	}
 }
@@ -106,13 +122,13 @@ void cal() {
 		return;
 	}
 
-	sort(sharks.begin(), sharks.end(), compare);
-	sort(sharks.begin(), sharks.end(), compare2);
-	sort(sharks.begin(), sharks.end(), compare3);
+	sort(sharks.begin(), sharks.end(), nc);
+	// sort(sharks.begin(), sharks.end(), compare2);
+	// sort(sharks.begin(), sharks.end(), compare3);
 
 	if (mainShark.s > sharks[0].s) {
 		map[mainShark.y][mainShark.x] = 0;
-		map[sharks[0].y][sharks[0].x] = mainShark.s;
+		map[sharks[0].y][sharks[0].x] = 9;
 		upgradeCnt++;
 		time += sharks[0].d;
 	}
@@ -123,7 +139,7 @@ void cal() {
 
 	mainShark.y = sharks[0].y;
 	mainShark.x = sharks[0].x;
-	
+
 	if (upgradeCnt == mainShark.s) {
 		mainShark.s = upgradeCnt + 1;
 		upgradeCnt = 0;
