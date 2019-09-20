@@ -6,19 +6,30 @@
 
 using namespace std;
 
-int money, ans = 0;
-int coinList[6] = { 500, 100, 50, 10, 5, 1 };
+int n, sum = 0, avg = 0, ans = -987654321;
+vector<int> nv;
+
+bool compare(int n1, int n2) {
+	return n1 > n2;
+}
 
 int main() {
-	cin >> money;
-	int targetMoney = 1000 - money;
+	cin >> n;
 
-	int a;
+	for (int i = 0; i < n; i++) {
+		int t;
+		cin >> t;
+		sum += t;
+		nv.push_back(t);
+	}
 
-	for (int i = 0; i < 6; i++) {
-		ans += (targetMoney / coinList[i]);
-		targetMoney %= coinList[i];
-		if (targetMoney == 0) break;
+	avg = sum / n;
+
+	sort(nv.begin(), nv.end(), compare);
+
+	for (int i = 1; i <= n; i++) {
+		int temp = nv[i-1] * i;
+		ans = ans > temp ? ans : temp;
 	}
 
 	cout << ans;
