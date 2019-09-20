@@ -6,29 +6,22 @@
 
 using namespace std;
 
-int n;
-int p = 0;
-int sum = 0;
-vector<int> v;
+int n, k, m;
+vector<int> coins;
 
 int main() {
 
-    cin >> n;
-
+    cin >> n >> k;
     for (int i=0; i<n; i++) {
-        int t;
-        cin >> t;
-        v.push_back(t);
+        int coin;
+        cin >> coin;
+        coins.push_back(coin);
     }
 
-    sort(v.begin(), v.end());
-
-    for (int i=0; i<n; i++) {
-        p += v[i];
-        sum += p;
+    for (int i=n-1; i>=0; i--) {
+        m += (k/coins[i]);
+        k %= coins[i];
     }
 
-    cout << sum << endl;
-
-    return 0;
+    cout << m;
 }
