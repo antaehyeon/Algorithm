@@ -6,41 +6,22 @@
 
 using namespace std;
 
-struct Time
-{
-	int s;
-	int e;
-};
-
-int n, cnt = 0;
-vector<Time> tv;
-
-bool compare(Time t1, Time t2) {
-	if (t1.e == t2.e) return t1.s < t2.s;
-	else return t1.e < t2.e;
-}
+int money, ans = 0;
+int coinList[6] = { 500, 100, 50, 10, 5, 1 };
 
 int main() {
-	cin >> n;
+	cin >> money;
+	int targetMoney = 1000 - money;
 
-	for (int i = 0; i < n; i++) {
-		int a, b;
-		cin >> a >> b;
+	int a;
 
-		tv.push_back({ a, b });
+	for (int i = 0; i < 6; i++) {
+		ans += (targetMoney / coinList[i]);
+		targetMoney %= coinList[i];
+		if (targetMoney == 0) break;
 	}
 
-	sort(tv.begin(), tv.end(), compare);
-
-	int cv = 0;
-
-	for (auto t : tv) {
-		if (t.s >= cv) {
-			cnt++;
-			cv = t.e;
-		}
-	}
-
-	cout << cnt;
+	cout << ans;
+	
 	return 0;
 }
