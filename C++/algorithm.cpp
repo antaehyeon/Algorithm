@@ -6,22 +6,41 @@
 
 using namespace std;
 
-int n, k, m;
-vector<int> coins;
+struct Time
+{
+	int s;
+	int e;
+};
+
+int n, cnt = 0;
+vector<Time> tv;
+
+bool compare(Time t1, Time t2) {
+	if (t1.e == t2.e) return t1.s < t2.s;
+	else return t1.e < t2.e;
+}
 
 int main() {
+	cin >> n;
 
-    cin >> n >> k;
-    for (int i=0; i<n; i++) {
-        int coin;
-        cin >> coin;
-        coins.push_back(coin);
-    }
+	for (int i = 0; i < n; i++) {
+		int a, b;
+		cin >> a >> b;
 
-    for (int i=n-1; i>=0; i--) {
-        m += (k/coins[i]);
-        k %= coins[i];
-    }
+		tv.push_back({ a, b });
+	}
 
-    cout << m;
+	sort(tv.begin(), tv.end(), compare);
+
+	int cv = 0;
+
+	for (auto t : tv) {
+		if (t.s >= cv) {
+			cnt++;
+			cv = t.e;
+		}
+	}
+
+	cout << cnt;
+	return 0;
 }
