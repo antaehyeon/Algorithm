@@ -1,51 +1,18 @@
-const MAX = 1000;
-const map = [];
-let size = 0;
+const checkName = name => {};
 
-const dx = [];
-
-const explorer = start => {
-  let isStar = false;
-  let x = start;
-  let y = 0;
-
-  while (true) {
-    const type = map[y][x];
-    console.log(type);
-    if (type === "#") {
-      y++;
-      if (y >= size) return true;
-    } else if (type === ">") {
-      x++;
-    } else if (type === "<") {
-      x--;
-    } else if (type === "*") {
-      y++;
-      if (isStar) return false;
-      isStar = true;
-    }
-  }
-};
-
-const solution = drum => {
+const solution = param => {
   let ans = 0;
-  size = drum.length;
-  //   console.log(drum);
+  const regex = /[\w+\.?\w+]+\@\w+\.[com|net|org]+/g;
 
-  for (const s of drum) {
-    // console.log("[s]", s);
-    const splited = s.split("");
-    // console.log(splited);
-    map.push(splited);
-  }
+  for (email of param) {
+    const res = email.replace(regex, "");
+    console.log(res);
 
-  //   console.log(drum.length);
-
-  for (let i = 0; i < size; i++) {
-    if (explorer(i)) ans++;
+    if (res === "") ans++;
   }
 
   console.log(ans);
 };
 
-solution(["######", ">#*###", "####*#", "#<#>>#", ">#*#*<", "######"]);
+solution(["d@co@m.com", "a@abc.com", "b@def.com", "c@ghi.net"]);
+solution(["abc.def@x.com", "abc", "abc@defx", "abc@defx.xyz"]);
