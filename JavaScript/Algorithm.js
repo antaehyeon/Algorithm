@@ -1,26 +1,51 @@
+const MAX = 1000;
+const map = [];
+let size = 0;
 
-const posX = [];
-const posY = [];
-const X = 0;
-const Y = 1;
+const dx = [];
 
-const solution = (v) => {
-    const ans = [];
+const explorer = start => {
+  let isStar = false;
+  let x = start;
+  let y = 0;
 
-    for (const pos of v) {
-        if (posX.includes(pos[X])) posX.splice(posX.findIndex(value => value===pos[X]), 1);
-        else posX.push(pos[X])
-
-        if (posY.includes(pos[Y])) posY.splice(posY.findIndex(value => value === pos[Y]), 1);
-        else posY.push(pos[Y])
+  while (true) {
+    const type = map[y][x];
+    console.log(type);
+    if (type === "#") {
+      y++;
+      if (y >= size) return true;
+    } else if (type === ">") {
+      x++;
+    } else if (type === "<") {
+      x--;
+    } else if (type === "*") {
+      y++;
+      if (isStar) return false;
+      isStar = true;
     }
+  }
+};
 
-    ans.push(posX[0]);
-    ans.push(posY[0]);
+const solution = drum => {
+  let ans = 0;
+  size = drum.length;
+  //   console.log(drum);
 
-    return ans;
-}
+  for (const s of drum) {
+    // console.log("[s]", s);
+    const splited = s.split("");
+    // console.log(splited);
+    map.push(splited);
+  }
 
+  //   console.log(drum.length);
 
-const res = solution([[1, 4], [3, 4], [3, 10]]);
-console.log(res);
+  for (let i = 0; i < size; i++) {
+    if (explorer(i)) ans++;
+  }
+
+  console.log(ans);
+};
+
+solution(["######", ">#*###", "####*#", "#<#>>#", ">#*#*<", "######"]);
