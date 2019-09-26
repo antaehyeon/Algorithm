@@ -1,31 +1,31 @@
-let card = 20000;
+let ans = [];
 
-const solution = param => {
-  let price = 720;
-
-  console.log(param);
-  if (param > 40) {
-    const a = Math.floor((param - 40) / 8);
-    const b = param % 8;
-    console.log(`a: ${a}, b: ${b}`);
-    price += a * 80;
-    if (b > 0) price += 80;
-    console.log(price);
+const recursion = (arr, n) => {
+  if (n * 2 >= arr.length) {
+    ans = [...arr, ...ans];
+    return;
   }
 
-  return price;
+  let tmp = arr.slice(n, arr.length - n);
+  console.log(`[arr:${arr}] [n:${n}] [tmp:${tmp}]`);
+  arr.splice(n, arr.length - 2 * n);
+  ans = [...arr, ...ans];
+  recursion(tmp, n);
+};
+
+const solution = (arr, n) => {
+  recursion(arr, n);
 };
 
 const main = () => {
-  const data = "11 128 15 111 59 31 70 102 50 172 88 56 40 41 12";
-  const splited = data.split(" ");
-  let sum = 0;
+  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  solution(arr, 2);
+  arr = ans;
+  ans = [];
+  solution(arr, 3);
+  console.log(ans);
 
-  for (const n of splited) {
-    sum += solution(n);
-  }
-
-  console.log(20000 - sum);
+  ans.slice(0, 5).map(v => console.log(v));
 };
 
 main();
