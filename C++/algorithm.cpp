@@ -81,6 +81,18 @@ void moveFish()
 		int direction = fish.d;
 		fq.pop();
 
+		int rc = (r - 1) * 2;
+		int cc = (c - 1) * 2;
+
+		if (direction == 1 || direction == 2)
+		{
+			speed %= rc;
+		}
+		else
+		{
+			speed %= cc;
+		}
+
 		for (int i = 0; i < speed; i++)
 		{
 			int ny = y + dy[direction];
