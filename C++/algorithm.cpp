@@ -1,157 +1,70 @@
 #include <iostream>
 #include <algorithm>
+#include <utility>
 #include <vector>
 #include <queue>
-#include <cstring>
-#define MAX 101
 
 using namespace std;
 
-int r, c, m, ans = 0;
-int dx[5] = {0, 0, 0, 1, -1};
-int dy[5] = {0, -1, 1, 0, 0};
+bool sorted(int a, int b) {
+	return a > b;
+}
 
-struct Fish
-{
-	int y;
-	int x;
-	int s; // speed
-	int d; // direction
-	int z; // size
-};
-
-queue<Fish> fq;
-vector<Fish> map[MAX][MAX];
-
-void input()
-{
-	cin >> r >> c >> m;
-	for (int i = 0; i < m; i++)
-	{
-		int y, x, s, d, z;
-		cin >> y >> x >> s >> d >> z;
-		map[y][x].push_back({y, x, s, d, z});
+int calc(vector<int> v) {
+	int res = 0;
+	
+	for (int i = 0; i < v.size()-1; i++) {
+		res += abs(v[i] - v[i + 1]);
 	}
+
+	return res;
 }
 
-void findAndInitMap()
-{
-	for (int i = 1; i <= r; i++)
-	{
-		for (int j = 1; j <= c; j++)
-		{
-			if (map[i][j].size())
-			{
-				fq.push(map[i][j][0]);
-				map[i][j].clear();
-			}
-		}
+int solution(int v[], int vLen) {
+
+	vector<int> des;
+	vector<int> asc;
+	vector<int> res;
+
+	for (int i = 0; i < vLen; i++) {
+		des.push_back(v[i]);
+		asc.push_back(v[i]);
 	}
-}
 
-bool isAccessable(int y, int x)
-{
-	return (y > 0 && y <= r) && (x > 0 && x <= c);
-}
+	sort(des.begin(), des.end(), sorted);
+	sort(asc.begin(), asc.end());
 
-int changeDirection(int dir)
-{
-	if (dir == 1)
-		return 2;
-	else if (dir == 2)
-		return 1;
-	else if (dir == 3)
-		return 4;
-	else if (dir == 4)
-		return 3;
-	else
-		return -1;
-}
+	cout << des[0] << endl;
 
-void moveFish()
-{
-	findAndInitMap();
-	while (!fq.empty())
-	{
-		Fish fish = fq.front();
-		int y = fish.y;
-		int x = fish.x;
-		int size = fish.z;
-		int speed = fish.s;
-		int direction = fish.d;
-		fq.pop();
-
-		int rc = (r - 1) * 2;
-		int cc = (c - 1) * 2;
-
-		if (direction == 1 || direction == 2)
-		{
-			speed %= rc;
-		}
-		else
-		{
-			speed %= cc;
-		}
-
-		for (int i = 0; i < speed; i++)
-		{
-			int ny = y + dy[direction];
-			int nx = x + dx[direction];
-
-			if (!isAccessable(ny, nx))
-			{
-				direction = changeDirection(direction);
-				i--;
-				continue;
-			}
-			else
-			{
-				y = ny;
-				x = nx;
-			}
-		}
-
-		if (map[y][x].size())
-		{
-			if (map[y][x][0].z < size)
-			{
-				map[y][x].clear();
-				map[y][x].push_back({y, x, speed, direction, size});
-			}
-		}
-		else
-		{
-			map[y][x].push_back({y, x, speed, direction, size});
-		}
+	for (int i = 0; i < vLen/2; i++) {
+		res.push_back(asc[i]);
+		res.push_back(des[i]);
 	}
+
+	for (auto n : res) cout << n << " ";
+
+	return calc(res);
 }
 
-void solution()
-{
-	for (int x = 1; x <= c; x++)
-	{
-		for (int y = 1; y <= r; y++)
-		{
-			if (map[y][x].size())
-			{
-				ans += map[y][x][0].z;
-				map[y][x].clear();
-				break;
-			}
-		}
-		moveFish();
-	}
+int solution2(int v[], int vLen) {
+	
+	int res = -1;
+	vector<int> t(v, v + vLen);
+	sort(t.begin(), t.end());
+
+	do {
+		int sum = calc(t);
+		res = sum > res ? sum : res;
+	} while (next_permutation(t.begin(), t.end()));
+
+	return res;
 }
 
-int main()
-{
-	ios_base::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
+int main() {
 
-	input();
-	solution();
-	cout << ans;
+	int v[] = { 20,8,10,1,4,15 };
+
+	cout << solution2(v, 6) << endl;
 
 	return 0;
 }
