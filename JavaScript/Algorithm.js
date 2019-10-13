@@ -1,31 +1,22 @@
-let ans = [];
+(() => {
+  let jin = 0;
+  let ans = 0;
+  const test = 10;
 
-const recursion = (arr, n) => {
-  if (n * 2 >= arr.length) {
-    ans = [...arr, ...ans];
-    return;
+  for (let i = 2; i <= 9; i++) {
+    let tmp = 1;
+    const a = test.toString(i);
+    console.log(a);
+
+    for (const n of a) {
+      if (n != 0) tmp *= n;
+    }
+
+    if (ans <= tmp) {
+      jin = i;
+      ans = tmp;
+    }
   }
 
-  let tmp = arr.slice(n, arr.length - n);
-  console.log(`[arr:${arr}] [n:${n}] [tmp:${tmp}]`);
-  arr.splice(n, arr.length - 2 * n);
-  ans = [...arr, ...ans];
-  recursion(tmp, n);
-};
-
-const solution = (arr, n) => {
-  recursion(arr, n);
-};
-
-const main = () => {
-  let arr = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  solution(arr, 2);
-  arr = ans;
-  ans = [];
-  solution(arr, 3);
-  console.log(ans);
-
-  ans.slice(0, 5).map(v => console.log(v));
-};
-
-main();
+  console.log(`jin : ${jin} ans : ${ans}`);
+})();
