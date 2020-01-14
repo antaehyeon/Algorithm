@@ -53,12 +53,23 @@ int rotateDirection(int currentDirection, string nextDirectionLetter) {
 	}
 }
 
+void printMap() {
+	for (int i = 1; i <= 10; i++) {
+		cout << endl;
+		for (int j = 1; j <= 10; j++) {
+			cout << map[i][j] << "  ";
+		}
+	}
+
+	cout << "\n\n\n\n\n" << endl;
+}
+
 void processInput() {
 	cin >> n >> k;
 
 	for (int i = 0; i < k; i++) {
 		int ax, ay;
-		cin >> ax >> ay;
+		cin >> ay >> ax;
 		map[ay][ax] = APPLE;
 	}
 
@@ -78,10 +89,13 @@ int main() {
 
 	processInput();
 
-	map[0][0] = SNAKE;
+	map[1][1] = SNAKE;
+	dir[1][1] = 0;
 
 	while (1) {
 		timeCount++;
+
+		// printMap();
 
 		// if exist snake and out of map -> exit condition
 		if (!checkInMap(cX + xD[currentDirection], cY + yD[currentDirection])) {
@@ -99,18 +113,19 @@ int main() {
 			break;
 		}
 
-		// set the next snake coordinate
-		map[nY][nX] = SNAKE;
-		dir[cY][cX] = currentDirection;
-
-		// checkExist
-		if (!checkExistApple(cX, cY)) {
+		// check exist apple
+		if (!checkExistApple(nX, nY)) {
 			map[ty][tx] = SPACE;
 			int _direction = dir[ty][tx];
 
 			ty += yD[_direction];
 			tx += xD[_direction];
 		}
+
+		// set the next snake coordinate
+		map[nY][nX] = SNAKE;
+		dir[cY][cX] = currentDirection;
+
 
 		// check timeCount (rotate Direction)
 		if (vri.size() != 0 && vri.front().time == timeCount) {
