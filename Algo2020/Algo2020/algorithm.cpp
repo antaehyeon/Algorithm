@@ -28,7 +28,13 @@ struct rotateInfo {
 	string direction;
 };
 
+struct coordinate {
+	int x;
+	int y;
+};
+
 queue<rotateInfo> vri;
+queue<coordinate> snakeQ;
 
 bool checkInMap(int x, int y) {
 	return (x > 0 && y > 0) && (x <= n && y <= n);
@@ -44,12 +50,11 @@ bool checkExistApple(int x, int y) {
 
 int rotateDirection(int currentDirection, string nextDirectionLetter) {
 	if (nextDirectionLetter == "L") {
-		if (currentDirection - LEFT_SIDE == -1) return 3;
+		if (currentDirection - LEFT_SIDE < 0) return 3;
 		return currentDirection - LEFT_SIDE;
 	}
 	else if (nextDirectionLetter == "D") {
-		if (currentDirection + RIGHT_SIDE == 4) return 0;
-		return currentDirection + RIGHT_SIDE;
+		return (currentDirection + RIGHT_SIDE) % 4;
 	}
 }
 
@@ -92,6 +97,8 @@ int main() {
 	map[1][1] = SNAKE;
 	dir[1][1] = 0;
 
+	snakeQ.push({ 1, 1 });
+
 	while (1) {
 		timeCount++;
 
@@ -115,16 +122,17 @@ int main() {
 
 		// check exist apple
 		if (!checkExistApple(nX, nY)) {
-			map[ty][tx] = SPACE;
-			int _direction = dir[ty][tx];
 
-			ty += yD[_direction];
-			tx += xD[_direction];
+			int tailX = snakeQ.front().x;
+			int tailY = snakeQ.front().y;
+
+			map[tailY][tailX] = SPACE;
+			snakeQ.pop();
 		}
 
 		// set the next snake coordinate
 		map[nY][nX] = SNAKE;
-		dir[cY][cX] = currentDirection;
+		snakeQ.push({ nX, nY });
 
 
 		// check timeCount (rotate Direction)
